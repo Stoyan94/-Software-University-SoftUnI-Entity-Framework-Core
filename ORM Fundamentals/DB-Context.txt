@@ -1,0 +1,39 @@
+
+DbContext is a central class in Entity Framework (EF), a popular Object-Relational Mapper (ORM) for .NET applications. It represents a session with the database and allows you to query and save data. DbContext manages the connection to the database, tracking of changes, and materialization of data from the database into .NET objects.
+
+Key Responsibilities of DbContext
+Database Connection Management: Handles the connection to the database.
+Querying: Provides methods to query the database using LINQ.
+Change Tracking: Keeps track of changes made to objects so that they can be persisted to the database.
+Saving Data: Saves changes to the database.
+Configuring Models: Configures the shape of your entities and their relationships using the Fluent API or data annotations.
+Creating a DbContext
+To create a DbContext, you typically derive a class from DbContext and define properties that represent collections of the entities (tables) you want to work with.
+
+
+Define Your Model: The Employee class represents a table in the database.
+Define Your DbContext:
+DbSet Properties: Each DbSet<T> property represents a table in the database.
+OnConfiguring Method: Configures the database connection. This example uses a SQL Server connection string.
+OnModelCreating Method: Configures entity mappings and relationships using the Fluent API.
+
+Use Your DbContext:
+Query Data: Use LINQ to query the data.
+
+Save Data: Use context.SaveChanges() to persist changes to the database.
+Key Methods and Properties
+
+DbSet<TEntity>: Represents a collection for a given entity type.
+
+SaveChanges(): Persists all changes made in this context to the database.
+
+OnConfiguring(DbContextOptionsBuilder): Configures the context options, such as the database connection.
+
+OnModelCreating(ModelBuilder): Configures the model using the Fluent API.
+Best Practices
+
+Dispose Pattern: Always use the using statement or explicitly dispose of your DbContext to free up resources.
+
+Separate Context for Each Unit of Work: Create a new DbContext instance for each unit of work to ensure the context is not holding onto resources longer than necessary.
+
+Configuration: Use the Fluent API for complex configurations instead of relying solely on data annotations.
