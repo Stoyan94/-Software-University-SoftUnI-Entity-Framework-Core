@@ -26,7 +26,7 @@ namespace EF_Demo
 
         public int AddressID { get; set; }
 
-       //public bool IsDeleted { get; set; }
+       public bool IsDeleted { get; set; }
 
         [ForeignKey(nameof(DepartmentID))]
         public Department Department { get; set; }
