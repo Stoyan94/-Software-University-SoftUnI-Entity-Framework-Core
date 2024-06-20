@@ -22,5 +22,9 @@ namespace EF_Demo
                 optionsBuilder.UseSqlServer("Server=STOYAN;Database=SoftUni;User Id=sa;Password=558955;Trusted_Connection=True;");
            }
         }
+
+        public DbSet<Employee> Employees { get; set; }
+
+        public DbSet<Department> Departments { get; set; }
     }
 }
