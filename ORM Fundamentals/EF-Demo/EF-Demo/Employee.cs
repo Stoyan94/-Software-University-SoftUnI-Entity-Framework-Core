@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EF_Demo
 {
@@ -17,7 +18,7 @@ namespace EF_Demo
 
         public string DepartmentId { get; set; }
 
-        public int MnagerId { get; set; }
+        public int ManagerId { get; set; }
 
         public DateTime HireDate { get; set; }
 
@@ -27,7 +28,11 @@ namespace EF_Demo
 
         public bool IsDeleted { get; set; }
 
+        [ForeignKey(nameof(DepartmentId))]
         public Department Department { get; set; }
+
+        [ForeignKey(nameof(ManagerId))]
+        public Employee Manager { get; set; }
 
     }
 }
