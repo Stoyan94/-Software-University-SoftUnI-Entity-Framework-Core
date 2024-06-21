@@ -8,4 +8,23 @@ var departments = new Department[] {
 
 var changeTracker = new ChangeTracker<Department>(departments);
 
-Console.WriteLine();
+foreach (var (original, copy) in departments.Zip(changeTracker.AllEntities))
+{
+    original.Id = -1;
+    Console.WriteLine(ReferenceEquals(original, copy));
+}
+
+//Explanation of Key Points
+
+//ChangeTracker Initialization:
+//When the ChangeTracker is initialized with the departments array, 
+//    it probably creates internal copies of these entities to track changes. 
+//    The AllEntities property of ChangeTracker likely returns these copies.
+
+//Zip Method:
+//The Zip method combines two sequences (the original departments and the entities tracked by ChangeTracker) into a single sequence of tuples. 
+//    Each tuple contains an element from each sequence at the same position.
+
+//ReferenceEquals:
+//ReferenceEquals checks if the two references (original and copy) point to the same object. 
+//    Since the ChangeTracker typically holds copies of the original entities, this should return false.

@@ -16,7 +16,7 @@
             this._allEntities = CloneEntities(entities).ToList();
         }
 
-
+        public IReadOnlyCollection<T> AllEntities => this._allEntities.AsReadOnly();
         public IReadOnlyCollection<T> Added => this._added.AsReadOnly();
         public IReadOnlyCollection<T> Removed => this._removed.AsReadOnly();
 
