@@ -2,6 +2,10 @@
 using MiniORM;
 using MiniORM.App.Entities;
 
+//Summary
+//This code snippet demonstrates creating a ChangeTracker for Department entities, modifying the original entities, 
+//and verifying that the ChangeTracker maintains separate copies of these entities. 
+//The ReferenceEquals method confirms that the entities tracked by the ChangeTracker are indeed different objects from the originals.
 var departments = new Department[] { 
     new Department { Id = 1, Name = "First"}, 
     new Department { Id = 2, Name = "Second" } };
