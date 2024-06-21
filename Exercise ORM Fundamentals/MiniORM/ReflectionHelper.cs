@@ -26,5 +26,11 @@ namespace MiniORM
             var hasAttribute = mi.GetCustomAttribute<T>() != null;
             return hasAttribute;
         }
+
+        internal static PropertyInfo[] GetAllowedSqlProperties(this Type type)
+        {
+            return type.GetProperties().Where(pi =>
+            DbContext.AllowedSqlTypes.Contains(pi.PropertyType)).ToArray();
+        }
     }
 }
