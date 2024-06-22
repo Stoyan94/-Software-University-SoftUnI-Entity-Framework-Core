@@ -12,5 +12,7 @@ namespace MiniORM.App.Entities
         public bool IsEmploeyd { get; set; }
         [ForeignKey(nameof(Department))] public int DepartmentId { get; set; }
         public Department Department { get; set; }
+
+        public ICollection<EmployeeProject> EmployeeProjects { get; set; }
     }
 }

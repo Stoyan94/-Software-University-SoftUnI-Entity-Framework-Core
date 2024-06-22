@@ -281,7 +281,7 @@ internal class DatabaseConnection
             }
 
             var property = typeof(T).GetProperty(columnName);
-            property.SetValue(obj, columnValue);
+            property?.SetValue(obj, columnValue);
         }
 
         return obj;

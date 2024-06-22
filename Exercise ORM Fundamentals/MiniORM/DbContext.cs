@@ -1,20 +1,21 @@
-﻿using System.Reflection;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 
 namespace MiniORM
 {
     public abstract class DbContext
     {
         private readonly DatabaseConnection _connection;
-
+        private readonly IDictionary<Type, PropertyInfo> dbSetProperties;
         protected DbContext(string connectionStirng)
         {
             this._connection = new DatabaseConnection(connectionStirng);
 
-            IDictionary<Type, PropertyInfo> dbSetProperties = DiscoverDbSets();
+            this.dbSetProperties = DiscoverDbSets();
 
             using (new ConnectionManager (this._connection))
             {
-                InitializeDbSets(dbSetProperties);
+                InitializeDbSets();
             }
         }
         internal static HashSet<Type> AllowedSqlTypes { get; set; } = new HashSet<Type>
@@ -46,9 +47,9 @@ namespace MiniORM
         }
 
 
-        private void InitializeDbSets(IDictionary<Type, PropertyInfo> dbSetProperties)
+        private void InitializeDbSets() 
         {
-            foreach (var (entityType, dbSetProperty) in dbSetProperties)
+            foreach (var (entityType, dbSetProperty) in this.dbSetProperties)
             {
                 MethodInfo populateMethod = typeof(DbContext).GetMethod(nameof(PopulateDbSet),
                      BindingFlags.Instance | BindingFlags.NonPublic)!
@@ -57,15 +58,42 @@ namespace MiniORM
                 populateMethod.Invoke(this, new object?[] { dbSetProperty });
             }
         }
-
-
     
         private void PopulateDbSet<T>(PropertyInfo dbSetProperty)
             where T : class, new ()
         {
-            var entities = Enumerable.Empty<T>();
+            var entities = LoadEntities<T>();
             var dbSet = new DbSet<T>(entities);
             ReflectionHelper.ReplaceBackingField(this, dbSetProperty.Name, dbSet);
+        }
+
+        private IEnumerable<T> LoadEntities<T>()
+            where T : class, new ()
+        {
+            Type entityType = typeof(T);
+
+            string tableName = this.GetTableName(entityType);
+            string[] columnNames = this.GetColumnNames(tableName).ToArray();
+
+            return this._connection.FetchResultSet<T>(tableName, columnNames);
+        }
+
+        private string GetTableName(Type entityType)
+        {
+            TableAttribute? tableAttribute = entityType.GetCustomAttribute<TableAttribute>();
+
+            if (tableAttribute is not null) 
+            {
+                return tableAttribute.Name;                
+            }
+
+            PropertyInfo dbSetProperty = this.dbSetProperties[entityType];
+            return dbSetProperty.Name;
+        }
+
+        private IEnumerable<string> GetColumnNames(string tableName)
+        {
+            return this._connection.FetchColumnNames(tableName);
         }
     }    
 }
