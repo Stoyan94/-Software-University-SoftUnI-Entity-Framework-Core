@@ -20,6 +20,17 @@
         public IReadOnlyCollection<T> Added => this._added.AsReadOnly();
         public IReadOnlyCollection<T> Removed => this._removed.AsReadOnly();
 
+        public void Add(T entity)
+        {
+            if (entity is null) throw new ArgumentNullException(nameof(entity)); 
+            this._added.Add(entity);
+        }
+
+        public void Remove(T entity)
+        {
+            if (entity is null) throw new ArgumentNullException(nameof(entity));
+            this._removed.Add(entity);
+        }
         private static IEnumerable<T> CloneEntities(IEnumerable<T> entities)
         {
             var properties = typeof(T).GetAllowedSqlProperties();
