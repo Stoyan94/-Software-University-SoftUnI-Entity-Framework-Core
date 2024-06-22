@@ -21,7 +21,7 @@ namespace MiniORM
 
             this._dbSetDescriptors = this.DescribeDbSets();
 
-            MapRelations();
+            MapAllRelations();
         }
         internal static HashSet<Type> AllowedSqlTypes { get; set; } = new HashSet<Type>
         {
@@ -85,7 +85,20 @@ namespace MiniORM
                 populateMethod.Invoke(this, new object?[] { dbSetProperty });
             }
         }
-    
+
+        private void MapAllRelations()
+        {
+            foreach (var dbSetDescriptor in this._dbSetDescriptors.Values)
+            {
+                MethodInfo mapRelationsMethod = typeof(DbContext).GetMethod(nameof(MapRelations),
+                    BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .MakeGenericMethod(dbSetDescriptor.EntityType);
+
+                mapRelationsMethod.Invoke(this, new object?[] { dbSetDescriptor.DbSet });
+            }
+        }
+
+
         private void PopulateDbSet<T>(PropertyInfo dbSetProperty)
             where T : class, new ()
         {
@@ -94,6 +107,35 @@ namespace MiniORM
             ReflectionHelper.ReplaceBackingField(this, dbSetProperty.Name, dbSet);
         }
 
+        private void MapRelations<T>(DbSet<T> dbSet)
+            where T : class, new ()
+        {
+            MapNavigationProperties(dbSet);
+        }
+
+        private void MapNavigationProperties<T>(DbSet<T> dbSet)
+            where T : class, new ()
+        {
+            Type entityType = typeof(T);
+
+            foreach (var property in entityType.GetProperties())
+            {
+                ForeignKeyAttribute? foreignKeyAttribute = property.GetCustomAttribute<ForeignKeyAttribute>();
+
+                if (foreignKeyAttribute is null)
+                {
+                    continue;
+                }
+
+                var navigationPropertyName = foreignKeyAttribute.Name;
+                var navigationProperty = entityType.GetProperty(navigationPropertyName);
+
+                if (navigationProperty is null)
+                {
+                    throw new InvalidOperationException($"Navigation property with name {navigationProperty} was not found");
+                }
+            }
+        }
         private IEnumerable<T> LoadEntities<T>()
             where T : class, new ()
         {
