@@ -6,17 +6,22 @@ namespace MiniORM
     public abstract class DbContext
     {
         private readonly DatabaseConnection _connection;
-        private readonly IDictionary<Type, PropertyInfo> dbSetProperties;
+        private readonly IDictionary<Type, PropertyInfo> _dbSetProperties;
+        private readonly IDictionary<Type, DbSetDescriptor> _dbSetDescriptors;
         protected DbContext(string connectionStirng)
         {
             this._connection = new DatabaseConnection(connectionStirng);
 
-            this.dbSetProperties = DiscoverDbSets();
+            this._dbSetProperties = this.DiscoverDbSets();
 
             using (new ConnectionManager (this._connection))
             {
-                InitializeDbSets();
+                this.InitializeDbSets();
             }
+
+            this._dbSetDescriptors = this.DescribeDbSets();
+
+            MapRelations();
         }
         internal static HashSet<Type> AllowedSqlTypes { get; set; } = new HashSet<Type>
         {
@@ -46,10 +51,32 @@ namespace MiniORM
             return result;
         }
 
+        private IDictionary<Type, DbSetDescriptor> DescribeDbSets()
+        {
+            Dictionary<Type, DbSetDescriptor> result = new Dictionary<Type, DbSetDescriptor>();
+
+            foreach (var (entityType, dbSetProperty) in this._dbSetProperties)
+            {
+                var name = dbSetProperty.Name;
+
+                object? dbSet = dbSetProperty.GetValue(this);
+
+                if (dbSet is not (IEnumerable<object> typedDbset))
+                {
+                    throw new InvalidOperationException($"DbSet {name} was not initialized correctly");
+                }
+
+                DbSetDescriptor descriptor = new DbSetDescriptor(entityType, name, typedDbset);
+
+                result[entityType] = descriptor;
+            }
+
+            return result;
+        }
 
         private void InitializeDbSets() 
         {
-            foreach (var (entityType, dbSetProperty) in this.dbSetProperties)
+            foreach (var (entityType, dbSetProperty) in this._dbSetProperties)
             {
                 MethodInfo populateMethod = typeof(DbContext).GetMethod(nameof(PopulateDbSet),
                      BindingFlags.Instance | BindingFlags.NonPublic)!
@@ -87,13 +114,27 @@ namespace MiniORM
                 return tableAttribute.Name;                
             }
 
-            PropertyInfo dbSetProperty = this.dbSetProperties[entityType];
+            PropertyInfo dbSetProperty = this._dbSetProperties[entityType];
             return dbSetProperty.Name;
         }
 
         private IEnumerable<string> GetColumnNames(string tableName)
         {
             return this._connection.FetchColumnNames(tableName);
+        }
+
+        private class DbSetDescriptor
+        {
+            public DbSetDescriptor(Type entityType, string name, IEnumerable<object> dbSet)
+            {
+                this.EntityType = entityType;
+                this.Name = name;
+                this.DbSet = dbSet;
+            }
+
+            public Type EntityType { get; }
+            public string Name { get; }
+            public IEnumerable<object> DbSet {  get; }
         }
     }    
 }
