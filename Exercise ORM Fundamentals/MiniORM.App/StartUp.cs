@@ -4,7 +4,7 @@ using MiniORM.App;
 using MiniORM.App.Entities;
 
 
-const string connectionstring = "Server=STOYAN;Database=MiniORM;User Id=sa;Password=558955;Trusted_Connection=True;";
+const string connectionstring = "Server=STOYAN;Database=MiniORM;User Id=sa;Password=558955;TrustServerCertificate=True;";
 
 SoftUniDbContext dbContext = new SoftUniDbContext(connectionstring);
 
@@ -14,17 +14,17 @@ Console.WriteLine();
 //This code snippet demonstrates creating a ChangeTracker for Department entities, modifying the original entities, 
 //and verifying that the ChangeTracker maintains separate copies of these entities. 
 //The ReferenceEquals method confirms that the entities tracked by the ChangeTracker are indeed different objects from the originals.
-var departments = new Department[] {
-    new Department { Id = 1, Name = "First"},
-    new Department { Id = 2, Name = "Second" } };
+//var departments = new Department[] {
+//    new Department { Id = 1, Name = "First"},
+//    new Department { Id = 2, Name = "Second" } };
 
-var changeTracker = new ChangeTracker<Department>(departments);
+//var changeTracker = new ChangeTracker<Department>(departments);
 
-foreach (var (original, copy) in departments.Zip(changeTracker.AllEntities))
-{
-    original.Id = -1;
-    Console.WriteLine(ReferenceEquals(original, copy));
-}
+//foreach (var (original, copy) in departments.Zip(changeTracker.AllEntities))
+//{
+//    original.Id = -1;
+//    Console.WriteLine(ReferenceEquals(original, copy));
+//}
 
 //Explanation of Key Points
 

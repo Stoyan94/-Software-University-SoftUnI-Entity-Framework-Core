@@ -58,12 +58,14 @@ namespace MiniORM
             }
         }
 
+
+    
         private void PopulateDbSet<T>(PropertyInfo dbSetProperty)
             where T : class, new ()
         {
             var entities = Enumerable.Empty<T>();
             var dbSet = new DbSet<T>(entities);
-            ReflectionHelper.ReplaceBackingField(this, dbSetProperty.Name, dbSetProperty);
+            ReflectionHelper.ReplaceBackingField(this, dbSetProperty.Name, dbSet);
         }
     }    
 }
