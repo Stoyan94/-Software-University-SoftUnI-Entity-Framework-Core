@@ -118,21 +118,34 @@ namespace MiniORM
         {
             Type entityType = typeof(T);
 
-            foreach (var property in entityType.GetProperties())
+            foreach (var foreignKeyProperty in entityType.GetProperties())
             {
-                ForeignKeyAttribute? foreignKeyAttribute = property.GetCustomAttribute<ForeignKeyAttribute>();
+                ForeignKeyAttribute? foreignKeyAttribute = foreignKeyProperty.GetCustomAttribute<ForeignKeyAttribute>();
 
                 if (foreignKeyAttribute is null)
                 {
                     continue;
                 }
 
-                var navigationPropertyName = foreignKeyAttribute.Name;
-                var navigationProperty = entityType.GetProperty(navigationPropertyName);
+                string navigationPropertyName = foreignKeyAttribute.Name;
+                PropertyInfo? navigationProperty = entityType.GetProperty(navigationPropertyName);
 
                 if (navigationProperty is null)
                 {
                     throw new InvalidOperationException($"Navigation property with name {navigationProperty} was not found");
+                }
+
+                Type relatedEntityType = navigationProperty.PropertyType;
+                var relatedEntityPrimaryKey = relatedEntityType.GetSingleKeyProperty();
+                IEnumerable<object> relatedDbSet = this._dbSetDescriptors[relatedEntityType].DbSet;
+
+                foreach (var entity in dbSet.Entities)
+                {
+                    var foreignKey = foreignKeyProperty.GetValue(entity);
+                    var relatedEntity = relatedDbSet
+                        .Single(re => Equals(relatedEntityPrimaryKey.GetValue(re), foreignKey));
+
+                    navigationProperty.SetValue(entity, relatedEntity);
                 }
             }
         }

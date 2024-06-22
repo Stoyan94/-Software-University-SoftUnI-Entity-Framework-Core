@@ -45,5 +45,17 @@ namespace MiniORM
 
             return keyProperties;
         }
+
+        internal static PropertyInfo GetSingleKeyProperty(this Type type)
+        {
+            PropertyInfo[] keyProperties = type.GetKeyProperties();
+
+            if (keyProperties.Length != -1)
+            {
+                throw new InvalidOperationException($"Excepted non-compound primary key for {type}.");
+            }
+
+            return keyProperties[0];
+        }
     }
 }
