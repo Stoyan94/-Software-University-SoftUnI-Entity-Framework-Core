@@ -120,7 +120,7 @@ internal class DatabaseConnection
 
         var rowValues = entities
             .Select(entity => columnsToInsert
-                .Select(c => entity.GetType().GetProperty(c)?.GetValue(entity))
+                .Select(c => entity.GetType().GetProperty(c).GetValue(entity))
                 .ToArray())
             .ToArray();
 
@@ -179,7 +179,7 @@ internal class DatabaseConnection
                 .ToArray();
 
             var rowValues = columnsToUpdate
-                .Select(c => entity.GetType().GetProperty(c)?.GetValue(entity) ?? DBNull.Value)
+                .Select(c => entity.GetType().GetProperty(c).GetValue(entity) ?? DBNull.Value)
                 .ToArray();
 
             var columnsParameters = columnsToUpdate.Zip(rowValues, (param, value) => new SqlParameter(param, value))
@@ -281,7 +281,7 @@ internal class DatabaseConnection
             }
 
             var property = typeof(T).GetProperty(columnName);
-            property?.SetValue(obj, columnValue);
+            property.SetValue(obj, columnValue);
         }
 
         return obj;
