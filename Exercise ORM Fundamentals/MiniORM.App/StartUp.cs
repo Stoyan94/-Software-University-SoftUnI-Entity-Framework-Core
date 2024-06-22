@@ -1,13 +1,26 @@
 ﻿
 using MiniORM;
+using MiniORM.App;
 using MiniORM.App.Entities;
+
+
+const string connectionstring = "Server=STOYAN;Database=MiniORM;User Id=sa;Password=558955;Trusted_Connection=True;";
+
+var dbContext = new SoftUniDbContext(connectionstring);
+
+var departmentSetType = typeof(DbSet<Department>);
+
+Console.WriteLine(departmentSetType);
+Console.WriteLine(departmentSetType.GetGenericTypeDefinition());
+Console.WriteLine(departmentSetType.GenericTypeArguments[0]);
+
 
 //Summary
 //This code snippet demonstrates creating a ChangeTracker for Department entities, modifying the original entities, 
 //and verifying that the ChangeTracker maintains separate copies of these entities. 
 //The ReferenceEquals method confirms that the entities tracked by the ChangeTracker are indeed different objects from the originals.
-var departments = new Department[] { 
-    new Department { Id = 1, Name = "First"}, 
+var departments = new Department[] {
+    new Department { Id = 1, Name = "First"},
     new Department { Id = 2, Name = "Second" } };
 
 var changeTracker = new ChangeTracker<Department>(departments);
