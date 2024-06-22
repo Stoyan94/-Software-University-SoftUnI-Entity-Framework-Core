@@ -6,14 +6,9 @@ using MiniORM.App.Entities;
 
 const string connectionstring = "Server=STOYAN;Database=MiniORM;User Id=sa;Password=558955;Trusted_Connection=True;";
 
-var dbContext = new SoftUniDbContext(connectionstring);
+SoftUniDbContext dbContext = new SoftUniDbContext(connectionstring);
 
-var departmentSetType = typeof(DbSet<Department>);
-
-Console.WriteLine(departmentSetType);
-Console.WriteLine(departmentSetType.GetGenericTypeDefinition());
-Console.WriteLine(departmentSetType.GenericTypeArguments[0]);
-
+Console.WriteLine();
 
 //Summary
 //This code snippet demonstrates creating a ChangeTracker for Department entities, modifying the original entities, 
