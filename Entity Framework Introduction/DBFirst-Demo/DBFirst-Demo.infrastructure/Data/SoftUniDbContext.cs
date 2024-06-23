@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using DBFirst_Demo.Data.Models;
+using DBFirst_Demo.infrastructure.Data.Models;
 
-namespace DBFirst_Demo.Data
+namespace DBFirst_Demo.infrastructure.Data
 {
     public partial class SoftUniDbContext : DbContext
     {

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace DBFirst_Demo.Data.Models
+namespace DBFirst_Demo.infrastructure.Data.Models
 {
     [Keyless]
     [Table("EmpWithSalaryOver30000")]
