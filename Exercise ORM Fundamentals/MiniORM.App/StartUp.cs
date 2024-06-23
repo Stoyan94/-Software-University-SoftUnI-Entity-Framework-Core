@@ -8,6 +8,22 @@ const string connectionstring = "Server=STOYAN;Database=MiniORM;User Id=sa;Passw
 
 SoftUniDbContext dbContext = new SoftUniDbContext(connectionstring);
 
+//Add
+//dbContext.Projects.Add(new Project { Name = "miniorm" });
+
+//Delete
+//var projectToDelete = dbContext.Projects.FirstOrDefault(p => p.Name == "miniorm");
+//dbContext.Projects.Remove(projectToDelete);
+
+//Update
+var employeesToUpdate = dbContext.Employees.Where(e => e.FirstName.Length > 3 && !e.IsEmployed).ToList();
+foreach (var employee in employeesToUpdate)
+{
+    employee.IsEmployed = true;
+}
+
+dbContext.SaveChanges();
+
 Console.WriteLine();
 
 //Summary
