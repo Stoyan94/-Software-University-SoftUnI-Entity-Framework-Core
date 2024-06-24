@@ -12,7 +12,7 @@ public class StartUp
 
         foreach ( var employee in employees ) 
         {
-            Console.WriteLine($"{employee.EmployeeId}");
+            Console.WriteLine($"{employee.FirstName}");
         }
     }
 }

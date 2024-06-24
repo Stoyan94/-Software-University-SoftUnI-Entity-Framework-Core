@@ -144,17 +144,17 @@ public class SoftUniContext : DbContext
         modelBuilder.Entity<EmployeeProject>(entity =>
         {
             // Generate composite PK
-            entity.HasKey(pk => new object[] { pk.EmployeeId, pk.ProjectId });
+            entity.HasKey(pk => new { pk.EmployeeId, pk.ProjectId });
 
             // Configure FKs
             entity
                .HasOne(ep => ep.Employee)
-               .WithMany(e => e.EmployeeProjects)
+               .WithMany(e => e.EmployeesProjects)
                .HasForeignKey(ep => ep.EmployeeId);
 
             entity
                .HasOne(ep => ep.Project)
-               .WithMany(p => p.EmployeeProjects)
+               .WithMany(p => p.EmployeesProjects)
                .HasForeignKey(ep => ep.ProjectId);
         });        
     }  
