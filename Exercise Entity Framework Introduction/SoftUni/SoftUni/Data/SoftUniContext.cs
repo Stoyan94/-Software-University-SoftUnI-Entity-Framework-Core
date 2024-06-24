@@ -3,10 +3,11 @@ using SoftUni.Models;
 
 namespace SoftUni.Data;
 
-public partial class SoftUniContext : DbContext
+public class SoftUniContext : DbContext
 {
     public SoftUniContext()
     {
+
     }
 
     public SoftUniContext(DbContextOptions<SoftUniContext> options)
@@ -15,10 +16,16 @@ public partial class SoftUniContext : DbContext
     }
 
     public virtual DbSet<Address> Addresses { get; set; } = null!;
+
     public virtual DbSet<Department> Departments { get; set; } = null!;
+
     public virtual DbSet<Employee> Employees { get; set; } = null!;
+
     public virtual DbSet<Project> Projects { get; set; } = null!;
+
     public virtual DbSet<Town> Towns { get; set; } = null!;
+
+    public virtual DbSet<EmployeeProject> EmployeesProjects { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -107,24 +114,7 @@ public partial class SoftUniContext : DbContext
             entity.HasOne(d => d.Manager)
                 .WithMany(p => p.InverseManager)
                 .HasForeignKey(d => d.ManagerId)
-                .HasConstraintName("FK_Employees_Employees");
-
-            entity.HasMany(d => d.Projects)
-                .WithMany(p => p.Employees)
-                .UsingEntity<Dictionary<string, object>>(
-                    "EmployeesProject",
-                    l => l.HasOne<Project>().WithMany().HasForeignKey("ProjectId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_EmployeesProjects_Projects"),
-                    r => r.HasOne<Employee>().WithMany().HasForeignKey("EmployeeId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_EmployeesProjects_Employees"),
-                    j =>
-                    {
-                        j.HasKey("EmployeeId", "ProjectId");
-
-                        j.ToTable("EmployeesProjects");
-
-                        j.IndexerProperty<int>("EmployeeId").HasColumnName("EmployeeID");
-
-                        j.IndexerProperty<int>("ProjectId").HasColumnName("ProjectID");
-                    });
+                .HasConstraintName("FK_Employees_Employees");          
         });
 
         modelBuilder.Entity<Project>(entity =>
@@ -151,9 +141,22 @@ public partial class SoftUniContext : DbContext
                 .IsUnicode(false);
         });
 
-        OnModelCreatingPartial(modelBuilder);
-    }
+        modelBuilder.Entity<EmployeeProject>(entity =>
+        {
+            // Generate composite PK
+            entity.HasKey(pk => new object[] { pk.EmployeeId, pk.ProjectId });
 
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+            // Configure FKs
+            entity
+               .HasOne(ep => ep.Employee)
+               .WithMany(e => e.EmployeeProjects)
+               .HasForeignKey(ep => ep.EmployeeId);
+
+            entity
+               .HasOne(ep => ep.Project)
+               .WithMany(p => p.EmployeeProjects)
+               .HasForeignKey(ep => ep.ProjectId);
+        });        
+    }  
 }
 

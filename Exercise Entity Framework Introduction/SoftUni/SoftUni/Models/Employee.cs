@@ -6,7 +6,7 @@ public class Employee
     {
         this.Departments = new HashSet<Department>();
         this.InverseManager = new HashSet<Employee>();
-        this.Projects = new HashSet<Project>();
+        this.EmployeeProjects = new HashSet<EmployeeProject>();
     }
 
     public int EmployeeId { get; set; }
@@ -38,6 +38,6 @@ public class Employee
 
     public virtual ICollection<Employee> InverseManager { get; set; }
 
-    public virtual ICollection<Project> Projects { get; set; }
+    public virtual ICollection<EmployeeProject> EmployeeProjects { get; set; }
 }
 
