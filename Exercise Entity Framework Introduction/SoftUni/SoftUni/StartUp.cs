@@ -33,7 +33,7 @@ public class StartUp
                 e.JobTitle,
                 e.Salary
             })
-            .ToArray();
+            .ToArray(); //ToList() - Detach from the change tracker, any changes on the data inside will not be saved into db
 
         foreach (var employee in employees)
         {
