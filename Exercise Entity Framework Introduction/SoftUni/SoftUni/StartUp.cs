@@ -9,7 +9,7 @@ public class StartUp
     {
         SoftUniContext dbContext = new SoftUniContext();
 
-        string result = GetEmployeesFullInformation(dbContext);
+        string result = GetEmployeesWithSalaryOver50000(dbContext);
         Console.WriteLine(result);
 
         //var employees = dbContext.Employees.Where(e=> e.EmployeeId == 1);
@@ -39,6 +39,26 @@ public class StartUp
         {
             output.AppendLine($"{employee.FirstName} {employee.LastName} {employee.MiddleName} {employee.JobTitle} {employee.Salary:f2}");
         }
+
+        return output.ToString().TrimEnd();
+    }
+
+    public static string GetEmployeesWithSalaryOver50000(SoftUniContext context)
+    {
+        StringBuilder output = new StringBuilder();
+
+         var employeesSalary = context.Employees
+            .Where(e => e.Salary > 50000)
+            .Select(e => new
+            {
+                e.FirstName,
+                e.Salary
+            }).OrderBy(e => e.FirstName).ToArray();
+
+        foreach (var employee in employeesSalary)
+        {
+            output.AppendLine($"{employee.FirstName} - {employee.Salary:f2}");
+        }       
 
         return output.ToString().TrimEnd();
     }
