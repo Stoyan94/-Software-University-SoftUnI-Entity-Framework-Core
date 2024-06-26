@@ -1,4 +1,5 @@
 ﻿using SoftUni.Data;
+using SoftUni.Models;
 using System.Text;
 
 namespace SoftUni;
@@ -9,7 +10,7 @@ public class StartUp
     {
         SoftUniContext dbContext = new SoftUniContext();
 
-        string result = GetEmployeesFromResearchAndDevelopment(dbContext);
+        string result = AddNewAddressToEmployee(dbContext);
         Console.WriteLine(result);
 
         //var employees = dbContext.Employees.Where(e=> e.EmployeeId == 1);
@@ -77,16 +78,36 @@ public class StartUp
                 e.LastName,
                 DepartmentName = e.Department.Name,
                 e.Salary
-            });
+            }).ToArray();
 
         foreach (var employee in employeesRandDdepartment)
         {
-            output.AppendLine($"{employee.FirstName} {employee.LastName} {employee.DepartmentName} - {employee.Salary:f2}");
+            output.AppendLine($"{employee.FirstName} {employee.LastName} from {employee.DepartmentName} - ${employee.Salary:f2}");
         }
 
-
-
         return output.ToString().TrimEnd();
+    }
+
+    public static string AddNewAddressToEmployee(SoftUniContext context)
+    {
+        Address newAdressEmployee = new Address()
+        {
+            AddressText = "Vitoshka 15",
+            TownId = 4
+        };
+
+        var employeeUpdateInfo = context.Employees
+            .FirstOrDefault(e => e.LastName == "Nakov");
+        employeeUpdateInfo!.Address = newAdressEmployee;
+
+        context.SaveChanges();
+
+        var employee = context.Employees
+            .OrderByDescending(e => e.AddressId)
+            .Take(10)
+            .Select(e => e.Address!.AddressText).ToArray();
+
+        return string.Join(Environment.NewLine, employee);
     }
 
 }
