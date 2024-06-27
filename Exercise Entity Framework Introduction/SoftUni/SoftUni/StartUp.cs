@@ -11,7 +11,7 @@ public class StartUp
     {
         SoftUniContext dbContext = new SoftUniContext();
 
-        string result = GetAddressesByTown(dbContext);
+        string result = GetEmployee147(dbContext);
         Console.WriteLine(result);
 
         //var employees = dbContext.Employees.Where(e=> e.EmployeeId == 1);
@@ -157,13 +157,45 @@ public class StartUp
     {
         var emoloyeesAdresses = context.Addresses
            .OrderByDescending(e => e.Employees.Count())
-           .ThenBy(e => e.Town)
+           .ThenBy(e => e.Town.Name)
            .ThenBy(e => e.AddressText)
            .Take(10)
               .Select(e => $"{e.AddressText}, {e.Town!.Name} - {e.Employees.Count} employees")
                 .ToArray();
 
         return string.Join(Environment.NewLine, emoloyeesAdresses);
+    }
+
+    public static string GetEmployee147(SoftUniContext context)
+    {
+        StringBuilder output = new StringBuilder();
+
+        var findEmployeeByID = context.Employees
+            .Where(e => e.EmployeeId == 147)
+            .Select(e => new
+            {
+                e.FirstName,
+                e.LastName,
+                e.JobTitle,
+                Projects = e.EmployeesProjects
+                          .Select(e => new
+                          {
+                              e.Project.Name
+                          })
+            })
+            .ToList();
+
+        foreach (var e in findEmployeeByID)
+        {
+            output.AppendLine($"{e.FirstName} {e.LastName} - {e.JobTitle}");
+
+            foreach (var project in e.Projects.OrderBy(e=> e.Name))
+            {
+                output.AppendLine($"{project.Name}");
+            }
+        }
+                
+        return output.ToString().TrimEnd();
     }
 
 }
