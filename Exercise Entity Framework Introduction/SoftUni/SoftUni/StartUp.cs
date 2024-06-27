@@ -11,7 +11,7 @@ public class StartUp
     {
         SoftUniContext dbContext = new SoftUniContext();
 
-        string result = GetEmployeesInPeriod(dbContext);
+        string result = GetAddressesByTown(dbContext);
         Console.WriteLine(result);
 
         //var employees = dbContext.Employees.Where(e=> e.EmployeeId == 1);
@@ -151,6 +151,19 @@ public class StartUp
         }
 
         return output.ToString().TrimEnd();
+    }
+
+    public static string GetAddressesByTown(SoftUniContext context)
+    {
+        var emoloyeesAdresses = context.Addresses
+           .OrderByDescending(e => e.Employees.Count())
+           .ThenBy(e => e.Town)
+           .ThenBy(e => e.AddressText)
+           .Take(10)
+              .Select(e => $"{e.AddressText}, {e.Town!.Name} - {e.Employees.Count} employees")
+                .ToArray();
+
+        return string.Join(Environment.NewLine, emoloyeesAdresses);
     }
 
 }
