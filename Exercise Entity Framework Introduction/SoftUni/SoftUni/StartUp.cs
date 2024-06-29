@@ -1,6 +1,8 @@
-﻿using SoftUni.Data;
+﻿using Microsoft.VisualBasic;
+using SoftUni.Data;
 using SoftUni.Models;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 
 namespace SoftUni;
@@ -11,7 +13,7 @@ public class StartUp
     {
         SoftUniContext dbContext = new SoftUniContext();
 
-        string result = GetEmployee147(dbContext);
+        string result = IncreaseSalaries(dbContext);
         Console.WriteLine(result);
 
         //var employees = dbContext.Employees.Where(e=> e.EmployeeId == 1);
@@ -157,7 +159,7 @@ public class StartUp
     {
         var emoloyeesAdresses = context.Addresses
            .OrderByDescending(e => e.Employees.Count())
-           .ThenBy(e => e.Town.Name)
+           .ThenBy(e => e.Town!.Name)
            .ThenBy(e => e.AddressText)
            .Take(10)
               .Select(e => $"{e.AddressText}, {e.Town!.Name} - {e.Employees.Count} employees")
@@ -195,6 +197,64 @@ public class StartUp
             }
         }
                 
+        return output.ToString().TrimEnd();
+    }
+
+    public static string GetLatestProjects(SoftUniContext context)
+    {
+        StringBuilder output = new StringBuilder();
+
+        var employeeLastProjects = context.Projects
+            .OrderByDescending(ep => ep.StartDate)
+            .Take(10)
+            .Select(ep => new
+            {
+                Names = ep.Name,
+                ep.Description,
+                DateTime = ep.StartDate.ToString("M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture)
+            })
+            .OrderBy(ep => ep.Names)
+            .ToArray();
+           
+
+        foreach (var employee in employeeLastProjects)
+        {
+            output.AppendLine($"{employee.Names}")
+                  .AppendLine($"{employee.Description}")
+                  .AppendLine($"{employee.DateTime}");
+        }
+
+        return output.ToString().TrimEnd();
+    }
+
+    public static string IncreaseSalaries(SoftUniContext context)
+    {
+        StringBuilder output = new StringBuilder();
+
+        var selectedDepartments = context.Employees
+           .Where(e => e.Department.Name == "Engineering" 
+           || e.Department.Name == "Tool Design" 
+           || e.Department.Name == "Marketing" 
+           || e.Department.Name == "Information Services")
+           .Select(e => new
+           {
+              e.FirstName,
+              e.LastName,
+              e.Department, 
+              IncreaseSalary = e.Salary * 1.12m
+           })
+           .OrderBy(e=> e.FirstName)
+           .ThenBy(e => e.LastName)
+           .ToArray();
+       
+        context.SaveChanges();
+
+        foreach (var employee in selectedDepartments)
+        {
+            output.AppendLine($"{employee.FirstName} {employee.LastName} (${employee.IncreaseSalary:f2})");
+        }
+       
+        
         return output.ToString().TrimEnd();
     }
 
