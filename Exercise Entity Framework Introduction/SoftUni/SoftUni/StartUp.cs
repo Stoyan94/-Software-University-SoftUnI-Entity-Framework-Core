@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using SoftUni.Data;
 using SoftUni.Models;
 using System.Globalization;
@@ -13,7 +14,7 @@ public class StartUp
     {
         SoftUniContext dbContext = new SoftUniContext();
 
-        string result = GetEmployeesByFirstNameStartingWithSa(dbContext);
+        string result = DeleteProjectById(dbContext);
         Console.WriteLine(result);
 
         //var employees = dbContext.Employees.Where(e=> e.EmployeeId == 1);
@@ -281,6 +282,27 @@ public class StartUp
         }
        
         return output.ToString().TrimEnd();
+    }
+
+    public static string DeleteProjectById(SoftUniContext context)
+    {
+        StringBuilder output = new StringBuilder();
+
+        //Delete all rows from mapping entity EmployeesProjects ther refer Project with Id = 2
+        IQueryable<EmployeeProject> empToDelete = context.EmployeesProjects
+            .Where(e => e.ProjectId == 2);
+        context.RemoveRange(empToDelete);
+
+        var projectToDelete = context.Projects.Find(2)!;
+        context.Projects.Remove(projectToDelete);
+        context.SaveChanges();
+
+        var projectsName = context.Projects
+            .Take(10)
+            .Select(p => p.Name)
+            .ToArray();
+
+        return String.Join(Environment.NewLine, projectsName);
     }
 }
 
