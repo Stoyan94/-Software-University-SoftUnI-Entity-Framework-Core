@@ -8,24 +8,24 @@ public class BlogConfiguration : IEntityTypeConfiguration<Blog>
 {
     public void Configure(EntityTypeBuilder<Blog> builder)
     {
-        builder
-        .HasKey(b => b.BlogId);
+        //builder
+        //.HasKey(b => b.BlogId);
 
-        builder
-            .ToTable("Blogs", "blg");
+        //builder
+        //    .ToTable("Blogs", "blg");
 
-        builder
-            .Property(b => b.Name)
-            .HasColumnName("BlogName")
-            .HasColumnType("NVARCHAR")
-            .HasMaxLength(50)
-        .IsRequired();
+        //builder
+        //    .Property(b => b.Name)
+        //    .HasColumnName("BlogName")
+        //    .HasColumnType("NVARCHAR")
+        //    .HasMaxLength(50)
+        //.IsRequired();
 
-        builder
-            .Property(b => b.Description)
-            .HasColumnName("Description")
-            .HasColumnType("NVARCHAR")
-        .HasMaxLength(500);
+        //builder
+        //    .Property(b => b.Description)
+        //    .HasColumnName("Description")
+        //    .HasColumnType("NVARCHAR")
+        //.HasMaxLength(500);
 
         builder
             .Property(b => b.Created)
