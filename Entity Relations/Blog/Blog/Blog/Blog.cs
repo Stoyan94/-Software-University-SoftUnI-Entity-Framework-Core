@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlogDemo
 {
     [Table("Blogs", Schema = "blg")]
+    [Index(nameof(Name), IsUnique = true, Name = "IX_Blogs_Name_Unique")]
     public class Blog
     {
         [Key]
