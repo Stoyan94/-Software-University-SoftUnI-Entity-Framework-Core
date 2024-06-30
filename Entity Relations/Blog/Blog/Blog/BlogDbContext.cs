@@ -23,6 +23,28 @@ public class BlogDbContext : DbContext
         modelBuilder.Entity<Blog>()
             .ToTable("Blogs", "blg");
 
+        modelBuilder.Entity<Blog>()
+            .Property(b => b.Name)
+            .HasColumnName("BlogName")
+            .HasColumnType("NVARCHAR")
+            .HasMaxLength(50)
+            .IsRequired();
+
+        modelBuilder.Entity<Blog>()
+            .Property(b => b.Description)
+            .HasColumnName("Description")
+            .HasColumnType("NVARCHAR")
+            .HasMaxLength(500);
+
+        modelBuilder.Entity<Blog>()
+            .Property(b => b.Created)
+            .ValueGeneratedOnAdd();
+
+        modelBuilder.Entity<Blog>()
+            .Property(b => b.LastUpdated)
+            .ValueGeneratedOnAddOrUpdate();
+
+
         base.OnModelCreating(modelBuilder);
     }
 
@@ -35,5 +57,7 @@ public class BlogDbContext : DbContext
             optionsBuilder.UseSqlServer(connectionString);
         }
     }
+
+    public DbSet<Blog> Blogs { get; set; }
 }
 
