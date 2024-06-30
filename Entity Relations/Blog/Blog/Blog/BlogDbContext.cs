@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BlogDemo.Configurations;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogDemo;
 
@@ -17,33 +18,7 @@ public class BlogDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Blog>()
-            .HasKey(b => b.BlogId);
-
-        modelBuilder.Entity<Blog>()
-            .ToTable("Blogs", "blg");
-
-        modelBuilder.Entity<Blog>()
-            .Property(b => b.Name)
-            .HasColumnName("BlogName")
-            .HasColumnType("NVARCHAR")
-            .HasMaxLength(50)
-            .IsRequired();
-
-        modelBuilder.Entity<Blog>()
-            .Property(b => b.Description)
-            .HasColumnName("Description")
-            .HasColumnType("NVARCHAR")
-            .HasMaxLength(500);
-
-        modelBuilder.Entity<Blog>()
-            .Property(b => b.Created)
-            .ValueGeneratedOnAdd();
-
-        modelBuilder.Entity<Blog>()
-            .Property(b => b.LastUpdated)
-            .ValueGeneratedOnAddOrUpdate();
-
+        modelBuilder.ApplyConfiguration(new BlogConfiguration());
 
         base.OnModelCreating(modelBuilder);
     }
