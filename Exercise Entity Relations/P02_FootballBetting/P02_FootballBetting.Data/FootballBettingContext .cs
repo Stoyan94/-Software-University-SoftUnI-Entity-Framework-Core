@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using P02_FootballBetting.Data.Common;
+using P02_FootballBetting.Data.Models;
 
 namespace P02_FootballBetting.Data;
 
@@ -27,7 +28,7 @@ public class FootballBettingContext : DbContext
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
+    {        
         base.OnModelCreating(modelBuilder);
     }
 }
