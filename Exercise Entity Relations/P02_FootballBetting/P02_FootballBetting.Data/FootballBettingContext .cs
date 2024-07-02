@@ -30,6 +30,11 @@ public class FootballBettingContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {        
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<PlayerStatistic>(entity =>
+        {
+            entity.HasKey(ps => new { ps.GameId, ps.PlayerId });
+        });
     }
 }
 

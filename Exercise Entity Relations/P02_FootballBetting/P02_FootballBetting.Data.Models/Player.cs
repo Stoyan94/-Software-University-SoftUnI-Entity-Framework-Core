@@ -1,10 +1,16 @@
 ﻿using P02_FootballBetting.Data.Common;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace P02_FootballBetting.Data.Models;
 
 public class Player
 {
+    public Player()
+    {
+        this.PlayersStatistics = new HashSet<PlayerStatistic>();
+    }
+
     [Key]
     public int PlayerId { get; set; }
 
@@ -16,7 +22,16 @@ public class Player
 
     public bool IsInjured { get; set; }
 
-    public int? TeamId { get; set; } // This FK should not be NOT NULL
 
+    [ForeignKey(nameof(Team))]
+    public int? TeamId { get; set; } // This FK should not be NOT NULL
+    public virtual Team? Team { get; set; }
+
+
+    [ForeignKey(nameof(Position))]
     public int PositionId { get; set; }
+    public virtual Position Position { get; set; }
+
+    public virtual ICollection<PlayerStatistic> PlayersStatistics { get; set; }
+
 }

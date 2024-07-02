@@ -5,6 +5,11 @@ namespace P02_FootballBetting.Data.Models;
 
 public class Country
 {
+    public Country()
+    {
+        this.Towns = new HashSet<Town>();
+    }
+
     [Key]
     public int CountryId { get; set; }
 
@@ -13,5 +18,7 @@ public class Country
     public string Name { get; set; }
 
     // TODO: Create navigation collections  
+
+    public virtual ICollection<Town> Towns { get; set; }
 }
 
