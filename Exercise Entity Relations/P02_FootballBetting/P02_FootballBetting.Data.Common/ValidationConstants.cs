@@ -14,5 +14,11 @@
 
         // Town
         public const int TownNameMaxLength = 58;
+
+        // Country
+        public const int CountryNameMaxLength = 56;
+
+        // Player
+        public const int PlayerNameMaxLength = 100;
     }
 }
