@@ -20,5 +20,11 @@
 
         // Player
         public const int PlayerNameMaxLength = 100;
+
+        // Position
+        public const int PositionNameMaxLength = 50;
+
+        // Game
+        public const int GameResultMaxLength = 10;
     }
 }

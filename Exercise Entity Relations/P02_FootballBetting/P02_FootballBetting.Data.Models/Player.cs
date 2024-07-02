@@ -14,7 +14,9 @@ public class Player
 
     public int SquadNumber { get; set; }
 
-    public int? TeamId { get; set; }
+    public bool IsInjured { get; set; }
+
+    public int? TeamId { get; set; } // This FK should not be NOT NULL
 
     public int PositionId { get; set; }
 }
