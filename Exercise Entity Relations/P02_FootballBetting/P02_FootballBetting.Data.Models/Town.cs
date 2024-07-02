@@ -5,6 +5,11 @@ namespace P02_FootballBetting.Data.Models;
 
 public class Town
 {
+    public Town()
+    {
+        this.Teams = new HashSet<Team>();
+    }
+
     [Key]
     public int TownId { get; set; }
 
@@ -15,5 +20,7 @@ public class Town
     public int CountryId { get; set; }
 
     // TODO: Create navigation properties
+
+    public virtual ICollection<Team> Teams { get; set; }
 }
 
