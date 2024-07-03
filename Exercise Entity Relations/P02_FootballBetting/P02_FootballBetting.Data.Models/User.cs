@@ -1,7 +1,8 @@
-﻿using P02_FootballBetting.Data.Common;
+﻿namespace P02_FootballBetting.Data.Models;
+
 using System.ComponentModel.DataAnnotations;
 
-namespace P02_FootballBetting.Data.Models;
+using Common;
 
 public class User
 {
@@ -13,21 +14,18 @@ public class User
     [Key]
     public int UserId { get; set; }
 
-    [Required]
-    [MaxLength(ValidationConstants.UserUserNameMaxLength)]
-    public string UserName { get; set; }
-
-    [Required]
-    [MaxLength(ValidationConstants.UserPassWordMaxLength)]
-    public string Password { get; set; }
-
-    [Required]
-    [MaxLength(ValidationConstants.UserEmailMaxLenght)]
-    public string Email { get; set; }
-
-    [Required]
     [MaxLength(ValidationConstants.UserNameMaxLength)]
-    public string Name { get; set; }
+    public string Username { get; set; } = null!;
+
+    // Password are saved hashed in the DB
+    [MaxLength(ValidationConstants.UserPassWordMaxLength)]
+    public string Password { get; set; } = null!;
+
+    [MaxLength(ValidationConstants.UserEmailMaxLenght)]
+    public string Email { get; set; } = null!;
+
+    [MaxLength(ValidationConstants.UserNameMaxLength)]
+    public string Name { get; set; } = null!;
 
     public decimal Balance { get; set; }
 

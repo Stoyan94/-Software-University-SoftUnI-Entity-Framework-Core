@@ -1,8 +1,9 @@
-﻿using P02_FootballBetting.Data.Common;
+﻿namespace P02_FootballBetting.Data.Models;
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace P02_FootballBetting.Data.Models;
+using Common;
 
 public class Color
 {
@@ -15,16 +16,12 @@ public class Color
     [Key]
     public int ColorId { get; set; }
 
-    [Required]
     [MaxLength(ValidationConstants.ColorMaxLength)]
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
 
-    // TODO: Add Navigation collections
-
-    [InverseProperty(nameof(Team.PrimaryKitColor))]
+    //[InverseProperty(nameof(Team.PrimaryKitColor))]
     public virtual ICollection<Team> PrimaryKitTeams { get; set; }
 
-    [InverseProperty(nameof(Team.SecondaryKitColor))]
+    //[InverseProperty(nameof(Team.SecondaryKitColor))]
     public virtual ICollection<Team> SecondaryKitTeams { get; set; }
 }
-
