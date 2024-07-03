@@ -1,8 +1,7 @@
-﻿namespace P02_FootballBetting.Data.Models;
-
+﻿using P02_FootballBetting.Data.Common;
 using System.ComponentModel.DataAnnotations;
 
-using Common;
+namespace P02_FootballBetting.Data.Models;
 
 public class Country
 {
@@ -19,3 +18,4 @@ public class Country
 
     public virtual ICollection<Town> Towns { get; set; }
 }
+

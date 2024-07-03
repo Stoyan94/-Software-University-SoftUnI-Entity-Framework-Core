@@ -1,9 +1,8 @@
-﻿namespace P02_FootballBetting.Data.Models;
-
+﻿using P02_FootballBetting.Data.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-using Enums;
+namespace P02_FootballBetting.Data.Models;
 
 public class Bet
 {

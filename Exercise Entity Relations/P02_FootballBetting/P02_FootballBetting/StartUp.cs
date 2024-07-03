@@ -1,6 +1,6 @@
 ﻿namespace P02_FootballBetting;
 
-internal class StartUp
+public class StartUp
 {
     static void Main(string[] args)
     {

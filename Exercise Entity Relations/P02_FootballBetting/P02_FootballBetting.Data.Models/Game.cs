@@ -17,12 +17,12 @@ public class Game
     [Key]
     public int GameId { get; set; }
 
-    //[ForeignKey(nameof(HomeTeam))]
+    [ForeignKey(nameof(HomeTeam))]
     public int HomeTeamId { get; set; }
 
     public virtual Team HomeTeam { get; set; } = null!;
 
-    //[ForeignKey(nameof(AwayTeam))]
+    [ForeignKey(nameof(AwayTeam))]
     public int AwayTeamId { get; set; }
 
     public virtual Team AwayTeam { get; set; } = null!;

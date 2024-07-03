@@ -1,9 +1,8 @@
-﻿namespace P02_FootballBetting.Data.Models;
-
+﻿using P02_FootballBetting.Data.Common;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-using Common;
+namespace P02_FootballBetting.Data.Models;
 
 public class Player
 {
@@ -38,4 +37,5 @@ public class Player
     public virtual Position Position { get; set; } = null!;
 
     public virtual ICollection<PlayerStatistic> PlayersStatistics { get; set; }
+
 }
