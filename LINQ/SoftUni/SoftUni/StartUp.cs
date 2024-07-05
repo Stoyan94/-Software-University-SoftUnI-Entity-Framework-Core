@@ -6,7 +6,6 @@ using System.Text;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Xml.Linq;
 
-
 namespace SoftUni;
 
 public class StartUp
@@ -15,20 +14,34 @@ public class StartUp
     {
         using SoftUniContext dbContext = new SoftUniContext();
 
-        List<EmployeeDTO> emp = await AsyncAndDTO(dbContext);
-
-        foreach (var e in emp)
-        {
-            Console.WriteLine($"{e.FirstName} {e.LastName} {e.JobTitle}");
-        }
-        //----------------------------------------------------
-
-        Console.WriteLine(await JoinAgg(dbContext));      
+        Console.WriteLine(await GroupByMethod(dbContext));
+        Console.WriteLine(await AsyncAndDTO(dbContext));      
+        Console.WriteLine(await JoinAgg(dbContext));  
     }
 
-    private static async Task<List<EmployeeDTO>> AsyncAndDTO(SoftUniContext dbContext)
+    private static async Task<string> GroupByMethod(SoftUniContext dbContext)
     {
-        return await dbContext.Employees
+        StringBuilder sb = new StringBuilder();
+
+        var employees = await dbContext.Employees.ToListAsync();
+
+        var emp = employees
+                 .GroupBy(e => e.JobTitle)
+                 .ToList();    
+        
+        foreach (var e in emp)
+        {
+            sb.AppendLine(e.Key);
+        }
+
+        return sb.ToString().TrimEnd();
+    }
+
+    private static async Task<string> AsyncAndDTO(SoftUniContext dbContext)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        var em = await dbContext.Employees
                              .Where(e => e.DepartmentId == 1)
                              .Select(e => new EmployeeDTO()
                              {
@@ -36,6 +49,13 @@ public class StartUp
                                  LastName = e.LastName,
                                  JobTitle = e.JobTitle
                              }).ToListAsync();
+
+        foreach (var e in em)
+        {
+            sb.AppendLine($"{e.FirstName} {e.LastName} {e.JobTitle}");
+        }
+
+        return sb.ToString().TrimEnd();
     }
 
     private static async Task<string> JoinAgg(SoftUniContext dbContext)
@@ -71,7 +91,7 @@ public class StartUp
         var emp2 = await dbContext.Employees
                    .Where(e => e.DepartmentId == 1) //Include: However, it does not support specifying individual properties of the related entity.
                                                     //Instead, it is used to include the entire related entity.
-                   .Include(e => e.Department.Name).
+                   .Include(e => e.Department).
                    ToListAsync();
 
         // While both queries aim to achieve the same result(retrieving employee details along with their department name), 
