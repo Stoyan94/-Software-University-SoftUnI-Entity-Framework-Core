@@ -5,6 +5,16 @@ using SoftUni.Models;
 using System.Text;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Xml.Linq;
+using System;
+using Microsoft.EntityFrameworkCore.Storage;
+using System.Drawing;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using Microsoft.EntityFrameworkCore.Metadata;
+using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics.Metrics;
+using System.Runtime.Intrinsics.X86;
 
 namespace SoftUni;
 
@@ -26,65 +36,95 @@ public class StartUp
         var employees = await dbContext.Employees.ToListAsync();
 
         var emp = employees
-                 .GroupBy(e => e.JobTitle)
-                 .ToList();    
-        
-        foreach (var e in emp)
+        .GroupBy(e => e.JobTitle)
+                 .ToList();
+        // Snippet 1:
+            // Executes the initial query on the database to load all employees.
+            // Performs the grouping operation in memory on the client side.
+
+
+        var emp1 = await dbContext.Employees
+            .GroupBy(e => e.JobTitle)
+            .Select(grp => new
+            {
+                JobTitle = grp.Key,
+                Salary = grp.Sum(e => e.Salary)
+            })
+            .ToListAsync();
+        // Snippet 2:
+        // Returns the results directly from the database without loading all employee records into memory.
+        // Executes the entire query on the database, including the grouping and selection of keys.
+
+        foreach (var item in emp)
         {
-            sb.AppendLine(e.Key);
+            Console.WriteLine(item);
         }
 
-        return sb.ToString().TrimEnd();
-    }
+        foreach (var e in emp1)
+        {
+            sb.AppendLine($"{e.JobTitle} - {e.Salary:f2}");
+        }
 
+        // Summary
+        // Snippet 1 is less efficient because it loads all employee records into memory before grouping them.
+        //     It results in a collection of groups of employees by job title.
+        //
+        // Snippet 2 is more efficient because it performs the grouping directly in the database and only retrieves the distinct job titles.
+        //     It results in a list of job titles.
+        //
+        // When to Use Each Approach
+        // Use Snippet 1 if you need to perform further processing on the grouped employees in memory and are dealing with a manageable amount of data.
+        //
+        // Use Snippet 2 if you only need the distinct job titles or if you are dealing with a large dataset and want to optimize performance by offloading the grouping to the database.
+
+        return sb.ToString().TrimEnd();
+
+        //When we use in EF with LINQ GroupBy, we must comply with the rules based on the use of GroupBy 
+        //    => All Columns Must Be Aggregated or Grouped: 
+        //        Every column in the SELECT list must either be part of the GROUP BY clause or be used with an aggregate function(e.g., COUNT, SUM, AVG, MAX, MIN).
+    }
     private static async Task<string> AsyncAndDTO(SoftUniContext dbContext)
     {
         StringBuilder sb = new StringBuilder();
-
         var em = await dbContext.Employees
-                             .Where(e => e.DepartmentId == 1)
-                             .Select(e => new EmployeeDTO()
-                             {
-                                 FirstName = e.FirstName,
-                                 LastName = e.LastName,
-                                 JobTitle = e.JobTitle
-                             }).ToListAsync();
-
+        .Where(e => e.DepartmentId == 1)
+        .Select(e => new EmployeeDTO()
+        {
+            FirstName = e.FirstName,
+            LastName = e.LastName,
+            JobTitle = e.JobTitle
+        }).ToListAsync();
         foreach (var e in em)
         {
             sb.AppendLine($"{e.FirstName} {e.LastName} {e.JobTitle}");
         }
-
         return sb.ToString().TrimEnd();
     }
-
     private static async Task<string> JoinAgg(SoftUniContext dbContext)
     {
         StringBuilder sb = new StringBuilder();
-
         var emp1 = await dbContext.Employees
-            .Where(e => e.DepartmentId == 1)
-            .Join(
-            dbContext.Departments, 
-            e => e.DepartmentId,
-            d => d.DepartmentId,
-            (e, d) => new
-            {
-                e.FirstName,
-                e.LastName,
-                e.JobTitle,
-                d.Name
-            })
-            .ToListAsync();
-
+        .Where(e => e.DepartmentId == 1)
+        .Join(
+        dbContext.Departments,
+        e => e.DepartmentId,
+        d => d.DepartmentId,
+        (e, d) => new
+        {
+            e.FirstName,
+            e.LastName,
+            e.JobTitle,
+            d.Name
+        })
+        .ToListAsync();
         var emp = await dbContext.Employees
-                    .Where(e => e.DepartmentId == 1)
-                    .Select(e => new
-                    {
-                        e.FirstName,
-                        e.LastName,
-                        e.JobTitle,
-                        e.Department.Name
+        .Where(e => e.DepartmentId == 1)
+        .Select(e => new
+        {
+            e.FirstName,
+            e.LastName,
+            e.JobTitle,
+            e.Department.Name
                     })
         .ToListAsync();
 
