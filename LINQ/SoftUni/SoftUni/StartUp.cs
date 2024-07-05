@@ -24,18 +24,35 @@ public class StartUp
     {
         using SoftUniContext dbContext = new SoftUniContext();
 
+        Console.WriteLine(await SelectManyMethod(dbContext));
         Console.WriteLine(await GroupByMethod(dbContext));
         Console.WriteLine(await AsyncAndDTO(dbContext));      
         Console.WriteLine(await JoinAgg(dbContext));  
+    }
+
+    private static async Task<string> SelectManyMethod(SoftUniContext dbContext)
+    {
+        // SelectMany: This method projects each employee into their list of Addresses and then flattens these lists into a single sequence of Address objects.
+        StringBuilder sb = new StringBuilder();
+
+        List<Address> allAddresses = await dbContext.Towns
+            .SelectMany(t => t.Addresses).ToListAsync();
+
+        foreach (var item in allAddresses)
+        {
+            sb.AppendLine(item.AddressText);
+        }
+
+        return sb.ToString().TrimEnd();
     }
 
     private static async Task<string> GroupByMethod(SoftUniContext dbContext)
     {
         StringBuilder sb = new StringBuilder();
 
-        var employees = await dbContext.Employees.ToListAsync();
+        List<Employee> employees = await dbContext.Employees.ToListAsync();
 
-        var emp = employees
+        List<IGrouping<string, Employee>> emp = employees
         .GroupBy(e => e.JobTitle)
                  .ToList();
         // Snippet 1:
@@ -44,10 +61,11 @@ public class StartUp
 
 
         var emp1 = await dbContext.Employees
-            .GroupBy(e => e.JobTitle)
+            .GroupBy(e => new { e.JobTitle, e.Department.Name })
             .Select(grp => new
             {
-                JobTitle = grp.Key,
+                grp.Key.JobTitle,
+                Department = grp.Key.Name,
                 Salary = grp.Sum(e => e.Salary)
             })
             .ToListAsync();
@@ -62,7 +80,7 @@ public class StartUp
 
         foreach (var e in emp1)
         {
-            sb.AppendLine($"{e.JobTitle} - {e.Salary:f2}");
+            sb.AppendLine($"{e.JobTitle} - {e.Salary:f2} - {e.Department}");
         }
 
         // Summary
