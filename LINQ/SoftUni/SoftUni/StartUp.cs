@@ -9,6 +9,7 @@ using System.Net.NetworkInformation;
 using System;
 using System.Text;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Runtime.Intrinsics.X86;
 
 //using System.Data;
 
@@ -27,17 +28,21 @@ public class StartUp
         Console.WriteLine(await JoinAgg(dbContext));
 
         var employees = GetFilteredEmployees(e => e.DepartmentId == 1).ToList();
-
-
-        IQueryable<Employee> GetFilteredEmployees(Func<Employee, bool> filter)
+        
+        IQueryable<Employee> GetFilteredEmployees(Expression<Func<Employee, bool>> filter)
         {
+            // CORRECT
             return dbContext.Employees
-            .Where(filter)
-            .AsQueryable();
+            .Where(filter);
+
+            // WRONG
+            // dbContext.Employees
+            // .Where(filter).AsQueryable();
 
             // Using func caused the expression tree to convert IQuerable<T> to IEnumerable because func is used
-            //   by the IEnumerable<T> interface because at the moment whoever sees a func EF knows it should use IEnumerable<T> and the most dangerous thing is func made EF to download the entire base Into memory with all columns.
+            //   by the IEnumerable<T> interface because at the moment whoever sees a func EF knows it should use IEnumerable<T> and the most dangerous thing is func made EF to downloads the entire table from the base Into memory with all columns.
             //   In the query and write AsQueryable() EF will again execute it as IEnumerable<Т> before reaching AsQueryable() to convert the query to IQerable which is very wrong and dangerous for us.
+            // To avoid such errors we should use Expression<Func< T, bool>> which will not convert our query to IEnumerable
 
         }
     }
