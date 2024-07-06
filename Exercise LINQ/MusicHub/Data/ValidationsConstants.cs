@@ -8,4 +8,8 @@ public static class ValidationsConstants
 
     public const int PerformerFirstNameMaxLength = 20;
     public const int PerformerLastNameMaxLength = 20;
+
+    public const int ProducerNameMaxLength = 30;
+
+    public const int WriterNameMaxLength = 20;
 }
