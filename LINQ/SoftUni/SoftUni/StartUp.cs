@@ -43,7 +43,7 @@ public class StartUp
             //   by the IEnumerable<T> interface because at the moment whoever sees a func EF knows it should use IEnumerable<T> and the most dangerous thing is func made EF to downloads the entire table from the base Into memory with all columns.
             //   In the query and write AsQueryable() EF will again execute it as IEnumerable<Т> before reaching AsQueryable() to convert the query to IQerable which is very wrong and dangerous for us.
             // To avoid such errors we should use Expression<Func< T, bool>> which will not convert our query to IEnumerable
-
+            // implicit conversion occurs because IQueryable<> inherits IEnumerable<>
         }
     }
 
@@ -59,7 +59,7 @@ public class StartUp
     }
     return sb.ToString().TrimEnd();
 }
-private static async Task<string> GroupByMethod(SoftUniContext dbContext)
+    private static async Task<string> GroupByMethod(SoftUniContext dbContext)
 {
     StringBuilder sb = new StringBuilder();
     List<Employee> employees = await dbContext.Employees.ToListAsync();

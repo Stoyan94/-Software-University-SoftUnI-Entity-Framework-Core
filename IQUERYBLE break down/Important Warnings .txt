@@ -1,5 +1,6 @@
 Using func caused the expression tree to convert IQuerable<T> to IEnumerable because func is used by the IEnumerable<T> interface because at the moment whoever sees a func EF knows it should use IEnumerable<T> and the most dangerous thing is func made EF to the entire table from the base Into memory with all columns. In the query and write AsQueryable() EF will again execute it as IEnumerable<Т> before reaching AsQueryable() to convert the query to IQerable which is very wrong and dangerous for us. 
-To avoid such errors we should use Expression<Func<T, bool>> which will not convert our query to IEnumerable
+To avoid such errors we should use Expression<Func<T, bool>> which will not convert our query to IEnumerable.
+Implicit conversion occurs because IQueryable<> inherits IEnumerable<>
 
 WRONG
 IQueryable<Employee> GetFilteredEmployees(Func<Employee, bool> filter)
@@ -17,3 +18,4 @@ IQueryable<Employee> GetFilteredEmployees(Expression<Func<Employee, bool>> filte
 }
 
 Използването на функ накара дървото на изрази да преобрази IQuerable<T> в IEnumerable защото функ се използва от IEnumerable<Т> интерфейса защото в момента който види функ ЕФ знае че трябва да използва IEnumerable<Т> и най-опасното е функ накара ЕФ да изтегля цялата таблица от базата в паметта с всички колони. В заявката и да напишем AsQueryable() ЕФ отново ще си го изпълни като IEnumerable<Т> преди да стигне до AsQueryable() за да преобрази заявката на IQuerable, което е много грешно и опасно за нас. За да избегнем такива грешки трябва да използваме Expression<Func<T, bool>> което няма да преобразява нашата заявка в IEnumerable.
+Имплицитно преобразуване възниква, защото IQueryable<> наследява IEnumerable<>
