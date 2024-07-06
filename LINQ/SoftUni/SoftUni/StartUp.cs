@@ -1,20 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
 using SoftUni.Data;
 using SoftUni.Models;
 using System.Text;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using System.Xml.Linq;
-using System;
-using Microsoft.EntityFrameworkCore.Storage;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using Microsoft.EntityFrameworkCore.Metadata;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics.Metrics;
-using System.Runtime.Intrinsics.X86;
+
+//using System.Data;
+
 
 namespace SoftUni;
 
@@ -97,10 +88,11 @@ public class StartUp
 
         return sb.ToString().TrimEnd();
 
-        //When we use in EF with LINQ GroupBy, we must comply with the rules based on the use of GroupBy 
+        //When we use in EF with LINQ GroupBy, we must comply with the rules based on the use of GroupBy in SQL
         //    => All Columns Must Be Aggregated or Grouped: 
         //        Every column in the SELECT list must either be part of the GROUP BY clause or be used with an aggregate function(e.g., COUNT, SUM, AVG, MAX, MIN).
     }
+
     private static async Task<string> AsyncAndDTO(SoftUniContext dbContext)
     {
         StringBuilder sb = new StringBuilder();
@@ -118,6 +110,7 @@ public class StartUp
         }
         return sb.ToString().TrimEnd();
     }
+
     private static async Task<string> JoinAgg(SoftUniContext dbContext)
     {
         StringBuilder sb = new StringBuilder();
@@ -135,6 +128,8 @@ public class StartUp
             d.Name
         })
         .ToListAsync();
+
+
         var emp = await dbContext.Employees
         .Where(e => e.DepartmentId == 1)
         .Select(e => new
