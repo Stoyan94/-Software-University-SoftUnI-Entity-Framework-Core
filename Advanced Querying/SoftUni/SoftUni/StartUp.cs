@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using SoftUni.Data;
 using System.Text;
 
@@ -9,8 +10,16 @@ public class StartUp
     static async Task Main(string[] args)
     {
         SoftUniContext dbContext = new SoftUniContext();
-               
-        await Console.Out.WriteLineAsync(await SQLInjectionDefense(dbContext));
+
+        ExecutingStoredProcedure(dbContext);    
+        //await Console.Out.WriteLineAsync(await SQLInjectionDefense(dbContext));
+    }
+
+    private static void ExecutingStoredProcedure(SoftUniContext dbContext)
+    {
+        SqlParameter salaryParameter = new SqlParameter("@salary", 5);
+        string query = "EXEC UpdateSalary @salary";
+        dbContext.Database.ExecuteSqlRaw(query, salaryParameter);
     }
 
     private static async Task<string> SQLInjectionDefense(SoftUniContext dbContext)
@@ -36,7 +45,7 @@ public class StartUp
         var employeesStrongQuery = await dbContext.Employees
            .FromSqlRaw(strongQuery, jobTitleSQLinjection)
            .ToArrayAsync();
-        output.AppendLine($"Unsuccessful attack  {employeesStrongQuery.Count()}"); // 0
+        output.AppendLine($"Unsuccessful attack {employeesStrongQuery.Count()}"); // 0
 
         // To avoid SQL injection, you must use a placeholder in the Native SQL query syntax
         // Always the query must be parameterized.
@@ -49,10 +58,10 @@ public class StartUp
             .ToArrayAsync();
 
         // If we want to use an interpolated string ($"Some text {string}") we must use
-        // FormattableString to set the request type, because if you use "var" C# will convert it to a normal "string"
+        // FormattableString to set the query type, because if you use "var" C# will convert it to a normal "string"
         // making the query vulnerable to SQL injection
 
-        output.AppendLine($"Unsuccessful attack  {employeesInterpolatedQue.Count()}"); // 0
+        output.AppendLine($"Unsuccessful attack {employeesInterpolatedQue.Count()}"); // 0
 
         return output.ToString().TrimEnd();
     }
