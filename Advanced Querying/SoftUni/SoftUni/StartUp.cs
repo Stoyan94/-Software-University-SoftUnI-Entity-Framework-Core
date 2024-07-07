@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SoftUni.Data;
+using System.Text;
 
 namespace SoftUni;
 
@@ -8,14 +9,14 @@ public class StartUp
     static async Task Main(string[] args)
     {
         SoftUniContext dbContext = new SoftUniContext();
-
-        SQLInjectionDefense(dbContext);
-
-        
+               
+        await Console.Out.WriteLineAsync(await SQLInjectionDefense(dbContext));
     }
 
-    private static async Task<Models.Employee[]> SQLInjectionDefense(SoftUniContext dbContext)
+    private static async Task<string> SQLInjectionDefense(SoftUniContext dbContext)
     {
+        StringBuilder output = new StringBuilder();
+
         string realJobTitle = "Marketing Assistant";
         string jobTitleSQLinjection = "' OR 1=1--";
 
@@ -26,7 +27,8 @@ public class StartUp
             .FromSqlRaw(weakQuery)
             .ToArrayAsync();
 
-        Console.WriteLine(employeesWeakQuery.Count());
+        output.AppendLine($"All data stolen {employeesWeakQuery.Count()}");
+
 
         // Strong query that will detect the injection
         string strongQuery = "SELECT * FROM Employees WHERE JobTitle = {0}";
@@ -34,13 +36,25 @@ public class StartUp
         var employeesStrongQuery = await dbContext.Employees
            .FromSqlRaw(strongQuery, jobTitleSQLinjection)
            .ToArrayAsync();
-        Console.WriteLine(employeesStrongQuery.Count());
+        output.AppendLine($"Unsuccessful attack  {employeesStrongQuery.Count()}"); // 0
 
         // To avoid SQL injection, you must use a placeholder in the Native SQL query syntax
         // Always the query must be parameterized.
         // Never use concatenation
 
-        return employeesStrongQuery;
+        FormattableString query = $"SELECT * FROM Employees WHERE JobTitle = {jobTitleSQLinjection}";
+
+        var employeesInterpolatedQue = await dbContext.Employees
+            .FromSqlInterpolated(query)
+            .ToArrayAsync();
+
+        // If we want to use an interpolated string ($"Some text {string}") we must use
+        // FormattableString to set the request type, because if you use "var" C# will convert it to a normal "string"
+        // making the query vulnerable to SQL injection
+
+        output.AppendLine($"Unsuccessful attack  {employeesInterpolatedQue.Count()}"); // 0
+
+        return output.ToString().TrimEnd();
     }
 }
 
