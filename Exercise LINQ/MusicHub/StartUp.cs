@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Text;
 using Data;
 using Initializer;
+using MusicHub.Data.Models;
 
 public class StartUp
 {
@@ -15,19 +16,24 @@ public class StartUp
 
         DbInitializer.ResetDatabase(context);
 
-        string result = ExportAlbumsInfo(context, 9);
+        string result = ExportSongsAboveDuration(context, 4);
         Console.WriteLine(result);
+
+        //string result = ExportAlbumsInfo(context, 9);
+        //Console.WriteLine(result);
         //Test your solutions here
     }
 
     public static string ExportAlbumsInfo(MusicHubDbContext context, int producerId)
     {
+        // Formatting of numbers in the .Select() gives you data ready to fill any ViewModel
+        // This ViewModel can be passed to any View
         StringBuilder output = new StringBuilder();
 
         var albumsInfo = context.Albums
             .Where(a => a.ProducerId.HasValue &&
                         a.ProducerId.Value == producerId)
-            .ToArray()
+            .ToArray() // This is because of bug in EF => "cannot translate data" because is still IQueryable(connected to the base ) and need materilizeishon
             .OrderByDescending(a => a.Price)
             .Select(a => new
             {
@@ -77,8 +83,51 @@ public class StartUp
         return output.ToString().TrimEnd();
     }
 
-    public static string ExportSongsAboveDuration(MusicHubDbContext context, int duration)
+    public static string ExportSongsAboveDuration(MusicHubDbContext context, int durationSeckonds)
     {
-        throw new NotImplementedException();
+        StringBuilder output = new StringBuilder();
+
+        var songsInfo = context.Songs
+            .AsEnumerable()
+            .Where(s => s.Duration.TotalSeconds > durationSeckonds)
+            .Select(s => new
+            {
+                s.Name,
+                Performers = s.SongPerformers
+                    .Select(sp => $"{sp.Performer.FirstName} {sp.Performer.LastName}")
+                    .OrderBy(p => p)
+                    .ToArray(),
+                WriterName = s.Writer.Name,
+                AlbumProducer = s.Album!.Producer!.Name,
+                Duration = s.Duration.ToString("c")
+            })
+            .OrderBy(s => s.Name)
+            .ThenBy(s => s.WriterName)
+            .ToArray();
+
+        int songsCount = 1;
+
+        foreach (var song in songsInfo)
+        {
+
+            output
+                .AppendLine($"-Song #{songsCount}")
+                .AppendLine($"---SongName: {song.Name}")
+                .AppendLine($"---Writer: {song.WriterName}");
+
+            foreach (var performer in song.Performers)
+            {
+                output
+                    .AppendLine($"---Performer: {performer}");
+            }
+
+            output
+                .AppendLine($"---AlbumProducer: {song.AlbumProducer}")
+                .AppendLine($"---Duration: {song.Duration}");
+
+            songsCount++;
+        }
+
+        return output.ToString().TrimEnd();
     }
 }
