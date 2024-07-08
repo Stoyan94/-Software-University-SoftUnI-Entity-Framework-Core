@@ -1,0 +1,7 @@
+Explicit loading is useful when you need to load related data on-demand, providing you with more control over the data retrieval process and potentially improving performance by reducing unnecessary data loading.
+
+Types of Data You Can Load Explicitly
+Collection Navigation Properties: These are properties that represent a collection of related entities (e.g., a Blog entity that has many Post entities).
+Reference Navigation Properties: These are properties that represent a single related entity (e.g., a Post entity that has a single Blog entity).
+
+Explicit loading in Entity Framework Core allows you to load related data that is connected through foreign keys in your entities. 
