@@ -9,10 +9,25 @@ public class StartUp
 {
     static async Task Main(string[] args)
     {
-        SoftUniContext dbContext = new SoftUniContext();
+        using SoftUniContext dbContext = new SoftUniContext();
+        await ExplicitLoading(dbContext);
 
-        ExecutingStoredProcedure(dbContext);    
+        
+
+        ExecutingStoredProcedure(dbContext);
         //await Console.Out.WriteLineAsync(await SQLInjectionDefense(dbContext));
+    }
+
+    private static async Task ExplicitLoading(SoftUniContext dbContext)
+    {
+        var employee = await dbContext.Employees.FindAsync(1);
+        var enrty = dbContext.Entry(employee);
+
+        await enrty.Reference(e => e.Address).LoadAsync();
+        await enrty.Collection(e => e.EmployeesProjects).LoadAsync();
+
+        //Explicit loading in Entity Framework Core allows you to load related data that is connected through foreign keys in your entities.
+        //Loads data immediately at the moment we wanted.
     }
 
     private static void ExecutingStoredProcedure(SoftUniContext dbContext)
