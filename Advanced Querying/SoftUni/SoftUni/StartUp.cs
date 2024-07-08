@@ -23,8 +23,8 @@ public class StartUp
         var employee = await dbContext.Employees.FindAsync(1);
         var enrty = dbContext.Entry(employee);
 
-        await enrty.Reference(e => e.Address).LoadAsync();
-        await enrty.Collection(e => e.EmployeesProjects).LoadAsync();
+        await enrty.Reference(e => e.Address).LoadAsync(); // represent a single related entity
+        await enrty.Collection(e => e.EmployeesProjects).LoadAsync(); //represent a collection of related entities
 
         //Explicit loading in Entity Framework Core allows you to load related data that is connected through foreign keys in your entities.
         //Loads data immediately at the moment we wanted.
