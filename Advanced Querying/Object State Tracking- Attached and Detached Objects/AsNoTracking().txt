@@ -1,6 +1,6 @@
-Whenever we want to download information from the database and we know we are not going to modify it and we just want to show the information to someone or we just want to make a reference
+Whenever we want to download information from the database and we know we Whenever we want to retrieve information from the database about an object (entity) and we know we won't modify it and we just want to show the information to someone or we just want to make a reference
 
-we use the AsNoTracking() method
+we use the AsNoTracking() method.
 
 
 Returns detached read-only entity => var employees = context.Employees
@@ -8,6 +8,7 @@ Returns detached read-only entity => var employees = context.Employees
  					.ToList();
 
 
-Винаги когато искаме да изтеглим информация от базата данни и знаме  че няма да я модифицираме и просто искаме да покажем информацията на някого или ние искаме да си направим просто справка 
+Всеки път, когато искаме да извлечем информация от базата данни за обект (субект) и знаем, че няма да го променим и просто искаме да покажем информацията на някого или просто искаме да направим препратка
 
-използваме метода AsNoTracking ()
+използваме метода AsNoTracking().
+
