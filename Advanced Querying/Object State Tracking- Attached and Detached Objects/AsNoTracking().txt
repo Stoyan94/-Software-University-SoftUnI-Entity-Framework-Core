@@ -1,0 +1,13 @@
+Whenever we want to download information from the database and we know we are not going to modify it and we just want to show the information to someone or we just want to make a reference
+
+we use the AsNoTracking() method
+
+
+Returns detached read-only entity => var employees = context.Employees
+ 					.AsNoTracking()
+ 					.ToList();
+
+
+Винаги когато искаме да изтеглим информация от базата данни и знаме  че няма да я модифицираме и просто искаме да покажем информацията на някого или ние искаме да си направим просто справка 
+
+използваме метода AsNoTracking ()
