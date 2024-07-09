@@ -18,8 +18,9 @@ public class StartUp
     {
         using SoftUniContext dbContext = new SoftUniContext();
 
-        await ExplicitAndEagerCombination(dbContext);
 
+
+        //await ExplicitAndEagerCombination(dbContext);
         //await ExplicitLoading(dbContext);
         //ExecutingStoredProcedure(dbContext);
         //await Console.Out.WriteLineAsync(await SQLInjectionDefense(dbContext));
@@ -57,7 +58,7 @@ public class StartUp
         //Explicit Loading: Inside the loop, for the specific employee with EmployeeId == 3, explicit loading is used to load the related Address entity.
         //    The dbContext.Entry(employee).Reference(e => e.Address).LoadAsync() method call loads the Address entity for this particular employee on demand, after the initial query has been executed.
     }
-private static async Task ExplicitAndEagerLoadingIssue(SoftUniContext dbContext)
+    private static async Task ExplicitAndEagerLoadingIssue(SoftUniContext dbContext)
 {
     var employees = await dbContext.Employees
     .Where(e => e.DepartmentId == 1)
