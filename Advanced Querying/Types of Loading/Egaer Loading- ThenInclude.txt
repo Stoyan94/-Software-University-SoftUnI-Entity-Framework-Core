@@ -1,0 +1,28 @@
+Using Include and ThenInclude:
+
+Copy code
+var employees = await dbContext.Employees
+    .Include(e => e.Department)                 // Eagerly load Department for each Employee
+        .ThenInclude(d => d.Company)            // Eagerly load Company for each Department
+    .Include(e => e.Projects)                   // Eagerly load Projects for each Employee
+        .ThenInclude(p => p.Client)             // Eagerly load Client for each Project
+    .ToListAsync();
+
+Explanation of the Example
+
+Primary Include:
+Include(e => e.Department): Eagerly loads the Department entity related to each Employee.
+Include(e => e.Projects): Eagerly loads the Projects collection related to each Employee.
+
+Nested Include with ThenInclude:
+.ThenInclude(d => d.Company): Eagerly loads the Company entity related to each Department that was loaded in the previous Include.
+.ThenInclude(p => p.Client): Eagerly loads the Client entity related to each Project that was loaded in the previous Include.
+
+Use Case
+The use of ThenInclude is especially useful when you have complex data models with multiple levels of related entities, and you need to ensure that all necessary related data is loaded in a single query. This prevents multiple round trips to the database and improves performance by retrieving all the required data in one go.
+
+Summary
+Eager Loading with Include: Loads related entities for the main entity.
+Eager Loading with ThenInclude: Loads related entities for the entities that are already included via Include, allowing for deep loading of related data.
+Multiple Levels: ThenInclude can be chained multiple times to load multiple levels of related data.
+By using Include and ThenInclude, you can efficiently load related data in complex data models, ensuring that all necessary relationships are resolved in a single database query.
