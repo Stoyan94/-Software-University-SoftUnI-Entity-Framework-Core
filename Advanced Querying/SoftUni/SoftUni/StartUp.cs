@@ -15,9 +15,26 @@ public class StartUp
         using SoftUniContext dbContext = new SoftUniContext();
 
         var employees = await dbContext.Employees
-            .Where(e => e.DepartmentId == 1)
-            .Include(e => e.Department)
+            .Where(e => e.DepartmentId == 1)           
             .ToListAsync();
+
+        foreach (var employee in employees)
+        {
+            if (employee.EmployeeId == 3)
+            {
+                var entry = dbContext.Entry(employee);
+                await entry.Reference(e => e.Address).LoadAsync();
+
+                await Console.Out.WriteLineAsync("The one for whom we need address information");
+                await Console.Out.WriteLineAsync($"{employee.FirstName} {employee.LastName} - {employee.Address.AddressText}");
+                Console.WriteLine();
+                await Console.Out.WriteLineAsync("Employees for whose addresses information are not needed");
+            }
+            else
+            {   
+                await Console.Out.WriteLineAsync($"{employee.FirstName} {employee.LastName}");
+            }
+        }
 
         //await ExplicitLoading(dbContext);
         //ExecutingStoredProcedure(dbContext);
@@ -55,6 +72,9 @@ public class StartUp
         // Explicit Loading Not Available:        
         //      Explicit loading(.Load()) requires an already existing entity to load related data into.
         //      Since you're directly projecting into an anonymous type, there's no entity on which to call the Load method.
+
+        // Both techniques are universal and can be used to load any related data defined by navigation properties, 
+        // not just data linked by foreign keys.
     }
     private static async Task ExplicitLoading(SoftUniContext dbContext)
     {
