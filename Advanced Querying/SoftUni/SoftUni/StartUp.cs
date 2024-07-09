@@ -1,10 +1,14 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using SoftUni.Data;
 using SoftUni.Models;
+using System.ComponentModel;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace SoftUni;
 
@@ -14,8 +18,18 @@ public class StartUp
     {
         using SoftUniContext dbContext = new SoftUniContext();
 
+        await ExplicitAndEagerCombination(dbContext);
+
+        //await ExplicitLoading(dbContext);
+        //ExecutingStoredProcedure(dbContext);
+        //await Console.Out.WriteLineAsync(await SQLInjectionDefense(dbContext));
+    }
+
+    private static async Task ExplicitAndEagerCombination(SoftUniContext dbContext)
+    {
         var employees = await dbContext.Employees
-            .Where(e => e.DepartmentId == 1)           
+            .Where(e => e.DepartmentId == 1)
+            .Include(e => e.Department)
             .ToListAsync();
 
         foreach (var employee in employees)
@@ -25,26 +39,28 @@ public class StartUp
                 var entry = dbContext.Entry(employee);
                 await entry.Reference(e => e.Address).LoadAsync();
 
-                await Console.Out.WriteLineAsync("The one for whom we need address information");
-                await Console.Out.WriteLineAsync($"{employee.FirstName} {employee.LastName} - {employee.Address.AddressText}");
+                await Console.Out.WriteLineAsync("The one for whom we need address information and Department Name");
+                await Console.Out.WriteLineAsync($"{employee.FirstName} {employee.LastName} {employee.Department.Name} - {employee.Address.AddressText}");
                 Console.WriteLine();
                 await Console.Out.WriteLineAsync("Employees for whose addresses information are not needed");
             }
             else
-            {   
+            {
                 await Console.Out.WriteLineAsync($"{employee.FirstName} {employee.LastName}");
             }
         }
 
-        //await ExplicitLoading(dbContext);
-        //ExecutingStoredProcedure(dbContext);
-        //await Console.Out.WriteLineAsync(await SQLInjectionDefense(dbContext));
-    }
+        //Eager Loading: The Include(e => e.Department) method is used to eagerly load the related Department entity for each Employee. 
+        //               This means that the Department data is retrieved from the database as part of the initial query,
+        //               avoiding the need for additional queries to get this related data later.
 
-    private static async Task ExplicitAndEagerLoadingIssue(SoftUniContext dbContext)
-    {
-        var employees = await dbContext.Employees
-            .Where(e => e.DepartmentId == 1)
+        //Explicit Loading: Inside the loop, for the specific employee with EmployeeId == 3, explicit loading is used to load the related Address entity.
+        //    The dbContext.Entry(employee).Reference(e => e.Address).LoadAsync() method call loads the Address entity for this particular employee on demand, after the initial query has been executed.
+    }
+private static async Task ExplicitAndEagerLoadingIssue(SoftUniContext dbContext)
+{
+    var employees = await dbContext.Employees
+    .Where(e => e.DepartmentId == 1)
             .Select(e => new
             {
                 e.FirstName,
