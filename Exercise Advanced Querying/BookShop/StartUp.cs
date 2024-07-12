@@ -5,6 +5,7 @@
     using Data;
     using Initializer;
     using Microsoft.EntityFrameworkCore;
+    using System.Globalization;
     using System.Text;
 
     public class StartUp
@@ -16,7 +17,7 @@
 
             
             string input = Console.ReadLine();
-            string result = GetBooksByCategory(dbContext, input);           
+            string result = GetBooksReleasedBefore(dbContext, input);           
             Console.WriteLine(result);
         }
 
@@ -118,6 +119,19 @@
                 .ToArray();
 
             return string.Join(Environment.NewLine, bookByCategory);
+        }
+
+        public static string GetBooksReleasedBefore(BookShopContext dbContext, string date)
+        {
+            DateTime parsedDate = DateTime.ParseExact(date, "dd-MM-yyyy", null);
+
+            var booksBefore = dbContext.Books
+                .Where(b => b.ReleaseDate < parsedDate)
+                .OrderByDescending(b => b.ReleaseDate)
+                .Select(b => $"{b.Title} - {b.EditionType} - ${b.Price:f2}")
+                .ToArray();
+
+            return string.Join(Environment.NewLine, booksBefore);
         }
     }
 }
