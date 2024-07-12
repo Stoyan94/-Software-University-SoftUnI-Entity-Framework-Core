@@ -13,10 +13,9 @@
             using var dbContext = new BookShopContext();
             //DbInitializer.ResetDatabase(db);
 
-            string result = GetBooksByPrice(dbContext);
-            //string goldenBooks = GetGoldenBooks(dbContext);
-            //string input = Console.ReadLine();
-            //string result = GetBooksByAgeRestriction(dbContext, input);
+            
+            int input = int.Parse(Console.ReadLine());
+            string result = GetBooksNotReleasedIn(dbContext, input);           
             Console.WriteLine(result);
         }
 
@@ -94,6 +93,17 @@
             }
 
             return output.ToString().TrimEnd();
+        }
+
+        public static string GetBooksNotReleasedIn(BookShopContext dbContext, int year)
+        {
+            string[] books = dbContext.Books
+                .Where(b => b.ReleaseDate!.Value.Year != year)
+                .OrderBy(b => b.BookId)
+                .Select(b => b.Title)
+                .ToArray();
+
+            return string.Join(Environment.NewLine, books);
         }
     }
 }
