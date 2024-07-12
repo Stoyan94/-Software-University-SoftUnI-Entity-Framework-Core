@@ -1,5 +1,6 @@
 ﻿namespace BookShop
 {
+    using BookShop.Models;
     using BookShop.Models.Enums;
     using Data;
     using Initializer;
@@ -14,8 +15,8 @@
             //DbInitializer.ResetDatabase(db);
 
             
-            int input = int.Parse(Console.ReadLine());
-            string result = GetBooksNotReleasedIn(dbContext, input);           
+            string input = Console.ReadLine();
+            string result = GetBooksByCategory(dbContext, input);           
             Console.WriteLine(result);
         }
 
@@ -104,6 +105,19 @@
                 .ToArray();
 
             return string.Join(Environment.NewLine, books);
+        }
+
+        public static string GetBooksByCategory(BookShopContext dbContext, string input)
+        {
+            string[] categories = input.ToLower().Split().ToArray();
+
+            string[] bookByCategory = dbContext.BooksCategories
+                .Where(b => categories.Contains(b.Category.Name.ToLower()))
+                .Select(b => b.Book.Title)
+                .OrderBy(b => b)
+                .ToArray();
+
+            return string.Join(Environment.NewLine, bookByCategory);
         }
     }
 }
