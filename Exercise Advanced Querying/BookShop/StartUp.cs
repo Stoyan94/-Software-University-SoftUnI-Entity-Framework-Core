@@ -13,9 +13,11 @@
             using var dbContext = new BookShopContext();
             //DbInitializer.ResetDatabase(db);
 
-            string input = Console.ReadLine();
-            string result = GetBooksByAgeRestriction(dbContext, input);
-            Console.WriteLine(result);
+            string goldenBooks = GetGoldenBooks(dbContext);
+
+            //string input = Console.ReadLine();
+            //string result = GetBooksByAgeRestriction(dbContext, input);
+            Console.WriteLine(goldenBooks);
         }
 
         public static string GetBooksByAgeRestriction(BookShopContext dbContext, string command)
@@ -58,6 +60,18 @@
                 return "Not Found";
             }
 
+        }
+
+        public static string GetGoldenBooks(BookShopContext dbContext)
+        {
+            string[] goldenBooks = dbContext.Books
+                .Where(b => b.EditionType == EditionType.Gold && 
+                            b.Copies < 5000)
+                .OrderBy(b => b.BookId)
+                .Select (b => b.Title)
+                .ToArray();
+
+            return string.Join(Environment.NewLine, goldenBooks);
         }
     }
 }
