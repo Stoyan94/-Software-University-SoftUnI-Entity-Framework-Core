@@ -17,7 +17,7 @@
 
             
             string input = Console.ReadLine();
-            string result = GetAuthorNamesEndingIn(dbContext, input);           
+            string result = GetBookTitlesContaining(dbContext, input);           
             Console.WriteLine(result);
         }
 
@@ -160,6 +160,17 @@
             }
 
             return output.ToString().TrimEnd();
+        }
+
+        public static string GetBookTitlesContaining(BookShopContext dbContext, string input)
+        {
+            string[] getBookTitles = dbContext.Books
+                .Where(b => b.Title.ToLower().Contains(input.ToLower()))
+                .OrderBy(b => b.Title)
+                .Select(b => $"{b.Title}")
+                .ToArray();
+
+            return string.Join(Environment.NewLine,getBookTitles);
         }
     }
 }
