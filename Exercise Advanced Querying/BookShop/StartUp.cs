@@ -16,8 +16,8 @@
             //DbInitializer.ResetDatabase(db);
 
             
-            string input = Console.ReadLine();
-            string result = GetBooksByAuthor(dbContext, input);           
+            int input = int.Parse(Console.ReadLine());
+            int result = CountBooks(dbContext, input);           
             Console.WriteLine(result);
         }
 
@@ -178,7 +178,8 @@
             StringBuilder output = new StringBuilder();
 
             var getBooksByAuthor = dbContext.Books
-                .Where(a => a.Author.LastName.ToLower().StartsWith(input.ToLower()))
+                .Where(a => a.Author.LastName.ToLower()
+                            .StartsWith(input.ToLower()))
                 .OrderBy(b => b.BookId)
                 .Select(b => new
                 {
@@ -193,6 +194,15 @@
             }
 
             return output.ToString().TrimEnd();
+        }
+
+        public static int CountBooks(BookShopContext dbContext, int lengthCheck)
+        {
+            var booksCount = dbContext.Books
+                .Where(b => b.Title.Length > lengthCheck)
+                .Count();                
+
+            return booksCount;
         }
     }
 }
