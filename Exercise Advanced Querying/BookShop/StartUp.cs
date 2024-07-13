@@ -6,6 +6,7 @@
     using Initializer;
     using Microsoft.EntityFrameworkCore;
     using System.Globalization;
+    using System.Linq;
     using System.Text;
 
     public class StartUp
@@ -16,9 +17,9 @@
             //DbInitializer.ResetDatabase(db);
 
             
-            int input = int.Parse(Console.ReadLine());
-            int result = CountBooks(dbContext, input);           
-            Console.WriteLine(result);
+            //int input = int.Parse(Console.ReadLine());
+            //int result = CountBooks(dbContext, input);           
+            Console.WriteLine(CountCopiesByAuthor(dbContext));
         }
 
         public static string GetBooksByAgeRestriction(BookShopContext dbContext, string command)
@@ -203,6 +204,16 @@
                 .Count();                
 
             return booksCount;
+        }
+
+        public static string CountCopiesByAuthor(BookShopContext dbContext)
+        {
+            var copiesCount = dbContext.Authors
+                .OrderByDescending(a => a.Books.Sum(b => b.Copies))
+                .Select(a => $"{a.FirstName} {a.LastName} - {a.Books.Sum(b => b.Copies)}")
+                .ToArray();
+
+            return string.Join(Environment.NewLine, copiesCount);
         }
     }
 }
