@@ -1,0 +1,7 @@
+Kakvo oznachava migraciq - Ideqta e da imame mehanizum s koito da mojem da
+sinhronizirame strukturata na bazata s nashiq model (nasheto prilojenie) suotvetno nashiq obektno orientiran model. Zada moje da raboti EF te trqbva da sa absolutno ednakvi.
+
+EF ima nqkoi zashtitni mehanizmi koito mu polzvolqvat pri opredeleni razlichiq v modela da se spravi no tova e opasno i ne trqbva da polzvolqvame da se sluchva no vinagi trqbva prilojenieto i bazata da budat ednakvi obektno orientiraniq model da bude tochno proekciq na relacionniq model.
+
+
+Model Snapshot- Никога не трябва да до пипаме, защото ще причиним големи проблеми на EF- да синхронизира двата модела. Това е нещото което се грижи за синхронизинирането на двата модела.
