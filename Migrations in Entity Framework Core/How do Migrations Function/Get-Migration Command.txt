@@ -1,0 +1,11 @@
+
+The Get-Migration command is part of the Entity Framework (EF) Core CLI (Command-Line Interface) and is used to list all the migrations that have been applied to your database or are available in your project. This command helps you keep track of the migration history and manage the state of your database schema.
+
+Purpose of Get-Migration
+List Migrations: It provides a list of all the migrations in your project, showing which migrations have been applied to the database.
+
+Track Migration History: 
+Helps you understand the sequence of changes applied to your database schema.
+Identify Applied Migrations: Indicates which migrations have been applied and which are pending.
+
+By understanding and utilizing the Get-Migration command, you can effectively manage and track the evolution of your database schema, ensuring a smooth development and deployment process.
