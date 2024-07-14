@@ -11,7 +11,7 @@ using MigrationsDemo.Data;
 namespace MigrationsDemo.Migrations
 {
     [DbContext(typeof(SchoolContext))]
-    [Migration("20240714102829_InitialMigration")]
+    [Migration("20240714131958_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,11 @@ namespace MigrationsDemo.Migrations
 
                     b.Property<int>("Age")
                         .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
