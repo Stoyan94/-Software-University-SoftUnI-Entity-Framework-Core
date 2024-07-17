@@ -17,8 +17,8 @@ namespace StudentSystem.Data
         }
 
         public virtual DbSet<Resource> Resources { get; set; } = null!;
-
         public virtual DbSet<Course> Courses { get; set; } = null!;
+        public virtual DbSet<Student> Students { get; set; } = null!;
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
