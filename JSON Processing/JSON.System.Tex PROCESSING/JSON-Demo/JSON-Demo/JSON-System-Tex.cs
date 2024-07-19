@@ -11,7 +11,12 @@ namespace JSON_Demo
                 FullName = "Petar Petrov",
                 Age = 25,
                 Height = 185,
-                Weight = 83.7
+                Weight = 83.7,
+                Address = new Address()
+                {
+                    City = "Bourgas",
+                    Street = "B. Komluka"
+                }
             };
 
             var options = new JsonSerializerOptions()
