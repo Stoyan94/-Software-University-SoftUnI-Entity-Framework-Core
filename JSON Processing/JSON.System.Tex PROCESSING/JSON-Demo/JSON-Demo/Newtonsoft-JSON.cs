@@ -4,7 +4,7 @@ namespace JSON_Demo;
 
 public class Newthon_JSON
 {    
-    static void Main(string[] args)
+    public static void Newthon_JSON_()
     {
         var person = new Person()
         {
@@ -25,6 +25,6 @@ public class Newthon_JSON
 
         Person? person1 = JsonConvert.DeserializeObject<Person>(data);
 
-        Console.WriteLine($"{person1.FullName} is {person1.Age} years old and is {person1.Height}cm high!");
+        Console.WriteLine($"{person1.FullName} is {person1.Age} years old and is {person1.Height}cm high!");        
     }
 }
