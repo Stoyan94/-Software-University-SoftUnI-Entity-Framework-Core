@@ -7,8 +7,8 @@
     {
         public User()
         {
-            ProductsSold = new List<Product>();
-            ProductsBought = new List<Product>();
+            this.ProductsSold = new List<Product>();
+            this.ProductsBought = new List<Product>();
         }
 
         public int Id { get; set; }
@@ -20,9 +20,9 @@
         public int? Age { get; set; }
 
         [InverseProperty("Seller")]
-        public ICollection<Product> ProductsSold { get; set; }
+        public virtual ICollection<Product> ProductsSold { get; set; }
 
         [InverseProperty("Buyer")]
-        public ICollection<Product> ProductsBought { get; set; }
+        public virtual ICollection<Product> ProductsBought { get; set; }
     }
 }

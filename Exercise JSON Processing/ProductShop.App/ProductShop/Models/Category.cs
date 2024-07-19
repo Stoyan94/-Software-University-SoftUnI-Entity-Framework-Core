@@ -6,13 +6,13 @@
     {
         public Category()
         {
-            CategoriesProducts = new List<CategoryProduct>();
+            this.CategoriesProducts = new List<CategoryProduct>();
         }
 
         public int Id { get; set; }
 
         public string Name { get; set; } = null!;
 
-        public ICollection<CategoryProduct> CategoriesProducts { get; set; }
+        public virtual ICollection<CategoryProduct> CategoriesProducts { get; set; }
     }
 }
