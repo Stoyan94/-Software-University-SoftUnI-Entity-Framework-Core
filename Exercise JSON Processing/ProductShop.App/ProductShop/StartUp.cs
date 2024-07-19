@@ -11,8 +11,8 @@
         {
             ProductShopContext dbContext = new ProductShopContext();
 
-            string userText = File.ReadAllText("../../../Datasets/categories.json");
-            Console.WriteLine(ImportCategories(dbContext, userText));
+            string userText = File.ReadAllText("../../../Datasets/categories-products.json");
+            Console.WriteLine(ImportCategoryProducts(dbContext, userText));
         }
 
         //Define your DTO and entity classes:
@@ -35,7 +35,7 @@
             dbContext.SaveChanges();
             return $"Successfully imported {users.Count}";
         }
-
+        
         public static string ImportProducts(ProductShopContext dbContext, string inputJson)
         {
             var productsDto = JsonConvert.DeserializeObject<ImportProductsDTO[]>(inputJson);
@@ -66,6 +66,16 @@
             dbContext.SaveChanges();
 
             return $"Successfully imported {categories.Count()}";
+        }
+
+        public static string ImportCategoryProducts(ProductShopContext dbContext, string inputJson)
+        {
+            List<CategoryProduct>? categoryProducts = JsonConvert.DeserializeObject<List<CategoryProduct>>(inputJson);
+            
+            dbContext.CategoriesProducts.AddRange(categoryProducts);
+            dbContext.SaveChanges();
+
+            return $"Successfully imported {categoryProducts.Count()}";
         }
     }   
 }
