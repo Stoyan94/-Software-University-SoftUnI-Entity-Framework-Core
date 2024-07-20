@@ -1,4 +1,5 @@
 ﻿using CarDealer.Data;
+using CarDealer.DTOs.Import;
 using CarDealer.Models;
 using Castle.Core.Resource;
 using Newtonsoft.Json;
@@ -10,10 +11,10 @@ namespace CarDealer
     {
         public static void Main()
         {
-            using CarDealerContext dbContext = new CarDealerContext();
+            CarDealerContext dbContext = new CarDealerContext();
 
-            string readJsonImportFile = File.ReadAllText("../../../Datasets/customers.json");
-            Console.WriteLine(ImportCustomers(dbContext, readJsonImportFile));
+            string readJsonImportFile = File.ReadAllText(@"../../../Datasets/cars.json");
+            Console.WriteLine(ImportCars(dbContext, readJsonImportFile));
         }
 
         public static string ImportSuppliers(CarDealerContext dbContext, string inputJson)
@@ -44,9 +45,38 @@ namespace CarDealer
             return $"Successfully imported {partsWithValidSuppId.Length}."; 
         }
 
-        public static string ImportCars(CarDealerContext context, string inputJson)
+        public static string ImportCars(CarDealerContext dbContext, string inputJson)
         {
-            return null;
+            var carsDtos = JsonConvert.DeserializeObject<List<ImportCarsAndCarPartsDto>>(inputJson);
+
+            var cars = new HashSet<Car>();
+            var partsCars = new HashSet<PartCar>();
+
+            foreach (var carDto in carsDtos)
+            {
+                var newCar = new Car()
+                {
+                    Make = carDto.Make,
+                    Model = carDto.Model,
+                    TraveledDistance = carDto.TraveledDistance
+                };
+                cars.Add(newCar);
+
+                foreach (var partId in carDto.PartsId.Distinct())
+                {
+                    partsCars.Add(new PartCar()
+                    {
+                        Car = newCar,
+                        PartId = partId
+                    });
+                }
+            }
+
+            dbContext.Cars.AddRange(cars);
+            dbContext.PartsCars.AddRange(partsCars);
+            dbContext.SaveChanges();
+
+            return $"Successfully imported {cars.Count}.";
         }
         public static string ImportCustomers(CarDealerContext dbContext, string inputJson)
         {
