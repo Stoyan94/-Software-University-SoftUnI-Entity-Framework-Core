@@ -1,7 +1,9 @@
 ﻿namespace ProductShop
 {
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
     using ProductShop.Data;
+    using ProductShop.DTOs.Export;
     using ProductShop.DTOs.Import;
     using ProductShop.Models;
 
@@ -11,8 +13,8 @@
         {
             ProductShopContext dbContext = new ProductShopContext();
 
-            string userText = File.ReadAllText("../../../Datasets/categories-products.json");
-            Console.WriteLine(ImportCategoryProducts(dbContext, userText));
+            //string userText = File.ReadAllText("../../../Datasets/categories-products.json");
+            Console.WriteLine(GetSoldProducts(dbContext));
         }
 
         //Define your DTO and entity classes:
@@ -76,6 +78,66 @@
             dbContext.SaveChanges();
 
             return $"Successfully imported {categoryProducts.Count()}";
+        }
+
+        public static string GetProductsInRange(ProductShopContext dbContext)
+        {
+            List<ExportProducInRangeDTO> productsInRange = dbContext.Products
+                .Where(p => p.Price >= 500 && p.Price <= 1000)
+                .Select(p => new ExportProducInRangeDTO
+                {
+                    Name = p.Name,
+                    Price = p.Price,
+                    Seller = $"{p.Seller.FirstName} {p.Seller.LastName}"
+                })
+                .OrderBy(p => p.Price)
+                .ToList();
+
+            var settings = new JsonSerializerSettings()
+            {
+                NullValueHandling = NullValueHandling.Ignore, // Ignore null values in objects 
+                Formatting = Formatting.Indented, // formatting the text for easy human readable
+                //ContractResolver = new CamelCasePropertyNamesContractResolver(), when we use DTO wee dont need this setting
+            };
+
+            return JsonConvert.SerializeObject(productsInRange, settings);
+        }
+
+        public static string GetSoldProducts(ProductShopContext dbContext)
+        {
+            var soldProducts = dbContext.Users
+                .Where(u => u.ProductsSold.Any(p => p.BuyerId != null))
+                .OrderBy(u => u.LastName)
+                .ThenBy(u => u.FirstName)
+                .Select(u => new
+                {
+                    u.FirstName,
+                    u.LastName,
+                    SoldProducts = u.ProductsSold.Select(p => new
+                    {
+                        p.Name,
+                        p.Price,
+                        BuyerFirstName = p.Buyer.FirstName,
+                        BuyerLastName = p.Buyer.LastName,
+
+                    }).ToArray()
+                })
+                .ToList();
+            
+
+            return SerializeObjWithJsonSettings(soldProducts);
+        }
+
+        private static string SerializeObjWithJsonSettings(object obj)
+        {
+            var settings = new JsonSerializerSettings()
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Formatting = Formatting.Indented
+            };
+
+            return JsonConvert.SerializeObject(obj, settings);
         }
     }   
 }
