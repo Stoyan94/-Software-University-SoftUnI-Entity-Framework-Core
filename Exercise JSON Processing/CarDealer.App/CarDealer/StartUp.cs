@@ -17,7 +17,7 @@ namespace CarDealer
             CarDealerContext dbContext = new CarDealerContext();
 
             string readJsonImportFile = File.ReadAllText(@"../../../Datasets/sales.json");
-            Console.WriteLine(GetTotalSalesByCustomer(dbContext));
+            Console.WriteLine(GetSalesWithAppliedDiscount(dbContext));
         }
 
         public static string ImportSuppliers(CarDealerContext dbContext, string inputJson)
@@ -201,6 +201,28 @@ namespace CarDealer
             return SerializeObjWithJsonSettings(totalSalesByCustomer); 
         }
 
+        public static string GetSalesWithAppliedDiscount(CarDealerContext dbContext)
+        {
+            var salesWithOrNotWithDiscount = dbContext.Sales                
+                .Take(10)
+                .Select(s => new
+                {
+                    car = new
+                    {
+                        s.Car.Make,
+                        s.Car.Model,
+                        s.Car.TraveledDistance
+                    },
+                    customerName = s.Customer.Name,
+                    discount = $"{s.Discount:f2}",
+                    price = $"{s.Car.PartsCars.Sum(p => p.Part.Price):f2}",
+                    priceWithDiscount = $"{s.Car.PartsCars.Sum(p => p.Part.Price) * (1 - s.Discount / 100):f2}"
+                })
+                .ToList();
+
+            return SerializeObjWithJsonSettings(salesWithOrNotWithDiscount);
+        }
+
         private static string SerializeObjWithJsonSettings(object obj)
         {
             var settingsWithNull = new JsonSerializerSettings()
@@ -212,7 +234,7 @@ namespace CarDealer
 
             var settingsWithoutNull = new JsonSerializerSettings()
             {
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                //ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 Formatting = Formatting.Indented
             };
 
