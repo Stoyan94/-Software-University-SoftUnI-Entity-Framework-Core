@@ -4,6 +4,7 @@ using CarDealer.Models;
 using Castle.Core.Resource;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.Globalization;
 using System.IO;
 
 namespace CarDealer
@@ -15,7 +16,7 @@ namespace CarDealer
             CarDealerContext dbContext = new CarDealerContext();
 
             string readJsonImportFile = File.ReadAllText(@"../../../Datasets/sales.json");
-            Console.WriteLine(ImportSales(dbContext, readJsonImportFile));
+            Console.WriteLine(GetOrderedCustomers(dbContext));
         }
 
         public static string ImportSuppliers(CarDealerContext dbContext, string inputJson)
@@ -91,7 +92,7 @@ namespace CarDealer
 
         public static string ImportSales(CarDealerContext dbContext, string inputJson)
         {
-            var sales = JsonConvert.DeserializeObject<List<Sale>>(inputJson);
+            List<Sale>? sales = JsonConvert.DeserializeObject<List<Sale>>(inputJson);
 
             dbContext.Sales.AddRange(sales);
             dbContext.SaveChanges();
@@ -99,6 +100,21 @@ namespace CarDealer
             return $"Successfully imported {sales.Count}.";
         }
 
+        public static string GetOrderedCustomers(CarDealerContext dbContext)
+        {
+            var orderedCustomers = dbContext.Customers
+                .OrderBy(c => c.BirthDate)
+                .ThenBy(c => c.IsYoungDriver)
+                .Select(c => new
+                {
+                    c.Name,
+                    BirthDate = c.BirthDate.ToString(@"dd/MM/yyyy", CultureInfo.InvariantCulture),
+                    c.IsYoungDriver,
+                })
+                .ToList();   
+
+            return SerializeObjWithJsonSettings(orderedCustomers);
+        }
         private static string SerializeObjWithJsonSettings(object obj)
         {
             var settingsWithNull = new JsonSerializerSettings()
@@ -110,11 +126,11 @@ namespace CarDealer
 
             var settingsWithoutNull = new JsonSerializerSettings()
             {
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                //ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 Formatting = Formatting.Indented
             };
 
-            return JsonConvert.SerializeObject(obj, settingsWithNull);
+            return JsonConvert.SerializeObject(obj, settingsWithoutNull);
         }
     }
 }
