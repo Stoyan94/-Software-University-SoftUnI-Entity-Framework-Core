@@ -2,6 +2,7 @@
 using CarDealer.DTOs.Import;
 using CarDealer.Models;
 using Castle.Core.Resource;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Globalization;
@@ -16,7 +17,7 @@ namespace CarDealer
             CarDealerContext dbContext = new CarDealerContext();
 
             string readJsonImportFile = File.ReadAllText(@"../../../Datasets/sales.json");
-            Console.WriteLine(GetOrderedCustomers(dbContext));
+            Console.WriteLine(GetLocalSuppliers(dbContext));
         }
 
         public static string ImportSuppliers(CarDealerContext dbContext, string inputJson)
@@ -80,6 +81,7 @@ namespace CarDealer
 
             return $"Successfully imported {cars.Count}.";
         }
+
         public static string ImportCustomers(CarDealerContext dbContext, string inputJson)
         {
             var customers = JsonConvert.DeserializeObject<List<Customer>>(inputJson);
@@ -115,6 +117,40 @@ namespace CarDealer
 
             return SerializeObjWithJsonSettings(orderedCustomers);
         }
+
+        public static string GetCarsFromMakeToyota(CarDealerContext dbContext)
+        {
+            var toyotaCars = dbContext.Cars
+                .Where(m => m.Make == "Toyota")
+                .OrderBy(m => m.Model)
+                .ThenByDescending(td => td.TraveledDistance)
+                .Select(c => new
+                {
+                    c.Id,
+                    c.Make,
+                    c.Model,
+                    c.TraveledDistance
+                }).ToList();
+
+            
+
+            return SerializeObjWithJsonSettings(toyotaCars);
+        }
+
+        public static string GetLocalSuppliers(CarDealerContext dbContext)
+        {
+            var localSuppliers = dbContext.Suppliers
+                .Where(s => !s.IsImporter)
+                .Select(s => new
+                {
+                    s.Id,
+                    s.Name,
+                    PartsCount = s.Parts.Count,
+                }).ToList();
+
+            return SerializeObjWithJsonSettings(localSuppliers);
+        }
+
         private static string SerializeObjWithJsonSettings(object obj)
         {
             var settingsWithNull = new JsonSerializerSettings()
