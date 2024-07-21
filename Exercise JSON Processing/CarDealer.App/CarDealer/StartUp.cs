@@ -17,7 +17,7 @@ namespace CarDealer
             CarDealerContext dbContext = new CarDealerContext();
 
             string readJsonImportFile = File.ReadAllText(@"../../../Datasets/sales.json");
-            Console.WriteLine(GetLocalSuppliers(dbContext));
+            Console.WriteLine(GetCarsWithTheirListOfParts(dbContext));
         }
 
         public static string ImportSuppliers(CarDealerContext dbContext, string inputJson)
@@ -149,6 +149,30 @@ namespace CarDealer
                 }).ToList();
 
             return SerializeObjWithJsonSettings(localSuppliers);
+        }
+
+        public static string GetCarsWithTheirListOfParts(CarDealerContext dbContext)
+        {
+            var carsWithTheirParts = dbContext.Cars
+                .Select(c => new
+                {
+                    car = new 
+                    {
+                        c.Make,
+                        c.Model,
+                        c.TraveledDistance
+                    },
+                    parts = c.PartsCars.Select(p => new
+                    {
+                        p.Part.Name,
+                        Price = p.Part.Price.ToString("f2")
+                    })
+                    
+                })
+                .ToList();
+
+
+            return SerializeObjWithJsonSettings(carsWithTheirParts);
         }
 
         private static string SerializeObjWithJsonSettings(object obj)
