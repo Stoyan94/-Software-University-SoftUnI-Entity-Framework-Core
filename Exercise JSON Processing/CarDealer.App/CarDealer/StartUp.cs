@@ -3,6 +3,7 @@ using CarDealer.DTOs.Import;
 using CarDealer.Models;
 using Castle.Core.Resource;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.IO;
 
 namespace CarDealer
@@ -13,8 +14,8 @@ namespace CarDealer
         {
             CarDealerContext dbContext = new CarDealerContext();
 
-            string readJsonImportFile = File.ReadAllText(@"../../../Datasets/cars.json");
-            Console.WriteLine(ImportCars(dbContext, readJsonImportFile));
+            string readJsonImportFile = File.ReadAllText(@"../../../Datasets/sales.json");
+            Console.WriteLine(ImportSales(dbContext, readJsonImportFile));
         }
 
         public static string ImportSuppliers(CarDealerContext dbContext, string inputJson)
@@ -86,6 +87,34 @@ namespace CarDealer
             dbContext.SaveChanges();
 
             return $"Successfully imported {customers.Count}.";
+        }
+
+        public static string ImportSales(CarDealerContext dbContext, string inputJson)
+        {
+            var sales = JsonConvert.DeserializeObject<List<Sale>>(inputJson);
+
+            dbContext.Sales.AddRange(sales);
+            dbContext.SaveChanges();
+
+            return $"Successfully imported {sales.Count}.";
+        }
+
+        private static string SerializeObjWithJsonSettings(object obj)
+        {
+            var settingsWithNull = new JsonSerializerSettings()
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Formatting = Formatting.Indented
+            };
+
+            var settingsWithoutNull = new JsonSerializerSettings()
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Formatting = Formatting.Indented
+            };
+
+            return JsonConvert.SerializeObject(obj, settingsWithNull);
         }
     }
 }
