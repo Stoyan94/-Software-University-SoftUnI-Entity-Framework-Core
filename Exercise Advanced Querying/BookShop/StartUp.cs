@@ -19,7 +19,7 @@
             
             //int input = int.Parse(Console.ReadLine());
             //int result = CountBooks(dbContext, input);           
-            Console.WriteLine(CountCopiesByAuthor(dbContext));
+            Console.WriteLine(GetTotalProfitByCategory(dbContext));
         }
 
         public static string GetBooksByAgeRestriction(BookShopContext dbContext, string command)
@@ -214,6 +214,19 @@
                 .ToArray();
 
             return string.Join(Environment.NewLine, copiesCount);
+        }
+
+        public static string GetTotalProfitByCategory(BookShopContext dbContext)
+        {
+            string[] totalProfitByCategory = dbContext
+                .Categories
+                .OrderByDescending(c => c.CategoryBooks
+                    .Sum(cb => cb.Book.Copies * cb.Book.Price))
+                .ThenBy(c => c.Name)
+                .Select(c => $"{c.Name} ${c.CategoryBooks.Sum(cb => cb.Book.Copies * cb.Book.Price):f2}")
+                .ToArray();
+
+            return string.Join(Environment.NewLine, totalProfitByCategory);
         }
     }
 }
