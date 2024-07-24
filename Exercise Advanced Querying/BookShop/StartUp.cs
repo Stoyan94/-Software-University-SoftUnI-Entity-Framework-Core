@@ -228,6 +228,39 @@
 
             return string.Join(Environment.NewLine, totalProfitByCategory);
         }
+
+        public static string GetMostRecentBooks(BookShopContext dbContext)
+        {
+            var mostRecentBooks = dbContext
+                .Categories
+                .OrderBy(c => c.Name)
+                .Select(c => new
+                {
+                    CategoryName = c.Name,
+                    Books = c.CategoryBooks
+                        .OrderByDescending(cb => cb.Book.ReleaseDate)
+                        .Select(cb => new
+                        {
+                            BookTitle = cb.Book.Title,
+                            BookYear = cb.Book.ReleaseDate.Value.Year
+                        })
+                        .Take(3)
+                })
+                .ToArray();
+
+            StringBuilder output = new StringBuilder();
+
+            foreach (var c in mostRecentBooks)
+            {
+                output.AppendLine($"--{c.CategoryName}");
+                foreach (var b in c.Books)
+                {
+                    output.AppendLine($"{b.BookTitle} ({b.BookYear})");
+                }
+            }
+
+            return output.ToString().TrimEnd();
+        }
     }
 }
 
