@@ -1,0 +1,22 @@
+﻿using System.Xml.Linq;
+
+string xml = @"<?xml version=""1.0""?>
+<library name=""Developer's Library"">
+ <book>
+ <title>Professional C# and .NET</title>
+ <author>Christian Nagel</author>
+ <isbn>978-0-470-50225-9</isbn>
+ </book>
+ <book>
+ <title>Teach Yourself XML in 10
+Minutes</title>
+ <author>Andrew H. Watt</author>
+ <isbn>978-0-672-32471-0</isbn>
+ </book>
+</library>";
+
+XDocument doc = XDocument.Parse(xml);
+
+//Console.WriteLine(doc.Root.Value); // All elements in all roots
+
+Console.WriteLine(doc.Root.Descendants().First().Elements().First().Value);
