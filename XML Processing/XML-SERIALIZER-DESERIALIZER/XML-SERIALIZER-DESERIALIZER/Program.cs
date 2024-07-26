@@ -19,8 +19,14 @@ var family = new Family()
     }
 };
 
-XmlSerializer serializer = new XmlSerializer(typeof(Family));
+XmlSerializer serializer = new XmlSerializer(typeof(Family), new XmlRootAttribute("Family"));
 using (StreamWriter writer = new StreamWriter("family.xml"))
 {
     serializer.Serialize(writer, family);
 };
+
+using StreamReader reader = new StreamReader("family.xml");
+
+var newFemily =  (Family?)serializer.Deserialize(reader);
+
+Console.WriteLine();
