@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<class>
+  <student course="C#">
+    <name>Stoyan</name>
+  </student>
+  <student course="C++">
+    <name>Gosho</name>
+  </student>
+</class>
