@@ -1,0 +1,55 @@
+Create a new XDocument:
+
+
+XDocument doc3 = new XDocument();
+This line initializes a new XDocument object named doc3. An XDocument represents an XML document in memory.
+
+
+Add a root element to the document:
+
+doc3.Add(new XElement("cars"));
+This line adds a new root element <cars> to the doc3 document. The XElement represents an XML element.
+
+
+Add a child element to the root element:
+
+doc3.Root.Add(new XElement("car"));
+This line adds a child element <car> to the root <cars> element. The Root property gets the root element of the document.
+
+Get the first (and only) <car> element:
+
+XElement car = doc3.Root.Elements().First();
+This line retrieves the first <car> element from the root element <cars>. The Elements() method returns a collection of child elements, and First() gets the first element in that collection.
+
+
+Add child elements to the <car> element:
+
+car.Add(new XElement("maker", "Renault"));
+car.Add(new XElement("model", "Megan"));
+
+These lines add two child elements to the <car> element:
+<maker> with the value "Renault".
+<model> with the value "Megan".
+
+Save the document to a file:
+
+doc3.Save("cars.xml");
+This line saves the XML document to a file named "cars.xml".
+Final XML Structure
+After running this code, the "cars.xml" file will have the following structure:
+
+xml
+Copy code
+<cars>
+  <car>
+    <maker>Renault</maker>
+    <model>Megan</model>
+  </car>
+</cars>
+
+Summary
+A new XML document is created.
+A root element <cars> is added.
+A child element <car> is added to the root.
+The <car> element is populated with <maker> and <model> elements.
+The XML document is saved to "cars.xml".
