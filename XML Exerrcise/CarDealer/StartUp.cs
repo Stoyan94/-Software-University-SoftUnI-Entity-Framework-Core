@@ -16,7 +16,7 @@ namespace CarDealer
             using CarDealerContext dbContext = new CarDealerContext();
 
             //string readInputFile = File.ReadAllText("../../../Datasets/sales.xml");
-            Console.WriteLine(GetCarsFromMakeBmw(dbContext));
+            Console.WriteLine(GetLocalSuppliers(dbContext));
         }
 
         //9
@@ -224,6 +224,21 @@ namespace CarDealer
                 .ToList();
 
             return SerializeToXml(getBwmCars, "cars", true);
+        }
+
+        public static string GetLocalSuppliers(CarDealerContext dbContext)
+        {
+            var localSuppliers = dbContext.Suppliers
+                .Where(s => !s.IsImporter)
+                .Select(s => new LocalSupplierExportDto()
+                {
+                    Id= s.Id,
+                    Name = s.Name,
+                    PartsCount = s.Parts.Count
+                })
+                .ToList();
+
+            return SerializeToXml(localSuppliers, "suppliers");
         }
 
         private static string SerializeToXml<T>(T dto, string xmlRootAttribute, bool omitDeclaration = false)
