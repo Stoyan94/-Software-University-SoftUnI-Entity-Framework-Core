@@ -11,8 +11,8 @@ namespace CarDealer
         {
             using CarDealerContext dbContext = new CarDealerContext();
 
-            string readInputFile = File.ReadAllText("../../../Datasets/customers.xml");
-            Console.WriteLine(ImportCustomers(dbContext, readInputFile));
+            string readInputFile = File.ReadAllText("../../../Datasets/sales.xml");
+            Console.WriteLine(ImportSales(dbContext, readInputFile));
         }
 
         //9
@@ -105,7 +105,7 @@ namespace CarDealer
                      .Distinct()
                      .ToArray();
 
-                var carParts = new List<PartCar>();
+                List<PartCar> carParts = new List<PartCar>();
 
                 foreach (var id in carPartsId)
                 {
@@ -138,20 +138,21 @@ namespace CarDealer
                 customersDto = (CustomerImportDto[])serializer.Deserialize(reader);
             }
 
-            var customers = customersDto
+            List<Customer> customers = customersDto
                 .Select(dto => new Customer()
                 {
                     Name = dto.Name,
                     BirthDate = dto.BirthDate,
                     IsYoungDriver = dto.IsYoungDriver
-                }).ToList();
+                }).
+                ToList();
 
             dbContext.Customers.AddRange(customers);
             dbContext.SaveChanges();
 
             return $"Successfully imported {customers.Count}"; ;
         }
-        public static string ImportSales(CarDealerContext context, string inputXml)
+        public static string ImportSales(CarDealerContext dbContext, string inputXml)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(SaleImportDto[]),
                                        new XmlRootAttribute("Sales"));
@@ -163,15 +164,27 @@ namespace CarDealer
                 saleDto = (SaleImportDto[])serializer.Deserialize(reader);
             };
 
-            var sales = saleDto
+            var carsId = dbContext.Cars
+                .Select(c => c.Id)
+                .ToList();
+
+            var validCars = saleDto
+                .Where(c => carsId.Contains(c.CarId))
+                .ToList();
+
+            var sales = validCars
                 .Select(dto => new Sale()
                 {
                     CarId = dto.CarId,
                     CustomerId = dto.CustomerId,
                     Discount = dto.Discount,
-                });
+                })
+                .ToList();
 
-                return null;
+            dbContext.Sales.AddRange(sales);
+            dbContext.SaveChanges();
+
+            return $"Successfully imported {sales.Count}";
         }
     }
 }
