@@ -11,8 +11,8 @@ namespace CarDealer
         {
             using CarDealerContext dbContext = new CarDealerContext();
 
-            string readInputFile = File.ReadAllText("../../../Datasets/cars.xml");
-            Console.WriteLine(ImportCars(dbContext, readInputFile));
+            string readInputFile = File.ReadAllText("../../../Datasets/customers.xml");
+            Console.WriteLine(ImportCustomers(dbContext, readInputFile));
         }
 
         //9
@@ -124,6 +124,54 @@ namespace CarDealer
             dbContext.SaveChanges();            
 
             return $"Successfully imported {cars.Count}";
+        }
+
+        public static string ImportCustomers(CarDealerContext dbContext, string inputXml)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(CustomerImportDto[]),
+                                       new XmlRootAttribute("Customers"));
+
+            CustomerImportDto[] customersDto;
+
+            using (var reader = new StringReader(inputXml))
+            {
+                customersDto = (CustomerImportDto[])serializer.Deserialize(reader);
+            }
+
+            var customers = customersDto
+                .Select(dto => new Customer()
+                {
+                    Name = dto.Name,
+                    BirthDate = dto.BirthDate,
+                    IsYoungDriver = dto.IsYoungDriver
+                }).ToList();
+
+            dbContext.Customers.AddRange(customers);
+            dbContext.SaveChanges();
+
+            return $"Successfully imported {customers.Count}"; ;
+        }
+        public static string ImportSales(CarDealerContext context, string inputXml)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(SaleImportDto[]),
+                                       new XmlRootAttribute("Sales"));
+
+            SaleImportDto[] saleDto;
+
+            using (var reader = new StringReader(inputXml))
+            {
+                saleDto = (SaleImportDto[])serializer.Deserialize(reader);
+            };
+
+            var sales = saleDto
+                .Select(dto => new Sale()
+                {
+                    CarId = dto.CarId,
+                    CustomerId = dto.CustomerId,
+                    Discount = dto.Discount,
+                });
+
+                return null;
         }
     }
 }
