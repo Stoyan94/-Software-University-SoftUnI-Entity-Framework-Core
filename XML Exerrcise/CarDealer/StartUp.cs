@@ -11,8 +11,8 @@ namespace CarDealer
         {
             using CarDealerContext dbContext = new CarDealerContext();
 
-            string readInputFile = File.ReadAllText("../../../Datasets/parts.xml");
-            Console.WriteLine(ImportParts(dbContext, readInputFile));
+            string readInputFile = File.ReadAllText("../../../Datasets/cars.xml");
+            Console.WriteLine(ImportCars(dbContext, readInputFile));
         }
 
         //9
@@ -75,6 +75,55 @@ namespace CarDealer
             dbContext.SaveChanges();
 
             return $"Successfully imported {parts.Length}"; ;
+        }
+
+        public static string ImportCars(CarDealerContext dbContext, string inputXml)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(CarImportDto[]), 
+                                       new XmlRootAttribute("Cars"));
+
+            CarImportDto[] carsDto;
+
+            using (var reader = new StringReader(inputXml))
+            {
+                carsDto = (CarImportDto[])serializer.Deserialize(reader);
+            }
+
+            List<Car> cars = new List<Car>();
+
+            foreach (var dto in carsDto)
+            {
+               Car newCar = new Car()
+               {
+                   Make = dto.Make,
+                   Model = dto.Model,
+                   TraveledDistance = dto.TraveledDistance
+               };
+
+                int[] carPartsId = dto.PartId
+                     .Select(p => p.Id)
+                     .Distinct()
+                     .ToArray();
+
+                var carParts = new List<PartCar>();
+
+                foreach (var id in carPartsId)
+                {
+                    carParts.Add(new PartCar()
+                    {
+                        Car = newCar,
+                        PartId = id
+                    });
+                }
+
+                newCar.PartsCars = carParts;
+                cars.Add(newCar);
+            }
+
+            dbContext.Cars.AddRange(cars);
+            dbContext.SaveChanges();            
+
+            return $"Successfully imported {cars.Count}";
         }
     }
 }
