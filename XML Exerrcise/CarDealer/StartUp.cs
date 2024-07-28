@@ -1,6 +1,10 @@
 ﻿using CarDealer.Data;
+using CarDealer.DTOs.Export;
 using CarDealer.DTOs.Import;
 using CarDealer.Models;
+using System.Globalization;
+using System.Text;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace CarDealer
@@ -11,8 +15,8 @@ namespace CarDealer
         {
             using CarDealerContext dbContext = new CarDealerContext();
 
-            string readInputFile = File.ReadAllText("../../../Datasets/sales.xml");
-            Console.WriteLine(ImportSales(dbContext, readInputFile));
+            //string readInputFile = File.ReadAllText("../../../Datasets/sales.xml");
+            Console.WriteLine(GetCarsWithDistance(dbContext));
         }
 
         //9
@@ -185,6 +189,55 @@ namespace CarDealer
             dbContext.SaveChanges();
 
             return $"Successfully imported {sales.Count}";
+        }
+
+        public static string GetCarsWithDistance(CarDealerContext dbContext)
+        {
+            var carsWitchDistance = dbContext.Cars
+                .Where(c => c.TraveledDistance > 2000000)
+                .Select(c => new CarWithDistanceExportDto()
+                {
+                    Make = c.Make,
+                    Model = c.Model,
+                    TraveledDistance = c.TraveledDistance
+                })
+                .OrderBy(c => c.Make)
+                .ThenBy(c => c.Model)
+                .Take(10)
+                .ToList();
+
+            return SerializeToXml(carsWitchDistance, "cars");
+        }
+
+        private static string SerializeToXml<T>(T dto, string xmlRootAttribute, bool omitDeclaration = false)
+        {
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(T), new XmlRootAttribute(xmlRootAttribute));
+            StringBuilder stringBuilder = new StringBuilder();
+
+            XmlWriterSettings settings = new XmlWriterSettings
+            {
+                OmitXmlDeclaration = omitDeclaration,
+                Encoding = new UTF8Encoding(false),
+                Indent = true
+            };
+
+            using (StringWriter stringWriter = new StringWriter(stringBuilder, CultureInfo.InvariantCulture))
+            using (XmlWriter xmlWriter = XmlWriter.Create(stringWriter, settings))
+            {
+                XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
+                xmlSerializerNamespaces.Add(string.Empty, string.Empty);
+
+                try
+                {
+                    xmlSerializer.Serialize(xmlWriter, dto, xmlSerializerNamespaces);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+
+            return stringBuilder.ToString();
         }
     }
 }
