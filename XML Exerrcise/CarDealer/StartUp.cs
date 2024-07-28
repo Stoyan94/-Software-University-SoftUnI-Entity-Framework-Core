@@ -16,7 +16,7 @@ namespace CarDealer
             using CarDealerContext dbContext = new CarDealerContext();
 
             //string readInputFile = File.ReadAllText("../../../Datasets/sales.xml");
-            Console.WriteLine(GetCarsWithDistance(dbContext));
+            Console.WriteLine(GetCarsFromMakeBmw(dbContext));
         }
 
         //9
@@ -193,7 +193,7 @@ namespace CarDealer
 
         public static string GetCarsWithDistance(CarDealerContext dbContext)
         {
-            var carsWitchDistance = dbContext.Cars
+            List<CarWithDistanceExportDto> carsWitchDistance = dbContext.Cars
                 .Where(c => c.TraveledDistance > 2000000)
                 .Select(c => new CarWithDistanceExportDto()
                 {
@@ -207,6 +207,23 @@ namespace CarDealer
                 .ToList();
 
             return SerializeToXml(carsWitchDistance, "cars");
+        }
+
+        public static string GetCarsFromMakeBmw(CarDealerContext dbContext)
+        {
+            var getBwmCars = dbContext.Cars
+                .Where(c => c.Make == "BMW")
+                .Select(c => new BmwExportDto()
+                {
+                    Id = c.Id,
+                    Model = c.Model,
+                    TraveledDistance = c.TraveledDistance
+                })
+                .OrderBy(c=> c.Model)
+                .ThenByDescending(c => c.TraveledDistance)
+                .ToList();
+
+            return SerializeToXml(getBwmCars, "cars", true);
         }
 
         private static string SerializeToXml<T>(T dto, string xmlRootAttribute, bool omitDeclaration = false)
