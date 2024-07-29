@@ -2,6 +2,7 @@
 using CarDealer.DTOs.Export;
 using CarDealer.DTOs.Import;
 using CarDealer.Models;
+using System;
 using System.Globalization;
 using System.Text;
 using System.Xml;
@@ -16,7 +17,7 @@ namespace CarDealer
             using CarDealerContext dbContext = new CarDealerContext();
 
             //string readInputFile = File.ReadAllText("../../../Datasets/sales.xml");
-            Console.WriteLine(GetCarsWithTheirListOfParts(dbContext));
+            Console.WriteLine(GetTotalSalesByCustomer(dbContext));
         }
 
         //9
@@ -266,6 +267,36 @@ namespace CarDealer
             return SerializeToXml(carsWithAllParts, "cars");
         }
 
+        public static string GetTotalSalesByCustomer(CarDealerContext dbContext)
+        {
+            var tempQuery = dbContext.Customers
+                .Where(c => c.Sales.Any())
+                .Select(c => new
+                {
+                    FullName = c.Name,
+                    BoughtCars = c.Sales.Count(),
+                    SpentMoney = c.Sales.Select(sp => new
+                    {
+                        Prices = c.IsYoungDriver
+                        ? sp.Car.PartsCars.Sum(pr => Math.Round((double)pr.Part.Price * 0.95, 2))
+                        : sp.Car.PartsCars.Sum(pr => (double)pr.Part.Price)
+                    })                    
+                    .ToArray()
+                })
+                .ToArray();
+
+            var customersSales = tempQuery
+                .OrderByDescending(c => c.SpentMoney.Sum(s => s.Prices))
+                .Select(dto => new CustomersSalesDto()
+                {
+                    Name = dto.FullName,
+                    BoughtCars = dto.BoughtCars,
+                    SpentMoney = dto.SpentMoney.Sum(s => (decimal)s.Prices)
+                })
+                .ToArray();
+
+            return SerializeToXml(customersSales, "customers");
+        }
         private static string SerializeToXml<T>(T dto, string xmlRootAttribute, bool omitDeclaration = false)
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T), new XmlRootAttribute(xmlRootAttribute));
