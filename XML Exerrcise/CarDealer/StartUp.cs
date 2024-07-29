@@ -17,7 +17,7 @@ namespace CarDealer
             using CarDealerContext dbContext = new CarDealerContext();
 
             //string readInputFile = File.ReadAllText("../../../Datasets/sales.xml");
-            Console.WriteLine(GetTotalSalesByCustomer(dbContext));
+            Console.WriteLine(GetSalesWithAppliedDiscount(dbContext));
         }
 
         //9
@@ -296,6 +296,29 @@ namespace CarDealer
                 .ToArray();
 
             return SerializeToXml(customersSales, "customers");
+        }
+
+        public static string GetSalesWithAppliedDiscount(CarDealerContext dbContext)
+        {
+            var salesWithDiscount = dbContext.Sales
+                .Select(dto => new GetSalesWithDiscountDto()
+                {
+                    Car = new CarDto()
+                    {
+                        Make = dto.Car.Make,
+                        Model = dto.Car.Model,
+                        TraveledDistance = dto.Car.TraveledDistance,
+                    },
+                    Discount = (int)dto.Discount,
+                    CustomerName = dto.Customer.Name,
+                    Price = dto.Car.PartsCars.Sum(p => p.Part.Price),
+                    PriceWithDiscount = Math.Round(
+                        (double)(dto.Car.PartsCars.Sum(p => p.Part.Price)
+                                 * (1 - (dto.Discount / 100))), 4)
+                })
+                .ToArray();
+
+            return SerializeToXml(salesWithDiscount, "sales");
         }
         private static string SerializeToXml<T>(T dto, string xmlRootAttribute, bool omitDeclaration = false)
         {
