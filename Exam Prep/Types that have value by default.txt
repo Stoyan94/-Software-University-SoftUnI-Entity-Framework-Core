@@ -1,0 +1,38 @@
+Numeric Types:
+
+int: Default value is 0
+float: Default value is 0.0f
+double: Default value is 0.0d
+decimal: Default value is 0.0m
+byte: Default value is 0
+sbyte: Default value is 0
+short: Default value is 0
+ushort: Default value is 0
+uint: Default value is 0u
+long: Default value is 0L
+ulong: Default value is 0UL
+char: Default value is '\0' (null character)
+Boolean Type:
+
+bool: Default value is false
+
+Date and Time Types:
+DateTime: Default value is 01/01/0001 00:00:00
+
+Structures:
+Struct types have their default values, with each field in the struct being initialized to its respective default value.
+Enum Types:
+
+Enum types default to the value of the member with the integral value of 0.
+Reference Types
+Reference types, such as classes, arrays, and delegates, are initialized to null by default when declared but not explicitly initialized. However, since null is not a value in the same sense as the default values for value types, they are often not listed under types with default values. Nevertheless, the default initialization still applies:
+
+Class: Default value is null
+Array: Default value is null
+String: Default value is null
+Nullable Value Types
+For nullable value types (types using Nullable<T> or T?), the default value is null, which indicates that they can have a value type with nullability:
+
+Nullable<int>: Default value is null
+Nullable<DateTime>: Default value is null
+In summary, all value types have default values in C#, whereas reference types default to null. This automatic default value initialization is a key feature of the C# language, ensuring variables are always in a predictable state.

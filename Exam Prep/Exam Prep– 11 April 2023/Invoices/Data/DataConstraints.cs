@@ -2,7 +2,14 @@
 {
     public static class DataConstraints
     {
+        //Product
         public const byte ProductNameMinLength = 9;
-        public const byte ProductNameMaxLength = 10;
+        public const byte ProductNameMaxLength = 30;
+        public const string ProductPriceMinValue = "5.00";
+        public const string ProductPriceMaxValue = "1000.00";
+
+        // Adress
+        public const byte AddressStreetNameMinLength = 10;
+        public const byte AddressStreetNameMaxLength = 20;
     }
 }

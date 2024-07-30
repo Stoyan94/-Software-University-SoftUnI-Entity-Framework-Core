@@ -16,5 +16,7 @@ namespace Invoices.Data.Models
         public decimal Price { get; set; }
 
         public CategoryType CategoryType { get; set; }
+
+        // TODO: Add navigation properties 
     }
 }
