@@ -20,5 +20,9 @@
         public const int InvoiceNumberMinLength = 1000000;
         public const int InvoiceNumberMaxLength = 1500000;
 
+        // Client
+        public const byte ClientNameMinLength = 10;
+        public const byte ClientNameMaxLength = 25;
+
     }
 }
