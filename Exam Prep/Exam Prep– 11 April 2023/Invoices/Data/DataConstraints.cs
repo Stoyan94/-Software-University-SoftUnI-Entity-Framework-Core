@@ -11,5 +11,9 @@
         // Adress
         public const byte AddressStreetNameMinLength = 10;
         public const byte AddressStreetNameMaxLength = 20;
+        public const byte AdressCityMinLength = 5;
+        public const byte AdressCityMaxLength = 15;
+        public const byte AdressCountryMinLength = 5;
+        public const byte AdressCountryMaxLength = 15;
     }
 }

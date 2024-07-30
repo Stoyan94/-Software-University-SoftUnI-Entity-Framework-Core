@@ -14,5 +14,13 @@ namespace Invoices.Data.Models
         public int StreetNumber  { get; set; }
 
         public string PostCode { get; set; } = null!;
+
+        [MaxLength(AdressCityMaxLength)]
+        public string City { get; set; } = null!;
+
+        [MaxLength(AdressCountryMaxLength)]
+        public string Country { get; set; } = null!;
+
+        // TODO: Add navigation properties
     }
 }
