@@ -17,6 +17,9 @@ namespace Invoices.Data.Models
 
         public CategoryType CategoryType { get; set; }
 
+        public ICollection<Client> ProductsClients  { get; set; }
+             = new HashSet<Client>();
+
         // TODO: Add navigation properties 
     }
 }

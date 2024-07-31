@@ -23,6 +23,8 @@
         // Client
         public const byte ClientNameMinLength = 10;
         public const byte ClientNameMaxLength = 25;
+        public const byte ClientNumberVatMinLength = 10;
+        public const byte ClientNumberVatMaxLength = 15;
 
     }
 }

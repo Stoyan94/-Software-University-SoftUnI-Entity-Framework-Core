@@ -10,5 +10,10 @@ namespace Invoices.Data.Models
 
         [MaxLength(ClientNameMaxLength)]
         public string Name { get; set; } = null!;
+
+        [MaxLength(ClientNumberVatMaxLength)]
+        public string NumberVat { get; set; } = null!;
+
+        // TODO: Add navigations properties 
     }
 }
