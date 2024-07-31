@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Invoices.Data.Models
 {
@@ -21,6 +22,9 @@ namespace Invoices.Data.Models
         [MaxLength(AdressCountryMaxLength)]
         public string Country { get; set; } = null!;
 
-        // TODO: Add navigation properties
+        [ForeignKey(nameof(Client))]
+        public Client ClientId  { get; set; }
+
+        public Client Client { get; set; } = null!;
     }
 }

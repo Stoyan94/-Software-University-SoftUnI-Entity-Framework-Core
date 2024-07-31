@@ -19,7 +19,5 @@ namespace Invoices.Data.Models
 
         public ICollection<Client> ProductsClients  { get; set; }
              = new HashSet<Client>();
-
-        // TODO: Add navigation properties 
     }
 }
