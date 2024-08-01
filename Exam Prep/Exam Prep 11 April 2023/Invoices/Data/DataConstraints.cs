@@ -11,10 +11,10 @@
         // Adress
         public const byte AddressStreetNameMinLength = 10;
         public const byte AddressStreetNameMaxLength = 20;
-        public const byte AdressCityMinLength = 5;
-        public const byte AdressCityMaxLength = 15;
-        public const byte AdressCountryMinLength = 5;
-        public const byte AdressCountryMaxLength = 15;
+        public const byte AddressCityMinLength = 5;
+        public const byte AddressCityMaxLength = 15;
+        public const byte AddressCountryMinLength = 5;
+        public const byte AddressCountryMaxLength = 15;
 
         // Invoice
         public const int InvoiceNumberMinLength = 1000000;
