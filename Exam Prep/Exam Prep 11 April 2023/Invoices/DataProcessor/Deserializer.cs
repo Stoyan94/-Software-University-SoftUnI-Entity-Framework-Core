@@ -2,6 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
     using Invoices.Data;
+    using Invoices.DataProcessor.ImportDto;
+    using Invoices.Utilities;
 
     public class Deserializer
     {
@@ -19,7 +21,15 @@
 
         public static string ImportClients(InvoicesContext context, string xmlString)
         {
-            throw new NotImplementedException();
+            XmlHepler xmlHepler = new XmlHepler();
+            const string xmlRoot = "Clients";
+
+            ImportClientDto[] deserializeClient =
+                xmlHepler.Deserialize<ImportClientDto[]>(xmlString, xmlRoot);
+            foreach (ImportClientDto clientDto in deserializeClient)
+            {
+
+            }
         }
 
 
