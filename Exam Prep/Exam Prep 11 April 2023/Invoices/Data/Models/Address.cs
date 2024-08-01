@@ -16,10 +16,10 @@ namespace Invoices.Data.Models
 
         public string PostCode { get; set; } = null!;
 
-        [MaxLength(AdressCityMaxLength)]
+        [MaxLength(AddressCityMaxLength)]
         public string City { get; set; } = null!;
 
-        [MaxLength(AdressCountryMaxLength)]
+        [MaxLength(AddressCountryMaxLength)]
         public string Country { get; set; } = null!;
 
         [ForeignKey(nameof(Client))]

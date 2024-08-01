@@ -13,7 +13,7 @@ namespace Invoices.Utilities
 
             using StringReader stringReader = new StringReader(inputXml);
             object? deserializedObjects = xmlSerializer.Deserialize(stringReader);
-            if (deserializedObjects != null || 
+            if (deserializedObjects == null || 
                 deserializedObjects is not T deserializeObjectTypes )
             {
                 throw new InvalidOperationException();
