@@ -1,4 +1,6 @@
-﻿namespace Invoices.Data
+﻿using Invoices.Data.Models.Enums;
+
+namespace Invoices.Data
 {
     public static class DataConstraints
     {
@@ -17,8 +19,10 @@
         public const byte AddressCountryMaxLength = 15;
 
         // Invoice
-        public const int InvoiceNumberMinLength = 1000000;
-        public const int InvoiceNumberMaxLength = 1500000;
+        public const int InvoiceNumberMinLength = 1_000_000_000;
+        public const int InvoiceNumberMaxLength = 1_500_000_000;
+        public const int InvoiceCurrencyTypeMinValue = (int)CurrencyType.BGN;
+        public const int InvoiceCurrencyTypeMaxValue = (int)CurrencyType.USD;
 
         // Client
         public const byte ClientNameMinLength = 10;

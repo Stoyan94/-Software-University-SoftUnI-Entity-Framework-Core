@@ -1,11 +1,14 @@
 ﻿namespace Invoices.DataProcessor
 {
     using System.ComponentModel.DataAnnotations;
+    using System.Globalization;
     using System.Text;
     using Invoices.Data;
     using Invoices.Data.Models;
+    using Invoices.Data.Models.Enums;
     using Invoices.DataProcessor.ImportDto;
     using Invoices.Utilities;
+    using Newtonsoft.Json;
 
     public class Deserializer
     {
@@ -24,6 +27,7 @@
         public static string ImportClients(InvoicesContext context, string xmlString)
         {
             StringBuilder sb = new StringBuilder();
+
             XmlHepler xmlHepler = new XmlHepler();
             const string xmlRoot = "Clients";
 
@@ -76,13 +80,68 @@
             context.Clients.AddRange(clientsToImport);
             context.SaveChanges();
 
-            return sb.ToString();
+            return sb.ToString().TrimEnd();
         }
 
 
         public static string ImportInvoices(InvoicesContext context, string jsonString)
         {
-            throw new NotImplementedException();
+            StringBuilder sb = new StringBuilder();
+
+            ICollection<Invoice> invoicesToImport = new List<Invoice>();
+
+            ImportInvoicesDto[] deserializedInvoices = 
+                JsonConvert.DeserializeObject<ImportInvoicesDto[]>(jsonString)!;
+
+            foreach (var invoicesDto in deserializedInvoices)
+            {
+                if (!IsValid(invoicesDto))
+                {
+                    sb.AppendLine(ErrorMessage);
+                    continue;
+                }
+
+                bool isIssueDateValid = DateTime
+                    .TryParse(invoicesDto.IssueDate, CultureInfo.InvariantCulture,
+                    DateTimeStyles.None, 
+                    out DateTime issueDate);
+
+                bool isDueDateValid = DateTime
+                    .TryParse(invoicesDto.DueDate, CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out DateTime dueDate);
+
+                if (isIssueDateValid == false || isDueDateValid == false ||
+                    DateTime.Compare(dueDate, issueDate ) < 0)
+                {
+                    sb.AppendLine(ErrorMessage);
+                    continue;
+                }
+
+                if (!context.Clients.Any(cl => cl.Id == invoicesDto.ClientId))
+                {
+                    sb.AppendLine(ErrorMessage);
+                    continue;
+                }
+
+                Invoice newInvoice = new Invoice()
+                {
+                    Number = invoicesDto.Number,
+                    IssueDate = issueDate,
+                    DueDate = dueDate,
+                    Amount = invoicesDto.Amount,
+                    CurrencyType = (CurrencyType)invoicesDto.CurrencyType,
+                    ClientId = invoicesDto.ClientId
+                };
+
+                invoicesToImport.Add(newInvoice);
+                sb.AppendLine(String.Format(SuccessfullyImportedInvoices, invoicesDto.Number));
+            }
+
+            context.Invoices.AddRange(invoicesToImport);
+            context.SaveChanges();
+
+            return sb.ToString().TrimEnd();
         }
 
         public static string ImportProducts(InvoicesContext context, string jsonString)

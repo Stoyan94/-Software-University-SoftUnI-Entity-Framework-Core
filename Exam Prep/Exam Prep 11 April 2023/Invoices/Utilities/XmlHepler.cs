@@ -6,20 +6,22 @@ namespace Invoices.Utilities
     public class XmlHepler
     {
         public T Deserialize<T>(string inputXml, string rootName)
-            where T : class
         {
             XmlRootAttribute xmlRoot = new XmlRootAttribute(rootName);
+
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T), xmlRoot);
 
             using StringReader stringReader = new StringReader(inputXml);
+
             object? deserializedObjects = xmlSerializer.Deserialize(stringReader);
+
             if (deserializedObjects == null || 
-                deserializedObjects is not T deserializeObjectTypes )
+                deserializedObjects is not T deserializedObjectTypes )
             {
                 throw new InvalidOperationException();
             }
 
-            return deserializeObjectTypes;
+            return deserializedObjectTypes;
         }
 
         public string Serialize<T> (T obj, string rootName)
