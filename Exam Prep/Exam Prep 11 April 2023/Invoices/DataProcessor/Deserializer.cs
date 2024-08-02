@@ -146,9 +146,55 @@
 
         public static string ImportProducts(InvoicesContext context, string jsonString)
         {
+            StringBuilder sb = new StringBuilder();
+            ICollection<Product> productsToImport = new List<Product>();
 
+            ImportProductDto[] deserializedProducts = 
+                JsonConvert.DeserializeObject<ImportProductDto[]>(jsonString)!;
 
-            throw new NotImplementedException();
+            foreach (var productDto in deserializedProducts)
+            {
+                if (!IsValid(productDto))
+                {
+                    sb.AppendLine(ErrorMessage);
+                    continue;
+                }
+
+                Product newProduct = new Product()
+                {
+                    Name = productDto.Name,
+                    Price = productDto.Price,
+                    CategoryType = (CategoryType)productDto.CategoryType
+                };
+
+                ICollection<ProductClient> productClientsToImport = new List<ProductClient>();
+
+                foreach (var clientId in productDto.Clients.Distinct())
+                {
+                    if (context.Clients.Any(cl => cl.Id == clientId))
+                    {
+                        sb.AppendLine(ErrorMessage);
+                        continue;
+                    }
+
+                    ProductClient newProductClient = new ProductClient()
+                    {
+                        ClientId = clientId,
+                        Product = newProduct
+                    };
+
+                    productClientsToImport.Add(newProductClient);
+                }
+                newProduct.ProductsClients = productClientsToImport;
+
+                productsToImport.Add(newProduct);
+                sb.AppendLine(String.Format(SuccessfullyImportedProducts, productDto.Name, productClientsToImport.Count));
+            }
+
+            context.Products.AddRange(productsToImport);
+            context.SaveChanges();
+
+            return sb.ToString();
         }
 
         public static bool IsValid(object dto)
