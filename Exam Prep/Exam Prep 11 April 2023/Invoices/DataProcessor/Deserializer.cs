@@ -171,7 +171,7 @@
 
                 foreach (var clientId in productDto.Clients.Distinct())
                 {
-                    if (context.Clients.Any(cl => cl.Id == clientId))
+                    if (!context.Clients.Any(cl => cl.Id == clientId))
                     {
                         sb.AppendLine(ErrorMessage);
                         continue;
