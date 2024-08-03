@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Text;
+using System.Xml.Serialization;
 using TravelAgency.Data;
 using TravelAgency.Data.Models;
 using TravelAgency.DataProcessor.ImportDtos;
@@ -19,68 +20,63 @@ namespace TravelAgency.DataProcessor
         public static string ImportCustomers(TravelAgencyContext context, string xmlString)
         {
             StringBuilder sb = new StringBuilder();
-            XmlHelper xmlHelper = new XmlHelper();
 
-            const string xmlRootName = "Customers";
+            XmlSerializer serializer = new XmlSerializer(typeof(XmlImportCustomerDto[]), new XmlRootAttribute("Customers"));
 
-            List<Customer> customerToImport = new List<Customer>();
+            using StringReader reader = new StringReader(xmlString);
+            XmlImportCustomerDto[] customerDtos = (XmlImportCustomerDto[])serializer.Deserialize(reader);
+            List<Customer> customers = new List<Customer>();
 
-            XmlImportCustomerDto[] importCustomers = xmlHelper.
-                Deserialize<XmlImportCustomerDto[]>(xmlString, xmlRootName);
-
-            foreach (var customerDto in importCustomers)
+            foreach (var cDto in customerDtos)
             {
-                
-                    if (!IsValid(customerDto))
-                    {
-                        sb.AppendLine(ErrorMessage);
-                        continue;
-                    }
-
-                Customer newCustomer = new Customer()
+                if (!IsValid(cDto))
                 {
-                    FullName = customerDto.FullName,
-                    Email = customerDto.Email,
-                    PhoneNumber = customerDto.PhoneNumber
+                    sb.AppendLine(ErrorMessage);
+                    continue;
+                }
+
+                var customer = new Customer
+                {
+                    FullName = cDto.FullName,
+                    Email = cDto.Email,
+                    PhoneNumber = cDto.PhoneNumber
                 };
 
-                if (customerToImport.Any(n => n.FullName == customerDto.FullName) ||
-                    customerToImport.Any(e => e.Email == customerDto.Email ||
-                    customerToImport.Any(p => p.PhoneNumber == customerDto.PhoneNumber ||
-                    context.Customers.Any(n => n.FullName == customerDto.FullName) ||
-                    context.Customers.Any(e => e.Email == customerDto.Email ||
-                    context.Customers.Any(p => p.PhoneNumber == customerDto.PhoneNumber)))))
+                bool isDuplicationInContext = context.Customers.Any(c => c.FullName == customer.FullName) ||
+                                              context.Customers.Any(c => c.Email == customer.Email) ||
+                                              context.Customers.Any(c => c.PhoneNumber == customer.PhoneNumber);
+
+                bool isDuplicationInCustomers = customers.Any(c => c.FullName == customer.FullName) ||
+                                                customers.Any(c => c.Email == customer.Email) ||
+                                                customers.Any(c => c.PhoneNumber == customer.PhoneNumber);
+
+                if (isDuplicationInContext || isDuplicationInCustomers)
                 {
                     sb.AppendLine(DuplicationDataMessage);
                     continue;
                 }
 
-
-
-
-                customerToImport.Add(newCustomer);
-                sb.AppendLine(string.Format(SuccessfullyImportedCustomer, newCustomer.FullName));
+                customers.Add(customer);
+                sb.AppendLine(string.Format(SuccessfullyImportedCustomer, customer.FullName));
             }
 
-            context.Customers.AddRange(customerToImport);
+            context.Customers.AddRange(customers);
             context.SaveChanges();
 
-            return sb.ToString();
-
+            return sb.ToString().TrimEnd();
         }
 
-        
+
 
         public static string ImportBookings(TravelAgencyContext context, string jsonString)
         {
             StringBuilder sb = new StringBuilder();
-            
-            ICollection<Booking> bookingsToImport = new List<Booking>();
 
-            JsonImportBooking[] deserializedBookings =
-               JsonConvert.DeserializeObject<JsonImportBooking[]>(jsonString)!;
+            var bookingDtos = JsonConvert.DeserializeObject<List<JsonImportBooking>>(jsonString);
 
-            foreach (var bookingDto in deserializedBookings)
+            List<Booking> validBookings = new List<Booking>();
+
+            foreach (var bookingDto in bookingDtos)
             {
                 if (!IsValid(bookingDto))
                 {
@@ -88,35 +84,37 @@ namespace TravelAgency.DataProcessor
                     continue;
                 }
 
-                DateTime parsedDate;
+                DateTime bookingDate;
 
-                if (DateTime.TryParse(bookingDto.BookingDate, out parsedDate))
+                if (!DateTime.TryParseExact(bookingDto.BookingDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out bookingDate))
                 {
-                    string formattedDate = parsedDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    sb.AppendLine(ErrorMessage);
+                    continue;
                 }
 
-                var customer = context.Customers.SingleOrDefault(c => c.FullName == bookingDto.CustomerName);
-                var tourPackage = context.TourPackages.SingleOrDefault(tp => tp.PackageName == bookingDto.TourPackageName);
+                var customerId = context.Customers.FirstOrDefault(c => c.FullName == bookingDto.CustomerName).Id;
+                var tourPackageId = context.TourPackages.FirstOrDefault(tp => tp.PackageName == bookingDto.TourPackageName).Id;
 
-                if (customer != null && tourPackage != null)
+                if (customerId == 0 || tourPackageId == 0)
                 {
-                    var booking = new Booking
-                    {
-                        BookingDate = parsedDate,
-                        CustomerId = customer.Id,
-                        TourPackageId = tourPackage.Id
-                    };
-
-                    context.Bookings.Add(booking);
-                    context.SaveChanges();
-
-                    bookingsToImport.Add(booking);
+                    sb.AppendLine(ErrorMessage);
+                    continue;
                 }
 
-
+                var booking = new Booking
+                {
+                    CustomerId = customerId,
+                    TourPackageId = tourPackageId,
+                    BookingDate = bookingDate
+                };
+                validBookings.Add(booking);
+                sb.AppendLine(string.Format(SuccessfullyImportedBooking, bookingDto.TourPackageName, bookingDto.BookingDate));
             }
 
-            throw new NotImplementedException();
+            context.Bookings.AddRange(validBookings);
+            context.SaveChanges();
+
+            return sb.ToString().TrimEnd();
         }
 
         public static bool IsValid(object dto)

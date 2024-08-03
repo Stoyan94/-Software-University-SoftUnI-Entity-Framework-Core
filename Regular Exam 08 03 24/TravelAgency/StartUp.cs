@@ -15,7 +15,7 @@ namespace TravelAgency
             var projectDir = GetProjectDirectory();
 
             ImportEntities(context, projectDir + @"Datasets/", projectDir + @"ImportResults/");
-           //ExportEntities(context, projectDir + @"ExportResults/");
+            //ExportEntities(context, projectDir + @"ExportResults/");
 
             using (var transaction = context.Database.BeginTransaction())
             {
@@ -49,10 +49,10 @@ namespace TravelAgency
 
             PrintAndExportEntityToFile(customers, exportDir + "Actual Result - Import Customers.txt");
 
-            //var bookings = DataProcessor.Deserializer
-            //    .ImportBookings(context, File.ReadAllText(baseDir + "bookings.json"));
+            var bookings = DataProcessor.Deserializer
+                .ImportBookings(context, File.ReadAllText(baseDir + "bookings.json"));
 
-            //PrintAndExportEntityToFile(bookings, exportDir + "Actual Result - Import Bookings.txt");
+            PrintAndExportEntityToFile(bookings, exportDir + "Actual Result - Import Bookings.txt");
         }
 
         private static void PrintAndExportEntityToFile(string entityOutput, string outputPath)

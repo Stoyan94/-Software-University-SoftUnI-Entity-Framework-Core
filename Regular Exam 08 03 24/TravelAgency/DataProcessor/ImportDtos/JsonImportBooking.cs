@@ -1,21 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace TravelAgency.DataProcessor.ImportDtos
 {
-    using static Data.DataConstraints;
     public class JsonImportBooking
     {
         [Required]
+        [JsonProperty("BookingDate")]
         public string BookingDate { get; set; } = null!;
 
         [Required]
-        [MinLength(CustomerEmailMinLenght)]
-        [MaxLength(CustomerEmailMaxLenght)]
+        [JsonProperty("CustomerName")]
         public string CustomerName { get; set; } = null!;
 
         [Required]
-        [MinLength(TourPackageNameMinLenght)]
-        [MaxLength(TourPackageNameMaxLenght)]
+        [JsonProperty("TourPackageName")]
         public string TourPackageName { get; set; } = null!;
     }
 }

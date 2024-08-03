@@ -13,6 +13,7 @@ namespace TravelAgency.Data.Models
         public string FullName { get; set; } = null!;
 
         [Required]
+        [EmailAddress]
         [MaxLength(CustomerEmailMaxLenght)]
         public string Email { get; set; } = null!;
 

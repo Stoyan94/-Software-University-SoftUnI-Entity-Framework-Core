@@ -11,7 +11,7 @@
         public string PackageName { get; set; } = null!;
 
         [MaxLength(TourPackageDescriptionMaxLenght)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public decimal Price { get; set; }
 
