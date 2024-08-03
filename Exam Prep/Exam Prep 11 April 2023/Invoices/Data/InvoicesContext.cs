@@ -1,9 +1,9 @@
-﻿using Invoices.Data.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-
-namespace Invoices.Data
+﻿namespace Invoices.Data
 {
+    using Microsoft.EntityFrameworkCore;
+
+    using Models;
+
     public class InvoicesContext : DbContext
     {
         public InvoicesContext() 
@@ -15,11 +15,15 @@ namespace Invoices.Data
         { 
         }
 
-        public DbSet<Client> Clients { get; set; } = null!;
         public DbSet<Product> Products { get; set; } = null!;
+
         public DbSet<Address> Addresses { get; set; } = null!;
+
         public DbSet<Invoice> Invoices { get; set; } = null!;
-        public DbSet<ProductClient> ProductsClients { get; set; }
+
+        public DbSet<Client> Clients { get; set; } = null!;
+
+        public DbSet<ProductClient> ProductsClients { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -34,8 +38,9 @@ namespace Invoices.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Setup composite PK
-            modelBuilder.Entity<ProductClient>(entity =>
-                entity.HasKey(pk => new {pk.ProductId, pk.ClientId }));                  
+            modelBuilder
+                .Entity<ProductClient>()
+                .HasKey(pc => new { pc.ProductId, pc.ClientId });
         }
     }
 }

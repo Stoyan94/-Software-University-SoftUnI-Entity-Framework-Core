@@ -1,8 +1,9 @@
-﻿using Invoices.Data.Models;
-using System.Xml.Serialization;
-
-namespace Invoices.DataProcessor.ExportDto
+﻿namespace Invoices.DataProcessor.ExportDto
 {
+    using System.Xml.Serialization;
+
+    using Data.Models;
+
     [XmlType(nameof(Invoice))]
     public class ExportClientInvoiceDto
     {

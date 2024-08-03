@@ -3,12 +3,14 @@
     using System.ComponentModel.DataAnnotations;
     using System.Globalization;
     using System.Text;
-    using Invoices.Data;
-    using Invoices.Data.Models;
-    using Invoices.Data.Models.Enums;
-    using Invoices.DataProcessor.ImportDto;
-    using Invoices.Utilities;
+
     using Newtonsoft.Json;
+
+    using Data;
+    using Data.Models;
+    using Data.Models.Enums;
+    using ImportDto;
+    using Utilities;
 
     public class Deserializer
     {
@@ -27,27 +29,25 @@
         public static string ImportClients(InvoicesContext context, string xmlString)
         {
             StringBuilder sb = new StringBuilder();
-
-            XmlHepler xmlHepler = new XmlHepler();
+            XmlHelper xmlHelper = new XmlHelper();
             const string xmlRoot = "Clients";
 
             // Valid models to import into the DB!
             ICollection<Client> clientsToImport = new List<Client>();
 
-            ImportClientDto[] deserializeClient =
-                xmlHepler.Deserialize<ImportClientDto[]>(xmlString, xmlRoot);
-
-            foreach (ImportClientDto clientDto in deserializeClient)
+            ImportClientDto[] deserializedClients =
+                xmlHelper.Deserialize<ImportClientDto[]>(xmlString, xmlRoot);
+            foreach (ImportClientDto clientDto in deserializedClients)
             {
                 if (!IsValid(clientDto))
                 {
+                    // The DTO has invalid data!
                     sb.AppendLine(ErrorMessage);
                     continue;
                 }
 
                 ICollection<Address> addressesToImport = new List<Address>();
-
-                foreach (var addressDto in clientDto.Addresses)
+                foreach (ImportAddressDto addressDto in clientDto.Addresses)
                 {
                     if (!IsValid(addressDto))
                     {
@@ -61,7 +61,7 @@
                         StreetNumber = addressDto.StreetNumber,
                         PostCode = addressDto.PostCode,
                         City = addressDto.City,
-                        Country = addressDto.Country                        
+                        Country = addressDto.Country
                     };
                     addressesToImport.Add(newAddress);
                 }
@@ -77,71 +77,68 @@
                 sb.AppendLine(String.Format(SuccessfullyImportedClients, clientDto.Name));
             }
 
-            context.Clients.AddRange(clientsToImport);
+            context.Clients.AddRange(clientsToImport); // EF will import both new clients and new addresses
             context.SaveChanges();
 
-            return sb.ToString().TrimEnd();
+            return sb.ToString();
         }
 
 
         public static string ImportInvoices(InvoicesContext context, string jsonString)
         {
             StringBuilder sb = new StringBuilder();
-
             ICollection<Invoice> invoicesToImport = new List<Invoice>();
 
-            ImportInvoicesDto[] deserializedInvoices = 
-                JsonConvert.DeserializeObject<ImportInvoicesDto[]>(jsonString)!;
-
-            foreach (var invoicesDto in deserializedInvoices)
+            ImportInvoiceDto[] deserializedInvoices =
+                JsonConvert.DeserializeObject<ImportInvoiceDto[]>(jsonString)!;
+            foreach (ImportInvoiceDto invoiceDto in deserializedInvoices)
             {
-                if (!IsValid(invoicesDto))
+                if (!IsValid(invoiceDto))
                 {
                     sb.AppendLine(ErrorMessage);
                     continue;
                 }
 
                 bool isIssueDateValid = DateTime
-                    .TryParse(invoicesDto.IssueDate, CultureInfo.InvariantCulture,
-                    DateTimeStyles.None, 
-                    out DateTime issueDate);
-
+                    .TryParse(invoiceDto.IssueDate, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime issueDate);
                 bool isDueDateValid = DateTime
-                    .TryParse(invoicesDto.DueDate, CultureInfo.InvariantCulture,
-                    DateTimeStyles.None,
-                    out DateTime dueDate);
-
+                    .TryParse(invoiceDto.DueDate, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dueDate);
                 if (isIssueDateValid == false || isDueDateValid == false ||
-                    DateTime.Compare(dueDate, issueDate ) < 0)
+                    DateTime.Compare(dueDate, issueDate) < 0)
                 {
+                    // DateTime.Compare(t1, t2)
+                    //  -> -1 - t1 is before t2
+                    //  -> 0 - t1 is t2
+                    //  -> 1 - t1 is after t2
                     sb.AppendLine(ErrorMessage);
                     continue;
                 }
 
-                if (!context.Clients.Any(cl => cl.Id == invoicesDto.ClientId))
+                if (!context.Clients.Any(cl => cl.Id == invoiceDto.ClientId))
                 {
+                    // Non-existing client
                     sb.AppendLine(ErrorMessage);
                     continue;
                 }
 
                 Invoice newInvoice = new Invoice()
                 {
-                    Number = invoicesDto.Number,
+                    Number = invoiceDto.Number,
                     IssueDate = issueDate,
                     DueDate = dueDate,
-                    Amount = invoicesDto.Amount,
-                    CurrencyType = (CurrencyType)invoicesDto.CurrencyType,
-                    ClientId = invoicesDto.ClientId
+                    Amount = invoiceDto.Amount,
+                    CurrencyType = (CurrencyType)invoiceDto.CurrencyType,
+                    ClientId = invoiceDto.ClientId
                 };
 
                 invoicesToImport.Add(newInvoice);
-                sb.AppendLine(String.Format(SuccessfullyImportedInvoices, invoicesDto.Number));
+                sb.AppendLine(String.Format(SuccessfullyImportedInvoices, invoiceDto.Number));
             }
 
             context.Invoices.AddRange(invoicesToImport);
             context.SaveChanges();
 
-            return sb.ToString().TrimEnd();
+            return sb.ToString();
         }
 
         public static string ImportProducts(InvoicesContext context, string jsonString)
@@ -149,10 +146,9 @@
             StringBuilder sb = new StringBuilder();
             ICollection<Product> productsToImport = new List<Product>();
 
-            ImportProductDto[] deserializedProducts = 
+            ImportProductDto[] deserializedProducts =
                 JsonConvert.DeserializeObject<ImportProductDto[]>(jsonString)!;
-
-            foreach (var productDto in deserializedProducts)
+            foreach (ImportProductDto productDto in deserializedProducts)
             {
                 if (!IsValid(productDto))
                 {
@@ -168,8 +164,7 @@
                 };
 
                 ICollection<ProductClient> productClientsToImport = new List<ProductClient>();
-
-                foreach (var clientId in productDto.Clients.Distinct())
+                foreach (int clientId in productDto.Clients.Distinct())
                 {
                     if (!context.Clients.Any(cl => cl.Id == clientId))
                     {
@@ -179,12 +174,12 @@
 
                     ProductClient newProductClient = new ProductClient()
                     {
-                        ClientId = clientId,
-                        Product = newProduct
+                        Product = newProduct,
+                        ClientId = clientId
                     };
-
                     productClientsToImport.Add(newProductClient);
                 }
+
                 newProduct.ProductsClients = productClientsToImport;
 
                 productsToImport.Add(newProduct);

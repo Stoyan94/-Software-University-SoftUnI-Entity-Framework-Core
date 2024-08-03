@@ -1,22 +1,19 @@
-﻿using System.Text;
-using System.Xml.Serialization;
-
-namespace Invoices.Utilities
+﻿namespace Invoices.Utilities
 {
-    public class XmlHepler
+    using System.Text;
+    using System.Xml.Serialization;
+
+    public class XmlHelper
     {
         public T Deserialize<T>(string inputXml, string rootName)
         {
             XmlRootAttribute xmlRoot = new XmlRootAttribute(rootName);
-
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T), xmlRoot);
 
             using StringReader stringReader = new StringReader(inputXml);
-
             object? deserializedObjects = xmlSerializer.Deserialize(stringReader);
-
             if (deserializedObjects == null || 
-                deserializedObjects is not T deserializedObjectTypes )
+                deserializedObjects is not T deserializedObjectTypes)
             {
                 throw new InvalidOperationException();
             }
@@ -24,10 +21,9 @@ namespace Invoices.Utilities
             return deserializedObjectTypes;
         }
 
-        public string Serialize<T> (T obj, string rootName)
+        public string Serialize<T>(T obj, string rootName)
         {
             StringBuilder sb = new StringBuilder();
-
             XmlRootAttribute xmlRoot = new XmlRootAttribute(rootName);
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T), xmlRoot);
 

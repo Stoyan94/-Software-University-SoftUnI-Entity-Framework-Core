@@ -44,11 +44,11 @@ namespace Invoices
 
         private static void ExportEntities(InvoicesContext context, string exportDir)
         {
-            //DateTime date = DateTime.ParseExact("01/12/2022", "dd/MM/yyyy", CultureInfo.InvariantCulture);
-            //var exportClientsWithTheirInvoices = DataProcessor.Serializer.ExportClientsWithTheirInvoices(context, date);
-            //Console.WriteLine(exportClientsWithTheirInvoices);
-            //File.WriteAllText(exportDir + "Actual Result - ExportClientsWithTheirInvoices.xml", exportClientsWithTheirInvoices);
-
+            DateTime date = DateTime.ParseExact("01/12/2022", "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            var exportClientsWithTheirInvoices = DataProcessor.Serializer.ExportClientsWithTheirInvoices(context, date);
+            Console.WriteLine(exportClientsWithTheirInvoices);
+            File.WriteAllText(exportDir + "Actual Result - ExportClientsWithTheirInvoices.xml", exportClientsWithTheirInvoices);
+            
             var nameLength = 11;
             var exportProductsWithMostClients = DataProcessor.Serializer.ExportProductsWithMostClients(context, nameLength);
             Console.WriteLine(exportProductsWithMostClients);

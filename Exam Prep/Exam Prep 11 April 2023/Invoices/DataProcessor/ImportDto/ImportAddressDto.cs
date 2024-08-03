@@ -1,9 +1,9 @@
-﻿using Invoices.Data.Models;
-using System.ComponentModel.DataAnnotations;
-using System.Xml.Serialization;
-
-namespace Invoices.DataProcessor.ImportDto
+﻿namespace Invoices.DataProcessor.ImportDto
 {
+    using System.ComponentModel.DataAnnotations;
+    using System.Xml.Serialization;
+
+    using Data.Models;
     using static Data.DataConstraints;
 
     [XmlType(nameof(Address))]
@@ -16,9 +16,11 @@ namespace Invoices.DataProcessor.ImportDto
         public string StreetName { get; set; } = null!;
 
         [XmlElement(nameof(StreetNumber))]
+        [Required]
         public int StreetNumber { get; set; }
 
         [XmlElement(nameof(PostCode))]
+        [Required]
         public string PostCode { get; set; } = null!;
 
         [XmlElement(nameof(City))]

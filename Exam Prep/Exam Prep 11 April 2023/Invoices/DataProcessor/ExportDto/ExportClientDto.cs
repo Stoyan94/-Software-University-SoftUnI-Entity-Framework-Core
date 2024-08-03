@@ -1,8 +1,9 @@
-﻿using Invoices.Data.Models;
-using System.Xml.Serialization;
-
-namespace Invoices.DataProcessor.ExportDto
+﻿namespace Invoices.DataProcessor.ExportDto
 {
+    using System.Xml.Serialization;
+
+    using Data.Models;
+
     [XmlType(nameof(Client))]
     public class ExportClientDto
     {
@@ -14,5 +15,8 @@ namespace Invoices.DataProcessor.ExportDto
 
         [XmlArray(nameof(Invoices))]
         public ExportClientInvoiceDto[] Invoices { get; set; } = null!;
+
+        [XmlAttribute(nameof(InvoicesCount))]
+        public int InvoicesCount { get; set; }
     }
 }

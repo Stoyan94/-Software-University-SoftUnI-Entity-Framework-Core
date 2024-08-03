@@ -1,9 +1,9 @@
-﻿using Invoices.Data.Models;
-using System.ComponentModel.DataAnnotations;
-using System.Xml.Serialization;
-
-namespace Invoices.DataProcessor.ImportDto
+﻿    namespace Invoices.DataProcessor.ImportDto
 {
+    using System.ComponentModel.DataAnnotations;
+    using System.Xml.Serialization;
+
+    using Data.Models;
     using static Data.DataConstraints;
 
     [XmlType(nameof(Client))]
@@ -22,6 +22,6 @@ namespace Invoices.DataProcessor.ImportDto
         public string NumberVat { get; set; } = null!;
 
         [XmlArray(nameof(Addresses))]
-        public ImportAddressDto[] Addresses { get; set; }
+        public ImportAddressDto[] Addresses { get; set; } = null!;
     }
 }
