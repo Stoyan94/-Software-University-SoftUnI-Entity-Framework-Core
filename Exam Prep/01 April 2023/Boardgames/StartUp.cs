@@ -15,7 +15,7 @@
 
             ImportEntities(context, projectDir + @"Datasets/", projectDir + @"ImportResults/");
 
-            //ExportEntities(context, projectDir + @"ExportResults/");
+            ExportEntities(context, projectDir + @"ExportResults/");
 
             using (var transaction = context.Database.BeginTransaction())
             {
@@ -44,11 +44,11 @@
             Console.WriteLine(exportCreatorsWithTheirBoardgames);
             File.WriteAllText(exportDir + "Actual Result - ExportCreatorsWithTheirBoardgames.xml", exportCreatorsWithTheirBoardgames);
 
-            var year = 2021;
-            double rating = 9.50;
-            var exportSellersWithMostBoardgames = DataProcessor.Serializer.ExportSellersWithMostBoardgames(context, year, rating);
-            Console.WriteLine(exportSellersWithMostBoardgames);
-            File.WriteAllText(exportDir + "Actual Result - ExportSellersWithMostBoardgames.json", exportSellersWithMostBoardgames);
+            //var year = 2021;
+            //double rating = 9.50;
+            //var exportSellersWithMostBoardgames = DataProcessor.Serializer.ExportSellersWithMostBoardgames(context, year, rating);
+            //Console.WriteLine(exportSellersWithMostBoardgames);
+            //File.WriteAllText(exportDir + "Actual Result - ExportSellersWithMostBoardgames.json", exportSellersWithMostBoardgames);
         }
 
         private static void ResetDatabase(BoardgamesContext context, bool shouldDropDatabase = false)
