@@ -1,5 +1,6 @@
 ﻿using Boardgames.Data.Models.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Boardgames.Data.Models
 {
@@ -20,6 +21,11 @@ namespace Boardgames.Data.Models
 
         public string Mechanics { get; set; } = null!;
 
-        // TODO: Add nav prop
+        [ForeignKey(nameof(Creator))]
+        public int CreatorId { get; set; }
+        public virtual Creator Creator { get; set; } = null!;
+
+        public ICollection<BoardgameSeller> BoardgameSeller { get; set; } 
+            = new HashSet<BoardgameSeller>();
     }
 }
