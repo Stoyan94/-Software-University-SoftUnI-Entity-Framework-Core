@@ -10,7 +10,7 @@ namespace Boardgames.Data.Models
         [Key]
         public int Id { get; set; }
 
-        [MaxLength(BoardGameNameMinLenght)]
+        [MaxLength(BoardGameNameMaxLenght)]
         public string Name { get; set; } = null!;
 
         public double Rating { get; set; }
