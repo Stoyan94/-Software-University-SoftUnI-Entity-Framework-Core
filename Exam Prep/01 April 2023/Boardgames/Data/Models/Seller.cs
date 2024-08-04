@@ -17,6 +17,7 @@
 
         public string Website { get; set; } = null!;
 
-        // TOD: Add nav prop
+        public ICollection<BoardgameSeller> BoardgamesSellers { get; set; }
+            = new HashSet<BoardgameSeller>();
     }
 }

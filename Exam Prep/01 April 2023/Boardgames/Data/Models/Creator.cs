@@ -14,6 +14,7 @@ namespace Boardgames.Data.Models
         [MaxLength(CreatorLastNameMaxLenght)]
         public string LastName { get; set; } = null!;
 
-        // TODO: Add nav prop
+        public ICollection<Boardgame> Boardgames { get; set; } 
+            = new HashSet<Boardgame>();
     }
 }

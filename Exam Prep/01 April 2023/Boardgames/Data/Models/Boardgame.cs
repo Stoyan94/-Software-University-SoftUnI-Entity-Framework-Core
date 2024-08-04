@@ -25,7 +25,7 @@ namespace Boardgames.Data.Models
         public int CreatorId { get; set; }
         public virtual Creator Creator { get; set; } = null!;
 
-        public ICollection<BoardgameSeller> BoardgameSeller { get; set; } 
+        public ICollection<BoardgameSeller> BoardgamesSellers { get; set; } 
             = new HashSet<BoardgameSeller>();
     }
 }
