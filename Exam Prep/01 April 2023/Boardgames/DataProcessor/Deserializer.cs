@@ -7,6 +7,7 @@
     using Boardgames.Data.Models.Enums;
     using Boardgames.DataProcessor.ImportDto;
     using Boardgames.Utilities;
+    using Newtonsoft.Json;
 
     public class Deserializer
     {
@@ -73,7 +74,54 @@
 
         public static string ImportSellers(BoardgamesContext context, string jsonString)
         {
-            throw new NotImplementedException();
+            StringBuilder sb = new StringBuilder();
+
+            SellersImportDto[] sellersImportDtos = JsonConvert.DeserializeObject<SellersImportDto[]>(jsonString)!;
+
+            List<Seller> sellersToImport = new List<Seller>();
+
+            int bc = 0;
+
+            foreach (var sellerstDto in sellersImportDtos)
+            {
+                if (!IsValid(sellerstDto))
+                {
+                    sb.AppendLine(ErrorMessage);
+                    continue;
+                }
+
+                Seller sellerToAdd = new Seller()
+                {
+                    Name = sellerstDto.Name,
+                    Address = sellerstDto.Address,
+                    Country = sellerstDto.Country,
+                    Website = sellerstDto.Website
+                };
+
+                foreach (var boardgameId in sellerstDto.Boardgames.Distinct())
+                {
+                    Boardgame boardGameCount = context.Boardgames.Find(boardgameId);
+                    if (boardGameCount == null)
+                    {
+                        sb.AppendLine(ErrorMessage);
+                        continue;
+                    }
+
+                    sellerToAdd.BoardgamesSellers.Add(new BoardgameSeller()
+                    {
+                        Boardgame = boardGameCount
+                    });
+                }
+
+                bc += sellerToAdd.BoardgamesSellers.Count;
+                sellersToImport.Add(sellerToAdd);
+                sb.AppendLine(String.Format(SuccessfullyImportedSeller, sellerToAdd.Name, sellerToAdd.BoardgamesSellers.Count));
+            }
+            
+            context.Sellers.AddRange(sellersToImport);
+            context.SaveChanges();
+
+            return sb.ToString();
         }
 
         private static bool IsValid(object dto)

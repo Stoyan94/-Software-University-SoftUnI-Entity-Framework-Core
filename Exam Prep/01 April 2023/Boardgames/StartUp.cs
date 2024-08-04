@@ -31,11 +31,11 @@
 
             PrintAndExportEntityToFile(creators, exportDir + "Actual Result - ImportCreators.txt");
 
-            //var sellers =
-            // DataProcessor.Deserializer.ImportSellers(context,
-            //     File.ReadAllText(baseDir + "sellers.json"));
+            var sellers =
+             DataProcessor.Deserializer.ImportSellers(context,
+                 File.ReadAllText(baseDir + "sellers.json"));
 
-            //PrintAndExportEntityToFile(sellers, exportDir + "Actual Result - ImportSellers.txt");
+            PrintAndExportEntityToFile(sellers, exportDir + "Actual Result - ImportSellers.txt");
         }
 
         private static void ExportEntities(BoardgamesContext context, string exportDir)
