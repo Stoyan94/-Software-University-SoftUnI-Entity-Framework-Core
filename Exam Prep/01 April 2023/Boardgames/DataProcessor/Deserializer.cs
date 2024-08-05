@@ -25,7 +25,7 @@
             XmlHelper xmlHelper = new XmlHelper();
             const string xmlRootName = "Creators";
 
-            CreatorImportDto[] creatorsDtos= xmlHelper.Deserialize<CreatorImportDto[]>(xmlString, xmlRootName);
+            CreatorExportDto[] creatorsDtos= xmlHelper.Deserialize<CreatorExportDto[]>(xmlString, xmlRootName);
 
             List<Creator> creatorsToImport = new List<Creator>();
 

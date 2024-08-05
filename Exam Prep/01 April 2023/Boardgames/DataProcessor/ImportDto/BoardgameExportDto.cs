@@ -7,7 +7,7 @@
     using static Data.Models.DataConstraints;
 
     [XmlType(nameof(Boardgame))]
-    public class BoardgameImportDto
+    public class BoardgameExportDto
     {
         [Required]
         [XmlElement("Name")]
