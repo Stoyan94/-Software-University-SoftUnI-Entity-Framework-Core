@@ -1,17 +1,37 @@
 ﻿namespace Boardgames.DataProcessor
 {
     using Boardgames.Data;
+    using Boardgames.DataProcessor.ExportDto;
+    using Boardgames.Utilities;
     using Newtonsoft.Json;
 
     public class Serializer
     {
         public static string ExportCreatorsWithTheirBoardgames(BoardgamesContext context)
         {
+            XmlHelper xmlHelper = new XmlHelper();
+            const string xmlRootName = "Creators";
+
             var creatorsWithBoardGames = context.Creators
                 .Where(cb => cb.Boardgames.Any())
+                .Select(creatorDto => new CreatorExportDto()
+                {
+                    CreatorName = creatorDto.FirstName + " " + creatorDto.LastName,
+                    BoardgamesCount = creatorDto.Boardgames.Count(),
+                    Boardgames = creatorDto.Boardgames.Select(bgDto => new BoardgamesCreatorExporttDto()
+                    {
+                        BoardgameName = bgDto.Name,
+                        BoardgameYearPublished = bgDto.YearPublished
+                    })
+                    .OrderBy(bgDto => bgDto.BoardgameName)
+                    .ToArray()
+                })
+                .OrderByDescending(cb => cb.BoardgamesCount)
+                .ThenBy(cb => cb.CreatorName)
                 .ToArray();
-                //.Select(c => c.);
-            return null;
+                
+
+            return xmlHelper.Serialize(creatorsWithBoardGames, xmlRootName);
         }
 
         public static string ExportSellersWithMostBoardgames(BoardgamesContext context, int year, double rating)

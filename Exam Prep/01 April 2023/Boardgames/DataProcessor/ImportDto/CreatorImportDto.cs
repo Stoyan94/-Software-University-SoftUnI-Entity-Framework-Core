@@ -6,7 +6,7 @@
     using static Data.Models.DataConstraints;
 
     [XmlType(nameof(Creator))]
-    public class CreatorExportDto
+    public class CreatorImportDto
     {
         [Required]
         [XmlElement("FirstName")]
@@ -21,6 +21,6 @@
         public string LastName { get; set; } = null!;
 
         [XmlArray("Boardgames")]
-        public BoardgameExportDto[] Boardgame { get; set; } = null!;
+        public BoardgameImporttDto[] Boardgame { get; set; } = null!;
     }
 }

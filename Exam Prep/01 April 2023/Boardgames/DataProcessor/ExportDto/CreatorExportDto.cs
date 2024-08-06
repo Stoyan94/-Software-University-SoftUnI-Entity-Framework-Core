@@ -1,10 +1,8 @@
-﻿using Boardgames.Data.Models;
-using System.ComponentModel.DataAnnotations;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace Boardgames.DataProcessor.ExportDto
 {
-    [XmlType(nameof(Creator))]
+    [XmlType("Creator")]
     public class CreatorExportDto
     {
         [XmlElement("CreatorName")]
@@ -13,6 +11,7 @@ namespace Boardgames.DataProcessor.ExportDto
         [XmlAttribute("BoardgamesCount")]
         public int BoardgamesCount { get; set; }
 
-        [XmlArray("")]
+        [XmlArray("Boardgames")]
+        public BoardgamesCreatorExporttDto[] Boardgames { get; set; } = null!;
     }
 }
