@@ -1,7 +1,10 @@
 ﻿namespace Footballers.DataProcessor
 {
     using Footballers.Data;
+    using Footballers.Data.Models;
+    using Footballers.DataProcessor.ImportDto;
     using System.ComponentModel.DataAnnotations;
+    using System.Text;
 
     public class Deserializer
     {
@@ -15,7 +18,37 @@
 
         public static string ImportCoaches(FootballersContext context, string xmlString)
         {
-            throw new NotImplementedException();
+            StringBuilder sb = new StringBuilder();
+            XmlHelper xmlHelper = new XmlHelper();
+            const string xmlRootName = "Coaches";
+
+            List<Coach> coachesImportToDb = new List<Coach>();
+
+            var coachesAndFootballersDtos = xmlHelper
+                    .Deserialize<ImportCoachesDto[]>(xmlString, xmlRootName);
+
+            foreach (var coachesDto in coachesAndFootballersDtos)
+            {
+                if (!IsValid(coachesDto))
+                {
+                    sb.Append(ErrorMessage);
+                    continue;
+                }
+
+                Coach coachToAdd = new Coach()
+                {
+                    Name = coachesDto.Name,
+                    Nationality = coachesDto.Nationality
+                };
+
+                foreach (var footballersDto in coachesDto.Footballers)
+                {
+
+                }
+                
+            }
+
+            return null;
         }
 
         public static string ImportTeams(FootballersContext context, string jsonString)
