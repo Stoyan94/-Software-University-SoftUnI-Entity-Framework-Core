@@ -4,6 +4,7 @@
     using Footballers.Data.Models;
     using Footballers.DataProcessor.ImportDto;
     using System.ComponentModel.DataAnnotations;
+    using System.Globalization;
     using System.Text;
 
     public class Deserializer
@@ -43,7 +44,44 @@
 
                 foreach (var footballersDto in coachesDto.Footballers)
                 {
+                    if (!IsValid(footballersDto))
+                    {
+                        sb.AppendLine(ErrorMessage);
+                        continue;
+                    }
 
+                    DateTime footballerContractStartDate;
+                    bool isFootballerContractStartDateValid = DateTime.TryParseExact(footballersDto.ContractStartDate,
+                        "dd/MM/yyyy", CultureInfo.InvariantCulture,
+                        DateTimeStyles.None,
+                        out footballerContractStartDate);
+                    if (!isFootballerContractStartDateValid)
+                    {
+                        sb.AppendLine(ErrorMessage);
+                        continue;
+                    }
+
+                    DateTime footballerContractEndDate;
+                    bool isFootballerContractEndDateValid = DateTime.TryParseExact(footballersDto.ContractEndDate,
+                        "dd/MM/yyyy", CultureInfo.InvariantCulture,
+                        DateTimeStyles.None,
+                        out footballerContractEndDate);
+                    if (!isFootballerContractEndDateValid)
+                    {
+                        sb.AppendLine(ErrorMessage);
+                        continue;
+                    }
+
+                    if (footballerContractStartDate >= footballerContractEndDate)
+                    {
+                        sb.AppendLine(ErrorMessage);
+                        continue;
+                    }
+
+                    Footballer footballerToAdd = new Footballer()
+                    {
+
+                    };
                 }
                 
             }

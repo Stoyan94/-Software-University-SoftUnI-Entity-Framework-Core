@@ -16,6 +16,7 @@ namespace Footballers.DataProcessor.ImportDto
         public string Name { get; set; } = null!;
 
         [XmlElement("Nationality")]
+        [Required]
         public string Nationality { get; set; } = null!;
         public ImportFootballersDto[] Footballers { get; set; } = null!;
     }

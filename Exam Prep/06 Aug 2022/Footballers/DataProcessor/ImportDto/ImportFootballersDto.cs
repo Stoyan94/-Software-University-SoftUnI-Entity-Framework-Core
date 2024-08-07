@@ -19,6 +19,10 @@
         [Required]
         public string ContractStartDate { get; set; } = null!;
 
+        [XmlElement("ContractEndDate")]
+        [Required]
+        public string ContractEndDate { get; set; } = null!;
+
         [XmlElement("BestSkillType")]
         [Required]
         public int BestSkillType { get; set; } 
