@@ -1,6 +1,6 @@
 ﻿namespace Footballers.Data.Models.Enums
 {
-    public enum estSkillType
+    public enum BestSkillType
     {
         Defence = 0,
         Dribble = 1,
