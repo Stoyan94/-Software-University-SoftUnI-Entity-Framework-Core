@@ -31,11 +31,11 @@ namespace Footballers
 
         private static void ImportEntities(FootballersContext context, string baseDir, string exportDir)
         {
-            var coaches =
-                DataProcessor.Deserializer.ImportCoaches(context,
-                    File.ReadAllText(baseDir + "coaches.xml"));
+            //var coaches =
+            //    DataProcessor.Deserializer.ImportCoaches(context,
+            //        File.ReadAllText(baseDir + "coaches.xml"));
 
-            PrintAndExportEntityToFile(coaches, exportDir + "Actual Result - ImportCoaches.txt");
+            //PrintAndExportEntityToFile(coaches, exportDir + "Actual Result - ImportCoaches.txt");
 
             var teams =
              DataProcessor.Deserializer.ImportTeams(context,
