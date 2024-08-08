@@ -5,6 +5,7 @@
     using Footballers.Data.Models.Enums;
     using Footballers.DataProcessor.ImportDto;
     using Footballers.Utilities;
+    using Newtonsoft.Json;
     using System.ComponentModel.DataAnnotations;
     using System.Globalization;
     using System.Text;
@@ -111,7 +112,54 @@
 
         public static string ImportTeams(FootballersContext context, string jsonString)
         {
-            throw new NotImplementedException();
+            StringBuilder sb = new StringBuilder();
+
+            var teamsDots = JsonConvert.DeserializeObject<ImportTeamsDto[]>(jsonString);
+
+            List<Team> teamsToAddDb = new List<Team>();
+
+            foreach (var teamCurrentDto in teamsDots)
+            {
+                if (!(IsValid(teamCurrentDto)))
+                {
+                    sb.AppendLine(ErrorMessage);
+                    continue;
+                }
+
+                Team teamToAdd = new Team()
+                {
+                    Name = teamCurrentDto.Name,
+                    Nationality = teamCurrentDto.Nationality,
+                    Trophies = teamCurrentDto.Trophies
+                };
+
+                if (teamToAdd.Trophies == 0)
+                {
+                    sb.AppendLine(ErrorMessage);
+                    continue;
+                }
+
+                foreach (var footballerId in teamCurrentDto.Footballers.Distinct())
+                {
+                    Footballer footbaler = context.Footballers.Find(footballerId);
+                    if (footbaler == null)
+                    {
+                        sb.AppendLine(ErrorMessage);
+                        continue;
+                    }
+
+                    teamToAdd.TeamsFootballers.Add(new TeamFootballer()
+                    {
+                        Footballer = footbaler
+                    });
+                }
+                teamsToAddDb.Add(teamToAdd);
+                sb.AppendLine(String.Format(SuccessfullyImportedTeam, teamToAdd.Name, teamToAdd.TeamsFootballers.Count));
+            }
+            context.Teams.AddRange(teamsToAddDb);
+            context.SaveChanges();
+
+            return sb.ToString();
         }
 
         private static bool IsValid(object dto)
