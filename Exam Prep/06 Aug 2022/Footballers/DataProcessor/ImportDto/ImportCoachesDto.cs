@@ -13,11 +13,12 @@ namespace Footballers.DataProcessor.ImportDto
         [Required]
         [MinLength(CoachNameMinLenght)]
         [MaxLength(CoachNameMaxLenght)]
-        public string Name { get; set; } = null!;
+        public string Name { get; set; }
 
         [XmlElement("Nationality")]
-        [Required]
-        public string Nationality { get; set; } = null!;
+        public string Nationality { get; set; }
+
+        [XmlArray("Footballers")]
         public ImportFootballersDto[] Footballers { get; set; } = null!;
     }
 }

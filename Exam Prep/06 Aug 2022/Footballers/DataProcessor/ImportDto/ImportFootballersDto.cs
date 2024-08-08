@@ -13,7 +13,7 @@
         [Required]
         [MinLength(FootballerNameMinLenght)]
         [MaxLength(FootballerNameMaxLenght)]
-        public string Name { get; set; } = null!;
+        public string Name { get; set; }
 
         [XmlElement("ContractStartDate")]
         [Required]
@@ -25,7 +25,12 @@
 
         [XmlElement("BestSkillType")]
         [Required]
-        public int BestSkillType { get; set; } 
+        [Range(0, 4)]
+        public int BestSkillType { get; set; }
+
+        [Required]
+        [XmlElement("PositionType")]
+        [Range(0, 3)]
         public int PositionType { get; set; } 
     }
 
