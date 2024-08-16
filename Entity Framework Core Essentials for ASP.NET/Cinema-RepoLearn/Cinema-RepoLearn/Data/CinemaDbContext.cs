@@ -1,31 +1,26 @@
-﻿using CinemaApp.Data.Models;
+﻿using Cinema_RepoLearn.Data.Model;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
-namespace CinemaApp.Data
-{   
+namespace Cinema_RepoLearn.Data
+{
     public class CinemaDbContext : DbContext
     {
         public CinemaDbContext(DbContextOptions<CinemaDbContext> options)
-            : base(options)
+            : base(options) 
         {
+            
         }
-
         //public CinemaDbContext()
         //{
-
         //}
+
+
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
-        //    IConfiguration configuration = new ConfigurationBuilder()
-        //        .AddJsonFile("appsettings.json", true)
-        //        .AddUserSecrets(typeof(Program).Assembly)
-        //        .Build();
-
-        //    if (optionsBuilder.IsConfigured == false)
+        //    if (!optionsBuilder.IsConfigured)
         //    {
-        //        optionsBuilder.UseSqlServer(configuration.GetConnectionString("CinemaConnection"));
+        //        optionsBuilder.UseSqlServer("Server=STOYAN;Database=Cinema24;User Id=sa;Password=558955;Trusted_Connection=True;");
         //    }
         //}
 
@@ -44,18 +39,19 @@ namespace CinemaApp.Data
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<Cinema> Cinemas { get; set; }
+        public DbSet<Cinema> Cinemas { get; set; } = null!;
 
-        public DbSet<Hall> Halls { get; set; }
+        public DbSet<Hall> Halls { get; set; } = null!;
 
-        public DbSet<Film> Films { get; set; }
+        public DbSet<Film> Films { get; set; } = null!;
 
-        public DbSet<Schedule> Schedules { get; set; }
+        public DbSet<Schedule> Schedules { get; set; } = null!;
 
-        public DbSet<Seat> Seats { get; set; }
+        public DbSet<Seat> Seats { get; set; } = null!;
 
-        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<Ticket> Tickets { get; set; } = null!;
 
-        public DbSet<Tariff> Tariffs { get; set; }
+        public DbSet<Tariff> Tariffs { get; set; } = null!;
+
     }
 }

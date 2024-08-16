@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CinemaApp.Data.Models
+namespace Cinema_RepoLearn.Data.Model
 {
     public class Tariff
     {
@@ -13,15 +13,14 @@ namespace CinemaApp.Data.Models
         public string Name { get; set; } = null!;
 
         [Required]
+        [ForeignKey(nameof(Film))]
         public int FilmId { get; set; }
-
-        [Required]
-        [Column(TypeName = "money")]
-        public decimal Price { get; set; }
-
-        [ForeignKey(nameof(FilmId))]
         public Film Film { get; set; } = null!;
 
-        public List<Ticket> Tickets { get; set; } = new List<Ticket>();
+        [Required]
+        public decimal Price { get; set; }
+
+        public List<Ticket> Tickets { get; set; } 
+            = new List<Ticket>();
     }
 }

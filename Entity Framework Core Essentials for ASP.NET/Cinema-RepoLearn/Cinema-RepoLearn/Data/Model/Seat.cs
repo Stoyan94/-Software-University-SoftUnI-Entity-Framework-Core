@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CinemaApp.Data.Models
+namespace Cinema_RepoLearn.Data.Model
 {
     public class Seat
     {
@@ -9,16 +9,13 @@ namespace CinemaApp.Data.Models
         public int Id { get; set; }
 
         [Required]
+        [ForeignKey(nameof(Hall))]
         public int HallId { get; set; }
+        public Hall Hall { get; set; } = null!;
 
-        [Required]
         public int Row { get; set; }
 
-        [Required]
         public int Number { get; set; }
-
-        [ForeignKey(nameof(HallId))]
-        public Hall Hall { get; set; } = null!;
 
         public List<Ticket> Tickets { get; set; } = new List<Ticket>();
     }

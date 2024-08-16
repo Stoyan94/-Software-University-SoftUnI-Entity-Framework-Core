@@ -1,4 +1,6 @@
-﻿namespace CinemaApp.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Cinema_RepoLearn.Models
 {
     public class CinemaModel
     {
@@ -7,11 +9,10 @@
             Name = name;
             Address = address;
         }
-
         public int Id { get; set; }
-
+        
         public string Name { get; set; } = null!;
-
+        
         public string Address { get; set; } = null!;
     }
 }

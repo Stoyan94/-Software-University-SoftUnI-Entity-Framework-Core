@@ -1,9 +1,9 @@
-﻿using CinemaApp.Contracts;
-using CinemaApp.Data.Common;
-using CinemaApp.Data.Models;
-using CinemaApp.Models;
+﻿using Cinema_RepoLearn.Contracts;
+using Cinema_RepoLearn.Data.Model;
+using Cinema_RepoLearn.Data.Model.Common;
+using Cinema_RepoLearn.Models;
 
-namespace CinemaApp.Services
+namespace Cinema_RepoLearn.Services
 {
     public class CinemaService : ICinemaService
     {

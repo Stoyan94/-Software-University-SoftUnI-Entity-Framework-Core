@@ -1,11 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using Microsoft.EntityFrameworkCore;
 
-namespace CinemaApp.Data.Common
+namespace Cinema_RepoLearn.Data.Model.Common
 {
     public class Repository : IRepository
     {
@@ -16,7 +12,7 @@ namespace CinemaApp.Data.Common
             Context = dbContext;
         }
 
-        protected DbSet<T> DbSet<T>() where T : class
+        protected DbSet<T> DbSet<T>() where T : class 
         {
             return Context.Set<T>();
         }
@@ -41,7 +37,7 @@ namespace CinemaApp.Data.Common
         public IQueryable<T> AllReadonly<T>() where T : class
         {
             return DbSet<T>()
-                .AsNoTracking();
+                 .AsNoTracking();
         }
 
         public void Dispose()
@@ -52,7 +48,7 @@ namespace CinemaApp.Data.Common
         public async Task<T?> GetByIdAsync<T>(object id) where T : class
         {
             return await DbSet<T>()
-                .FindAsync(id);
+                 .FindAsync(id);
         }
 
         public async Task<int> SaveChangesAsync()

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CinemaApp.Data.Models
+namespace Cinema_RepoLearn.Data.Model
 {
     public class Film
     {
@@ -14,6 +14,7 @@ namespace CinemaApp.Data.Models
         [StringLength(500)]
         public string? Description { get; set; }
 
-        public List<Schedule> Schedules { get; set; } = new List<Schedule>();
+        public List<Schedule> Schedules { get; set; } 
+            = new List<Schedule>();
     }
 }

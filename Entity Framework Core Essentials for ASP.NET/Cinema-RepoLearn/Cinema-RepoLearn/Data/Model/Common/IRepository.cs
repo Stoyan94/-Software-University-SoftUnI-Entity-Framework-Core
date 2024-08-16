@@ -1,4 +1,4 @@
-﻿namespace CinemaApp.Data.Common
+﻿namespace Cinema_RepoLearn.Data.Model.Common
 {
     public interface IRepository : IDisposable
     {
@@ -10,7 +10,7 @@
 
         Task AddAsync<T>(T entity) where T : class;
 
-        Task AddRangeAsync<T>(IEnumerable<T> entities) where T : class;
+        Task AddRangeAsync<T> (IEnumerable<T> entities) where T : class;
 
         Task<int> SaveChangesAsync();
     }

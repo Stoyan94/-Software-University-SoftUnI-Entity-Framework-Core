@@ -1,8 +1,8 @@
-﻿using CinemaApp.Contracts;
-using CinemaApp.Data;
-using CinemaApp.Data.Common;
-using CinemaApp.Models;
-using CinemaApp.Services;
+﻿using Cinema_RepoLearn.Contracts;
+using Cinema_RepoLearn.Data;
+using Cinema_RepoLearn.Data.Model.Common;
+using Cinema_RepoLearn.Models;
+using Cinema_RepoLearn.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +26,5 @@ ICinemaService? service = scope.ServiceProvider.GetService<ICinemaService>();
 if (service != null)
 {
     var cinema = new CinemaModel("Capitol", "Sofia, Car Boris III");
-
     await service.AddCinemaAsync(cinema);
 }
