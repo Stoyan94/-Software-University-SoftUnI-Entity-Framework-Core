@@ -5,24 +5,24 @@ namespace Cinema_RepoLearn.Data
 {
     public class CinemaDbContext : DbContext
     {
+        public CinemaDbContext()
+        {
+        }
         public CinemaDbContext(DbContextOptions<CinemaDbContext> options)
             : base(options) 
         {
             
         }
-        //public CinemaDbContext()
-        //{
-        //}
 
 
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    if (!optionsBuilder.IsConfigured)
-        //    {
-        //        optionsBuilder.UseSqlServer("Server=STOYAN;Database=Cinema24;User Id=sa;Password=558955;Trusted_Connection=True;");
-        //    }
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("Server=STOYAN;Database=Cinema24;User Id=sa;Password=558955;Trusted_Connection=True;");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

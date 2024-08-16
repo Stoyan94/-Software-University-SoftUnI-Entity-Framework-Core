@@ -1,7 +1,6 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace Cinema_RepoLearn.Data.Model.Common
+namespace Cinema_RepoLearn.Data.Common
 {
     public class Repository : IRepository
     {
@@ -12,7 +11,7 @@ namespace Cinema_RepoLearn.Data.Model.Common
             Context = dbContext;
         }
 
-        protected DbSet<T> DbSet<T>() where T : class 
+        protected DbSet<T> DbSet<T>() where T : class
         {
             return Context.Set<T>();
         }

@@ -42,7 +42,7 @@ namespace Cinema_RepoLearn.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cinemas");
+                    b.ToTable("Cinemas", (string)null);
                 });
 
             modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Film", b =>
@@ -64,7 +64,7 @@ namespace Cinema_RepoLearn.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Films");
+                    b.ToTable("Films", (string)null);
                 });
 
             modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Hall", b =>
@@ -87,7 +87,7 @@ namespace Cinema_RepoLearn.Migrations
 
                     b.HasIndex("CinemaId");
 
-                    b.ToTable("Halls");
+                    b.ToTable("Halls", (string)null);
                 });
 
             modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Schedule", b =>
@@ -116,7 +116,7 @@ namespace Cinema_RepoLearn.Migrations
 
                     b.HasIndex("HallId");
 
-                    b.ToTable("Schedules");
+                    b.ToTable("Schedules", (string)null);
                 });
 
             modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Seat", b =>
@@ -140,7 +140,7 @@ namespace Cinema_RepoLearn.Migrations
 
                     b.HasIndex("HallId");
 
-                    b.ToTable("Seats");
+                    b.ToTable("Seats", (string)null);
                 });
 
             modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Tariff", b =>
@@ -166,7 +166,7 @@ namespace Cinema_RepoLearn.Migrations
 
                     b.HasIndex("FilmId");
 
-                    b.ToTable("Tariffs");
+                    b.ToTable("Tariffs", (string)null);
                 });
 
             modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Ticket", b =>
@@ -198,7 +198,7 @@ namespace Cinema_RepoLearn.Migrations
 
                     b.HasIndex("TariffId");
 
-                    b.ToTable("Tickets");
+                    b.ToTable("Tickets", (string)null);
                 });
 
             modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Hall", b =>

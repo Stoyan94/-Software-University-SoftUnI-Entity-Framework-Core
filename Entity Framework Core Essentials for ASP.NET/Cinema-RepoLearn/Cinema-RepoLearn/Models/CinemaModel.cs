@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Cinema_RepoLearn.Models
+﻿namespace Cinema_RepoLearn.Models
 {
     public class CinemaModel
     {

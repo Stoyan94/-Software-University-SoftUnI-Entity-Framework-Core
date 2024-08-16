@@ -1,6 +1,6 @@
 ﻿using Cinema_RepoLearn.Contracts;
 using Cinema_RepoLearn.Data;
-using Cinema_RepoLearn.Data.Model.Common;
+using Cinema_RepoLearn.Data.Common;
 using Cinema_RepoLearn.Models;
 using Cinema_RepoLearn.Services;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +15,7 @@ IConfiguration configuration = new ConfigurationBuilder()
 var serviceProvider = new ServiceCollection()
     .AddLogging()
     .AddDbContext<CinemaDbContext>(options =>
-        options.UseSqlServer(configuration.GetConnectionString("CinemaConnection")))
+        options.UseSqlServer(configuration.GetConnectionString("Server=STOYAN;Database=Cinema24;User Id=sa;Password=558955;Trusted_Connection=True;")))
     .AddScoped<IRepository, Repository>()
     .AddScoped<ICinemaService, CinemaService>()
     .BuildServiceProvider();
