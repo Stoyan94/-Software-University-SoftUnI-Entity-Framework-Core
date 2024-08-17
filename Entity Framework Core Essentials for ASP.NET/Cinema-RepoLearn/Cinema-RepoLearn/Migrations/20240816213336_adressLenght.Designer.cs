@@ -4,6 +4,7 @@ using Cinema_RepoLearn.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinema_RepoLearn.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    partial class CinemaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240816213336_adressLenght")]
+    partial class adressLenght
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,26 +45,6 @@ namespace Cinema_RepoLearn.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Cinemas");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Address = "Mladost 4, Sofia",
-                            Name = "Arena Mladost"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Address = "Stara Zagora Mall",
-                            Name = "Arena Stara Zagora"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Address = "Mall of Sofia",
-                            Name = "Ciname City"
-                        });
                 });
 
             modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Film", b =>

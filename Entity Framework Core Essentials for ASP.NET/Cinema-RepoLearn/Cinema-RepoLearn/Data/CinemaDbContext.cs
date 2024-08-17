@@ -15,10 +15,9 @@ namespace Cinema_RepoLearn.Data
         }
 
 
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
+            if (optionsBuilder.IsConfigured == false)
             {
                 optionsBuilder.UseSqlServer("Server=STOYAN;Database=Cinema24;User Id=sa;Password=558955;Trusted_Connection=True;");
             }
@@ -35,6 +34,27 @@ namespace Cinema_RepoLearn.Data
                 .HasOne(t => t.Tariff)
                 .WithMany(t => t.Tickets)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Cinema>()
+                .HasData(new Cinema()
+                {
+                    Id = 1,
+                    Name = "Arena Mladost",
+                    Address = "Mladost 4, Sofia"
+                }, 
+                new Cinema()
+                {
+                    Id = 2,
+                    Name = "Arena Stara Zagora",
+                    Address = "Stara Zagora Mall"
+                },
+                new Cinema()
+                {
+                    Id = 3,
+                    Name = "Ciname City",
+                    Address = "Mall of Sofia"
+                }
+                );
 
             base.OnModelCreating(modelBuilder);
         }

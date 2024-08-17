@@ -1,0 +1,64 @@
+
+In C#, a public static class is a class that can be accessed from anywhere in the application and cannot be instantiated. It is used to group together methods, properties, fields, or other members that are logically related but don't need to maintain state (i.e., they don't need to store instance-specific data).
+
+What is a public static class?
+Public: The class is accessible from any other code in the application, including other assemblies if they're referenced.
+Static: The class cannot be instantiated, meaning you cannot create an object of this class using the new keyword. All members of the class must also be static, meaning they belong to the class itself rather than to any object instance.
+
+Why We Create public static class:
+Utility or Helper Classes:
+
+Commonly, a public static class is used to create utility or helper classes that provide a set of related functions. For example, a Math class could be a static class that contains mathematical functions like Add, Subtract, Sin, Cos, etc. Since these functions don't need to maintain state between calls, a static class is ideal.
+
+public static class MathHelper
+{
+    public static int Add(int a, int b)
+    {
+        return a + b;
+    }
+
+    public static int Subtract(int a, int b)
+    {
+        return a - b;
+    }
+}
+
+You can then call these methods like this:
+
+int sum = MathHelper.Add(5, 10);
+Singleton Pattern:
+
+While singletons often involve private constructors and static instances, some scenarios where the entire functionality is encapsulated in static methods can be simplified using a public static class. This is useful when you need a single, global instance of something, but you don't need to maintain any state or data.
+
+Extension Methods:
+
+C# allows you to create extension methods, which add new methods to existing types. These methods must be defined in a public static class. This allows you to "extend" existing types with new methods as if they were instance methods of those types.
+
+public static class StringExtensions
+{
+    public static bool IsNullOrEmpty(this string str)
+    {
+        return string.IsNullOrEmpty(str);
+    }
+}
+
+This allows you to call the method as if it were part of the string class:
+
+string myString = null;
+bool isEmpty = myString.IsNullOrEmpty();
+
+Global Access:
+
+Members of a public static class can be accessed globally across your application. This is useful for constants, settings, or functions that need to be accessed from multiple places.
+
+public static class AppSettings
+{
+    public static readonly string ApplicationName = "MyApp";
+}
+
+You can access it globally like this:
+string appName = AppSettings.ApplicationName;
+
+Summary
+A public static class in C# is used when you have a set of methods or data that are related, do not need to be instantiated, and can be accessed globally. 
+This is common for utility functions, global constants, or when extending existing types.
