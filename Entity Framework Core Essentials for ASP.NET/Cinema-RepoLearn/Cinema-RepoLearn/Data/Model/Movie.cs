@@ -2,7 +2,7 @@
 
 namespace Cinema_RepoLearn.Data.Model
 {
-    public class Film
+    public class Movie
     {
         [Key]
         public int Id { get; set; }

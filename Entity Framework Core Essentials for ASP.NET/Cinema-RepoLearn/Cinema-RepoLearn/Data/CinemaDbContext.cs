@@ -1,4 +1,5 @@
-﻿using Cinema_RepoLearn.Data.Model;
+﻿using Cinema_RepoLearn.Data.Extension;
+using Cinema_RepoLearn.Data.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cinema_RepoLearn.Data
@@ -35,26 +36,7 @@ namespace Cinema_RepoLearn.Data
                 .WithMany(t => t.Tickets)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<Cinema>()
-                .HasData(new Cinema()
-                {
-                    Id = 1,
-                    Name = "Arena Mladost",
-                    Address = "Mladost 4, Sofia"
-                }, 
-                new Cinema()
-                {
-                    Id = 2,
-                    Name = "Arena Stara Zagora",
-                    Address = "Stara Zagora Mall"
-                },
-                new Cinema()
-                {
-                    Id = 3,
-                    Name = "Ciname City",
-                    Address = "Mall of Sofia"
-                }
-                );
+            modelBuilder.Seed();
 
             base.OnModelCreating(modelBuilder);
         }
@@ -63,7 +45,7 @@ namespace Cinema_RepoLearn.Data
 
         public DbSet<Hall> Halls { get; set; } = null!;
 
-        public DbSet<Film> Films { get; set; } = null!;
+        public DbSet<Movie> Movies { get; set; } = null!;
 
         public DbSet<Schedule> Schedules { get; set; } = null!;
 

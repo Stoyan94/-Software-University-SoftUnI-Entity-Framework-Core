@@ -11,7 +11,7 @@ namespace Cinema_RepoLearn.Data.Model
         [Required]
         [ForeignKey(nameof(Film))]
         public int FilmId { get; set; }
-        public Film Film { get; set; } = null!;
+        public Movie Film { get; set; } = null!;
 
         [Required]
         [ForeignKey(nameof(Hall))]

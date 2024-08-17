@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Cinema_RepoLearn.Data.Configuration;
+using Cinema_RepoLearn.Data.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cinema_RepoLearn.Data.Extension
 {
-    internal class ModuleBuilderExtionsion
+    public static class ModuleBuilderExtension
     {
+        public static void Seed(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new CinemaConfiguration());
+
+            modelBuilder.ApplyConfiguration(new HallConfiguration());
+        }
     }
 }

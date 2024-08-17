@@ -4,6 +4,7 @@ using Cinema_RepoLearn.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinema_RepoLearn.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    partial class CinemaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240817120028_seed_halls")]
+    partial class seed_halls
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,6 +65,28 @@ namespace Cinema_RepoLearn.Migrations
                             Address = "Mall of Sofia",
                             Name = "Ciname City"
                         });
+                });
+
+            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Film", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Films");
                 });
 
             modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Hall", b =>
@@ -118,28 +142,6 @@ namespace Cinema_RepoLearn.Migrations
                             CinemaId = 3,
                             Name = "IMAX Hall 1"
                         });
-                });
-
-            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Movie", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Movies");
                 });
 
             modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Schedule", b =>
@@ -266,7 +268,7 @@ namespace Cinema_RepoLearn.Migrations
 
             modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Schedule", b =>
                 {
-                    b.HasOne("Cinema_RepoLearn.Data.Model.Movie", "Film")
+                    b.HasOne("Cinema_RepoLearn.Data.Model.Film", "Film")
                         .WithMany("Schedules")
                         .HasForeignKey("FilmId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -296,7 +298,7 @@ namespace Cinema_RepoLearn.Migrations
 
             modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Tariff", b =>
                 {
-                    b.HasOne("Cinema_RepoLearn.Data.Model.Movie", "Film")
+                    b.HasOne("Cinema_RepoLearn.Data.Model.Film", "Film")
                         .WithMany()
                         .HasForeignKey("FilmId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -337,16 +339,16 @@ namespace Cinema_RepoLearn.Migrations
                     b.Navigation("Halls");
                 });
 
+            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Film", b =>
+                {
+                    b.Navigation("Schedules");
+                });
+
             modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Hall", b =>
                 {
                     b.Navigation("Schedules");
 
                     b.Navigation("Seats");
-                });
-
-            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Movie", b =>
-                {
-                    b.Navigation("Schedules");
                 });
 
             modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Schedule", b =>
