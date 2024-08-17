@@ -13,9 +13,9 @@ namespace Cinema_RepoLearn.Data.Model
         public string Name { get; set; } = null!;
 
         [Required]
-        [ForeignKey(nameof(Film))]
-        public int FilmId { get; set; }
-        public Movie Film { get; set; } = null!;
+        [ForeignKey(nameof(Movie))]
+        public int MovieId { get; set; }
+        public Movie Movie { get; set; } = null!;
 
         [Required]
         public decimal Price { get; set; }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Cinema_RepoLearn.Data.Model.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Cinema_RepoLearn.Data.Model
 {
@@ -10,6 +11,8 @@ namespace Cinema_RepoLearn.Data.Model
         [Required]
         [StringLength(150)]
         public string Title { get; set; } = null!;
+
+        public Genre Genre { get; set; }
 
         [StringLength(500)]
         public string? Description { get; set; }

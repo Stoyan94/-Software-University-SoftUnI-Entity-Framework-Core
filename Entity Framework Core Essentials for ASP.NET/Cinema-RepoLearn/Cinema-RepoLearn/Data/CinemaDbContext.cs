@@ -36,6 +36,10 @@ namespace Cinema_RepoLearn.Data
                 .WithMany(t => t.Tickets)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.UserName)
+                .IsUnique();
+
             modelBuilder.Seed();
 
             base.OnModelCreating(modelBuilder);

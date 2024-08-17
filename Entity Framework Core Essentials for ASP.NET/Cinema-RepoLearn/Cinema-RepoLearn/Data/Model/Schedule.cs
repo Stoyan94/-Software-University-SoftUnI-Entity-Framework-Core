@@ -9,9 +9,9 @@ namespace Cinema_RepoLearn.Data.Model
         public int Id { get; set; }
 
         [Required]
-        [ForeignKey(nameof(Film))]
-        public int FilmId { get; set; }
-        public Movie Film { get; set; } = null!;
+        [ForeignKey(nameof(Movie))]
+        public int MovieId { get; set; }
+        public Movie Movie { get; set; } = null!;
 
         [Required]
         [ForeignKey(nameof(Hall))]
@@ -20,7 +20,7 @@ namespace Cinema_RepoLearn.Data.Model
 
         public DateTime Start { get; set; }
 
-        public DateTime End { get; set; }
+        public TimeSpan Duration { get; set; }
 
         public List<Ticket> Tickets { get; set; } 
             = new List<Ticket>();

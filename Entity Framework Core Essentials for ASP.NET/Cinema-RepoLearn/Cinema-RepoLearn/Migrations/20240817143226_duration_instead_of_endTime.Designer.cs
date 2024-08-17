@@ -4,6 +4,7 @@ using Cinema_RepoLearn.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinema_RepoLearn.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    partial class CinemaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240817143226_duration_instead_of_endTime")]
+    partial class duration_instead_of_endTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -192,32 +194,6 @@ namespace Cinema_RepoLearn.Migrations
                     b.HasIndex("MovieId");
 
                     b.ToTable("Schedules");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Duration = new TimeSpan(0, 1, 38, 0, 0),
-                            HallId = 1,
-                            MovieId = 1,
-                            Start = new DateTime(2024, 7, 23, 20, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Duration = new TimeSpan(0, 1, 38, 0, 0),
-                            HallId = 4,
-                            MovieId = 2,
-                            Start = new DateTime(2024, 7, 23, 20, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Duration = new TimeSpan(0, 1, 38, 0, 0),
-                            HallId = 2,
-                            MovieId = 3,
-                            Start = new DateTime(2024, 7, 23, 20, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Seat", b =>

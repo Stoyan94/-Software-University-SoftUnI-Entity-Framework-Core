@@ -4,6 +4,7 @@ using Cinema_RepoLearn.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinema_RepoLearn.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    partial class CinemaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240817130030_add_user_model")]
+    partial class add_user_model
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,9 +134,6 @@ namespace Cinema_RepoLearn.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int>("Genre")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(150)
@@ -143,26 +142,6 @@ namespace Cinema_RepoLearn.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Movies");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Genre = 0,
-                            Title = "Snatch"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Genre = 0,
-                            Title = "Lock, Stock and Two Smoking Barrels"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Genre = 0,
-                            Title = "Rock n Rolla"
-                        });
                 });
 
             modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Schedule", b =>
@@ -173,8 +152,8 @@ namespace Cinema_RepoLearn.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<TimeSpan>("Duration")
-                        .HasColumnType("time");
+                    b.Property<DateTime>("End")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("HallId")
                         .HasColumnType("int");
@@ -192,32 +171,6 @@ namespace Cinema_RepoLearn.Migrations
                     b.HasIndex("MovieId");
 
                     b.ToTable("Schedules");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Duration = new TimeSpan(0, 1, 38, 0, 0),
-                            HallId = 1,
-                            MovieId = 1,
-                            Start = new DateTime(2024, 7, 23, 20, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Duration = new TimeSpan(0, 1, 38, 0, 0),
-                            HallId = 4,
-                            MovieId = 2,
-                            Start = new DateTime(2024, 7, 23, 20, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Duration = new TimeSpan(0, 1, 38, 0, 0),
-                            HallId = 2,
-                            MovieId = 3,
-                            Start = new DateTime(2024, 7, 23, 20, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Seat", b =>

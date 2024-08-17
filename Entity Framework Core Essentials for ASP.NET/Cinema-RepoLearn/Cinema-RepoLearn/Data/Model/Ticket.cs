@@ -8,8 +8,10 @@ namespace Cinema_RepoLearn.Data.Model
         [Key]
         public int Id { get; set; }
 
-        [StringLength(100)]
-        public string? CustomerName { get; set; }
+        [Required]
+        [ForeignKey(nameof(User))]
+        public int UserId { get; set; }
+        public User User { get; set; } = null!;
 
         [Required]
         [ForeignKey(nameof(Seat))]
