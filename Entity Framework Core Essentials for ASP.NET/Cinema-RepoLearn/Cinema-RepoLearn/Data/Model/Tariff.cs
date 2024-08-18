@@ -13,7 +13,8 @@ namespace Cinema_RepoLearn.Data.Model
         public string Name { get; set; } = null!;
 
         [Required]
-        public decimal Price { get; set; }
+        // Determines the discount for different groups
+        public decimal Factor { get; set; }
 
         public List<Ticket> Tickets { get; set; } 
             = new List<Ticket>();

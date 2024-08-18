@@ -14,6 +14,9 @@ namespace Cinema_RepoLearn.Data.Model
         public User User { get; set; } = null!;
 
         [Required]
+        public decimal BasePrice { get; set; }
+
+        [Required]
         [ForeignKey(nameof(Seat))]
         public int SeatId { get; set; }
         public Seat Seat { get; set; } = null!;

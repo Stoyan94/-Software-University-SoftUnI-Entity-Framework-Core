@@ -19,6 +19,10 @@ namespace Cinema_RepoLearn.Data.Extension
             modelBuilder.ApplyConfiguration(new UserConfiguration());
 
             modelBuilder.ApplyConfiguration(new TariffConfiguration());
+
+            modelBuilder.ApplyConfiguration(new SeatConfiguration());
+
+            //modelBuilder.ApplyConfiguration(new TicketConfiguration());
         }
     }
 }

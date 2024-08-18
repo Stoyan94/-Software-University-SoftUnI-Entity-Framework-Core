@@ -4,6 +4,7 @@ using Cinema_RepoLearn.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinema_RepoLearn.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    partial class CinemaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240818094734_edit_ticket_add_basePrice")]
+    partial class edit_ticket_add_basePrice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -242,71 +244,6 @@ namespace Cinema_RepoLearn.Migrations
                     b.HasIndex("HallId");
 
                     b.ToTable("Seats");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            HallId = 1,
-                            Number = 1,
-                            Row = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            HallId = 1,
-                            Number = 2,
-                            Row = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            HallId = 1,
-                            Number = 3,
-                            Row = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            HallId = 1,
-                            Number = 1,
-                            Row = 2
-                        },
-                        new
-                        {
-                            Id = 5,
-                            HallId = 1,
-                            Number = 2,
-                            Row = 2
-                        },
-                        new
-                        {
-                            Id = 6,
-                            HallId = 1,
-                            Number = 3,
-                            Row = 2
-                        },
-                        new
-                        {
-                            Id = 7,
-                            HallId = 1,
-                            Number = 1,
-                            Row = 3
-                        },
-                        new
-                        {
-                            Id = 8,
-                            HallId = 1,
-                            Number = 2,
-                            Row = 3
-                        },
-                        new
-                        {
-                            Id = 9,
-                            HallId = 1,
-                            Number = 3,
-                            Row = 3
-                        });
                 });
 
             modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Tariff", b =>
@@ -328,32 +265,6 @@ namespace Cinema_RepoLearn.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tariffs");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Factor = 1m,
-                            Name = "Adult"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Factor = 0.8m,
-                            Name = "Student"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Factor = 0.7m,
-                            Name = "Senior"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Factor = 0.5m,
-                            Name = "SoftUni Corporate Discount"
-                        });
                 });
 
             modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Ticket", b =>
