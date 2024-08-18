@@ -13,11 +13,6 @@ namespace Cinema_RepoLearn.Data.Model
         public string Name { get; set; } = null!;
 
         [Required]
-        [ForeignKey(nameof(Movie))]
-        public int MovieId { get; set; }
-        public Movie Movie { get; set; } = null!;
-
-        [Required]
         public decimal Price { get; set; }
 
         public List<Ticket> Tickets { get; set; } 

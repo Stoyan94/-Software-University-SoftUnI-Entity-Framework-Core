@@ -15,6 +15,10 @@ namespace Cinema_RepoLearn.Data.Extension
             modelBuilder.ApplyConfiguration(new MovieConfiguration());
 
             modelBuilder.ApplyConfiguration(new ScheduleConfiguration());
+
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+
+            modelBuilder.ApplyConfiguration(new TariffConfiguration());
         }
     }
 }
