@@ -22,7 +22,7 @@ namespace Cinema_RepoLearn.Data.Extension
 
             modelBuilder.ApplyConfiguration(new SeatConfiguration());
 
-            //modelBuilder.ApplyConfiguration(new TicketConfiguration());
+            modelBuilder.ApplyConfiguration(new TicketConfiguration());
         }
     }
 }

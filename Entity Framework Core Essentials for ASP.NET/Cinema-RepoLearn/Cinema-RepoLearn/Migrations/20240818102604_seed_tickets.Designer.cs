@@ -4,6 +4,7 @@ using Cinema_RepoLearn.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinema_RepoLearn.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    partial class CinemaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240818102604_seed_tickets")]
+    partial class seed_tickets
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -407,7 +409,7 @@ namespace Cinema_RepoLearn.Migrations
                             BasePrice = 20m,
                             ScheduleId = 3,
                             SeatId = 2,
-                            TariffId = 3,
+                            TariffId = 1,
                             UserId = 1
                         },
                         new
@@ -416,7 +418,7 @@ namespace Cinema_RepoLearn.Migrations
                             BasePrice = 20m,
                             ScheduleId = 2,
                             SeatId = 3,
-                            TariffId = 2,
+                            TariffId = 1,
                             UserId = 1
                         });
                 });
