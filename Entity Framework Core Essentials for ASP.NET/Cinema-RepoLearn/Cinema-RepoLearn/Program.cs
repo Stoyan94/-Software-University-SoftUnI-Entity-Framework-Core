@@ -1,8 +1,8 @@
-﻿using Cinema_RepoLearn.Contracts;
-using Cinema_RepoLearn.Data;
-using Cinema_RepoLearn.Data.Common;
-using Cinema_RepoLearn.Models;
-using Cinema_RepoLearn.Services;
+﻿using Cinema_RepoLearn.Core.Contracts;
+using Cinema_RepoLearn.Infrastructure.Data;
+using Cinema_RepoLearn.Infrastructure.Data.Common;
+using Cinema_RepoLearn.Core.Models;
+using Cinema_RepoLearn.Core.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
