@@ -1,7 +1,7 @@
 ﻿using Cinema_RepoLearn.Core.Contracts;
 using Cinema_RepoLearn.Core.Models;
-using Cinema_RepoLearn.Data.Common;
-using Cinema_RepoLearn.Data.Model;
+using Cinema_RepoLearn.Infrastructure.Data.Common;
+using Cinema_RepoLearn.Infrastructure.Data.Model;
 
 namespace Cinema_RepoLearn.Core.Services
 {

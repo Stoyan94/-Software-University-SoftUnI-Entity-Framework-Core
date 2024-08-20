@@ -1,0 +1,108 @@
+[
+  {
+    "Name": "Arena",
+    "Address": "Sofia, The Mall",
+    "Halls": []
+  },
+  {
+    "Name": "Arena",
+    "Address": "Sofia, Mega Mall",
+    "Halls ": []
+  },
+  {
+    "Name": "Arena",
+    "Address": "Varna, Grand Mall",
+    "Halls": []
+  },
+  {
+    "Name": "Arena",
+    "Address": "Plovdiv, Markovo Tepe",
+    "Halls": []
+  },
+  {
+    "Name": "Arena",
+    "Address": "Kardzhali, Arena",
+    "Halls": []
+  },
+  {
+    "Name": "Arena",
+    "Address": "Smolyan, Arena",
+    "Halls": []
+  },
+  {
+    "Name": "Cinema City",
+    "Address": "Sofia, Mall Sofia",
+    "Halls": []
+  },
+  {
+    "Name": "Cinema City",
+    "Address": "Sofia, Paradise Center",
+    "Halls": []
+  },
+  {
+    "Id" : 9,
+    "Name": "Cinema City",
+    "Address": "Stara Zagora, Mall Galleria",
+    "Halls": []
+  },
+  {
+    "Id" : 10,
+    "Name": "Cinema City",
+    "Address": "Burgas, Mall Galeria",
+    "Halls": []
+  },
+  {
+    "Id" : 11,
+    "Name": "Cinema City",
+    "Address": "Plovdiv, Mall Plovdiv",
+    "Halls": []
+  },
+  {
+    "Id" : 12,
+    "Name": "Cinema City",
+    "Address": "Rousse, Mall Rousse",
+    "Halls": []
+  },
+  {
+    "Id" : 13,
+    "Name": "Cine Grand",
+    "Address": "Sofia, Park Center",
+    "Halls": []
+  },
+  {
+    "Id" : 14,
+    "Name": "Cine Grand",
+    "Address": "Sofia, Ring Mall",
+    "Halls": []
+  },
+  {
+    "Id" : 15,
+    "Name": "Cineland",
+    "Address": "Sofia, Bulgaria Mall",
+    "Halls": []
+  },
+  {
+    "Id" : 16,
+    "Name": "Cineland",
+    "Address": "Pernik, Mall Pernik",
+    "Halls": []
+  },
+  {
+    "Id" : 17,
+    "Name": "Cineland",
+    "Address": "Veliko Tarnovo, Iskra",
+    "Halls": []
+  },
+  {
+    "Id" : 18,
+    "Name": "Cineland",
+    "Address": "Pleven, Central Mall",
+    "Halls": []
+  },
+  {
+    "Id" : 19,
+    "Name": "Cineland",
+    "Address": "Targovishte, Cinemagic",
+    "Halls": []
+  }
+]

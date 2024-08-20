@@ -42,7 +42,7 @@ namespace Cinema_RepoLearn.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cinemas");
+                    b.ToTable("Cinemas", (string)null);
 
                     b.HasData(
                         new
@@ -85,7 +85,7 @@ namespace Cinema_RepoLearn.Infrastructure.Migrations
 
                     b.HasIndex("CinemaId");
 
-                    b.ToTable("Halls");
+                    b.ToTable("Halls", (string)null);
 
                     b.HasData(
                         new
@@ -142,7 +142,7 @@ namespace Cinema_RepoLearn.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Movies");
+                    b.ToTable("Movies", (string)null);
 
                     b.HasData(
                         new
@@ -191,7 +191,7 @@ namespace Cinema_RepoLearn.Infrastructure.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("Schedules");
+                    b.ToTable("Schedules", (string)null);
 
                     b.HasData(
                         new
@@ -241,7 +241,7 @@ namespace Cinema_RepoLearn.Infrastructure.Migrations
 
                     b.HasIndex("HallId");
 
-                    b.ToTable("Seats");
+                    b.ToTable("Seats", (string)null);
 
                     b.HasData(
                         new
@@ -327,7 +327,7 @@ namespace Cinema_RepoLearn.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tariffs");
+                    b.ToTable("Tariffs", (string)null);
 
                     b.HasData(
                         new
@@ -389,7 +389,7 @@ namespace Cinema_RepoLearn.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tickets");
+                    b.ToTable("Tickets", (string)null);
 
                     b.HasData(
                         new
@@ -449,7 +449,7 @@ namespace Cinema_RepoLearn.Infrastructure.Migrations
                     b.HasIndex("UserName")
                         .IsUnique();
 
-                    b.ToTable("User");
+                    b.ToTable("User", (string)null);
 
                     b.HasData(
                         new

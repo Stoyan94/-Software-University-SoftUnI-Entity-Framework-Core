@@ -1,0 +1,37 @@
+[
+  {
+    "Name": "Standard",
+    "Seats": [],
+    "Schedules": []
+  },
+  {
+    "Name": "Kids",
+    "Seats": [],
+    "Schedules": []
+  },
+  {
+    "Name": "Luxury",
+    "Seats": [],
+    "Schedules": []
+  },
+  {
+    "Name": "3D",
+    "Seats": [],
+    "Schedules": []
+  },
+  {
+    "Name": "IMAX/4DX",
+    "Seats": [],
+    "Schedules": []
+  },
+  {
+    "Name": "Motion Controlled Seating",
+    "Seats": [],
+    "Schedules": []
+  },
+  {
+    "Name": "Drive-In",
+    "Seats": [],
+    "Schedules": []
+  }
+]

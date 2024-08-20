@@ -20,10 +20,15 @@ namespace Cinema_RepoLearn.Infrastructure.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            IConfiguration configuration = new ConfigurationBuilder()
-                 .AddJsonFile("appsettings.json", true)
-                 .AddUserSecrets(Assembly.GetEntryAssembly())
-                 .Build();
+            //IConfiguration configuration = new ConfigurationBuilder()
+            //     .AddJsonFile("appsettings.json", true)
+            //     .AddUserSecrets(Assembly.GetEntryAssembly())
+            //     .Build();
+
+            if (optionsBuilder.IsConfigured == false )
+            {
+                optionsBuilder.UseSqlServer("Server=STOYAN;Database=Cinema24;User Id=sa;Password=558955;Trusted_Connection=True;");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

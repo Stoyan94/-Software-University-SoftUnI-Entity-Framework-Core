@@ -1,4 +1,4 @@
-﻿using Cinema_RepoLearn.Data.Model;
+﻿using Cinema_RepoLearn.Infrastructure.Data.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;

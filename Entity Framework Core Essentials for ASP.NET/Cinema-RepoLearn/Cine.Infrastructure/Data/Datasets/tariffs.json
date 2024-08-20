@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "Standard",
+    "Factor": 1.0,
+    "Tickets": []
+  },
+  {
+    "Name": "Student",
+    "Factor": 0.8,
+    "Tickets": []
+  },
+  {
+    "Name": "Senior",
+    "Factor": 0.7,
+    "Tickets": []
+  },
+  {
+    "Name": "Child",
+    "Factor": 0.5,
+    "Tickets": []
+  }
+]
