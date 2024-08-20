@@ -1,4 +1,5 @@
-﻿using Cinema_RepoLearn.Infrastructure.Data.Extension;
+﻿using Cine.Infrastructure.Data.Model;
+using Cinema_RepoLearn.Infrastructure.Data.Extension;
 using Cinema_RepoLearn.Infrastructure.Data.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -47,6 +48,9 @@ namespace Cinema_RepoLearn.Infrastructure.Data
                 .HasIndex(u => u.UserName)
                 .IsUnique();
 
+            modelBuilder.Entity<CinemaHall>()
+                .HasKey(pk => new { pk.CinemaId, pk.HallId });
+
             modelBuilder.Seed();
 
             base.OnModelCreating(modelBuilder);
@@ -65,6 +69,8 @@ namespace Cinema_RepoLearn.Infrastructure.Data
         public DbSet<Ticket> Tickets { get; set; } = null!;
 
         public DbSet<Tariff> Tariffs { get; set; } = null!;
+
+        public DbSet<User> Users { get; set; } = null!;
 
     }
 }

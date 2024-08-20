@@ -11,10 +11,8 @@
         [StringLength(50)]
         public string Name { get; set; } = null!;
 
-        [Required]
-        [ForeignKey(nameof(Cinema))]
-        public int CinemaId { get; set; }
-        public Cinema Cinema { get; set; } = null!;
+        public List<Cinema> Cinemas { get; set; }
+            = new List<Cinema>();
 
         public List<Seat> Seats { get; set; } 
             = new List<Seat>();
