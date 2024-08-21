@@ -9,14 +9,14 @@ namespace Cinema_RepoLearn.Infrastructure.Data
 {
     public class CinemaDbContext : DbContext
     {
-        public CinemaDbContext()
-        {
-        }
-        public CinemaDbContext(DbContextOptions<CinemaDbContext> options)
-            : base(options)
-        {
+        //public CinemaDbContext()
+        //{
+        //}
+        //public CinemaDbContext(DbContextOptions<CinemaDbContext> options)
+        //    : base(options)
+        //{
 
-        }
+        //}
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

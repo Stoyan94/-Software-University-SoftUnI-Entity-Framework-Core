@@ -12,7 +12,7 @@
 
             modelBuilder.ApplyConfiguration(new HallConfiguration());
 
-            //modelBuilder.ApplyConfiguration(new CinemaHallsConfiguration());
+            modelBuilder.ApplyConfiguration(new CinemaHallsConfiguration());
 
             //modelBuilder.ApplyConfiguration(new MovieConfiguration());
 
