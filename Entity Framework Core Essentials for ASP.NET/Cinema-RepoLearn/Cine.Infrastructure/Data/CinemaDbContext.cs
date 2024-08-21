@@ -18,8 +18,6 @@ namespace Cinema_RepoLearn.Infrastructure.Data
 
         }
 
-
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (optionsBuilder.IsConfigured == false )

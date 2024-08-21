@@ -1,37 +1,30 @@
 [
   {
-    "Name": "Standard",
-    "Seats": [],
-    "Schedules": []
+    "Id" : 1,
+    "Name": "Standard"
   },
   {
-    "Name": "Kids",
-    "Seats": [],
-    "Schedules": []
+    "Id": 2,
+    "Name": "Kids"
   },
   {
-    "Name": "Luxury",
-    "Seats": [],
-    "Schedules": []
+    "Id": 3,
+    "Name": "Luxury"
   },
   {
-    "Name": "3D",
-    "Seats": [],
-    "Schedules": []
+    "Id": 4,
+    "Name": "3D"
   },
   {
-    "Name": "IMAX/4DX",
-    "Seats": [],
-    "Schedules": []
+    "Id": 5,
+    "Name": "IMAX/4DX"
   },
   {
-    "Name": "Motion Controlled Seating",
-    "Seats": [],
-    "Schedules": []
+    "Id": 6,
+    "Name": "Motion Controlled Seating"
   },
   {
-    "Name": "Drive-In",
-    "Seats": [],
-    "Schedules": []
+    "Id": 7,
+    "Name": "Drive-In"
   }
 ]

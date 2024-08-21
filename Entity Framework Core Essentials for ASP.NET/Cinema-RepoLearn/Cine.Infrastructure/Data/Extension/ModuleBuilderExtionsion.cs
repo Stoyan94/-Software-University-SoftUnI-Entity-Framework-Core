@@ -1,5 +1,6 @@
 ﻿namespace Cinema_RepoLearn.Infrastructure.Data.Extension
 {
+    using Cine.Infrastructure.Data.Configuration;
     using Cinema_RepoLearn.Data.Configuration;
     using Cinema_RepoLearn.Infrastructure.Data.Model;
     using Microsoft.EntityFrameworkCore;
@@ -11,17 +12,19 @@
 
             modelBuilder.ApplyConfiguration(new HallConfiguration());
 
-            modelBuilder.ApplyConfiguration(new MovieConfiguration());
+            //modelBuilder.ApplyConfiguration(new CinemaHallsConfiguration());
 
-            modelBuilder.ApplyConfiguration(new ScheduleConfiguration());
+            //modelBuilder.ApplyConfiguration(new MovieConfiguration());
 
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            //modelBuilder.ApplyConfiguration(new ScheduleConfiguration());
 
-            modelBuilder.ApplyConfiguration(new TariffConfiguration());
+            //modelBuilder.ApplyConfiguration(new UserConfiguration());
 
-            modelBuilder.ApplyConfiguration(new SeatConfiguration());
+            //modelBuilder.ApplyConfiguration(new TariffConfiguration());
 
-            modelBuilder.ApplyConfiguration(new TicketConfiguration());
+            //modelBuilder.ApplyConfiguration(new SeatConfiguration());
+
+            //modelBuilder.ApplyConfiguration(new TicketConfiguration());
         }
     }
 }
