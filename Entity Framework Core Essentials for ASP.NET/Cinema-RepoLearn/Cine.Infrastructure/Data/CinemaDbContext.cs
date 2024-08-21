@@ -9,23 +9,19 @@ namespace Cinema_RepoLearn.Infrastructure.Data
 {
     public class CinemaDbContext : DbContext
     {
-        //public CinemaDbContext(DbContextOptions<CinemaDbContext> options)
-        //    : base(options) 
-        //{
-            
-        //}
-        //public CinemaDbContext()
-        //{
-        //}
+        public CinemaDbContext()
+        {
+        }
+        public CinemaDbContext(DbContextOptions<CinemaDbContext> options)
+            : base(options)
+        {
+
+        }
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //IConfiguration configuration = new ConfigurationBuilder()
-            //     .AddJsonFile("appsettings.json", true)
-            //     .AddUserSecrets(Assembly.GetEntryAssembly())
-            //     .Build();
-
             if (optionsBuilder.IsConfigured == false )
             {
                 optionsBuilder.UseSqlServer("Server=STOYAN;Database=Cinema24;User Id=sa;Password=558955;Trusted_Connection=True;");
@@ -51,7 +47,7 @@ namespace Cinema_RepoLearn.Infrastructure.Data
             modelBuilder.Entity<CinemaHall>()
                 .HasKey(pk => new { pk.CinemaId, pk.HallId });
 
-            //modelBuilder.Seed();
+            modelBuilder.Seed();
 
             base.OnModelCreating(modelBuilder);
         }
