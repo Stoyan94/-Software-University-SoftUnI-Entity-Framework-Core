@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Cinema_RepoLearn.Infrastructure.Migrations
+namespace Cine.Infrastructure.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
     partial class CinemaDbContextModelSnapshot : ModelSnapshot
@@ -22,7 +22,22 @@ namespace Cinema_RepoLearn.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Cinema", b =>
+            modelBuilder.Entity("Cine.Infrastructure.Data.Model.CinemaHall", b =>
+                {
+                    b.Property<int>("CinemaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HallId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CinemaId", "HallId");
+
+                    b.HasIndex("HallId");
+
+                    b.ToTable("CinemaHall");
+                });
+
+            modelBuilder.Entity("Cinema_RepoLearn.Infrastructure.Data.Model.Cinema", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -42,39 +57,16 @@ namespace Cinema_RepoLearn.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cinemas", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Address = "Mladost 4, Sofia",
-                            Name = "Arena Mladost"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Address = "Stara Zagora Mall",
-                            Name = "Arena Stara Zagora"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Address = "Mall of Sofia",
-                            Name = "Ciname City"
-                        });
+                    b.ToTable("Cinemas");
                 });
 
-            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Hall", b =>
+            modelBuilder.Entity("Cinema_RepoLearn.Infrastructure.Data.Model.Hall", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("CinemaId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -83,44 +75,10 @@ namespace Cinema_RepoLearn.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CinemaId");
-
-                    b.ToTable("Halls", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CinemaId = 1,
-                            Name = "IMAX Hall 1"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CinemaId = 1,
-                            Name = "IMAX-5D Hall 1"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CinemaId = 1,
-                            Name = "3D Hall 1"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CinemaId = 2,
-                            Name = "VIP Hall"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CinemaId = 3,
-                            Name = "IMAX Hall 1"
-                        });
+                    b.ToTable("Halls");
                 });
 
-            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Movie", b =>
+            modelBuilder.Entity("Cinema_RepoLearn.Infrastructure.Data.Model.Movie", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -142,36 +100,19 @@ namespace Cinema_RepoLearn.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Movies", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Genre = 0,
-                            Title = "Snatch"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Genre = 0,
-                            Title = "Lock, Stock and Two Smoking Barrels"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Genre = 0,
-                            Title = "Rock n Rolla"
-                        });
+                    b.ToTable("Movies");
                 });
 
-            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Schedule", b =>
+            modelBuilder.Entity("Cinema_RepoLearn.Infrastructure.Data.Model.Schedule", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CinemaId")
+                        .HasColumnType("int");
 
                     b.Property<TimeSpan>("Duration")
                         .HasColumnType("time");
@@ -187,40 +128,16 @@ namespace Cinema_RepoLearn.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CinemaId");
+
                     b.HasIndex("HallId");
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("Schedules", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Duration = new TimeSpan(0, 1, 38, 0, 0),
-                            HallId = 1,
-                            MovieId = 1,
-                            Start = new DateTime(2024, 7, 23, 20, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Duration = new TimeSpan(0, 1, 38, 0, 0),
-                            HallId = 4,
-                            MovieId = 2,
-                            Start = new DateTime(2024, 7, 23, 20, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Duration = new TimeSpan(0, 1, 38, 0, 0),
-                            HallId = 2,
-                            MovieId = 3,
-                            Start = new DateTime(2024, 7, 23, 20, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
+                    b.ToTable("Schedules");
                 });
 
-            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Seat", b =>
+            modelBuilder.Entity("Cinema_RepoLearn.Infrastructure.Data.Model.Seat", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -241,75 +158,10 @@ namespace Cinema_RepoLearn.Infrastructure.Migrations
 
                     b.HasIndex("HallId");
 
-                    b.ToTable("Seats", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            HallId = 1,
-                            Number = 1,
-                            Row = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            HallId = 1,
-                            Number = 2,
-                            Row = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            HallId = 1,
-                            Number = 3,
-                            Row = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            HallId = 1,
-                            Number = 1,
-                            Row = 2
-                        },
-                        new
-                        {
-                            Id = 5,
-                            HallId = 1,
-                            Number = 2,
-                            Row = 2
-                        },
-                        new
-                        {
-                            Id = 6,
-                            HallId = 1,
-                            Number = 3,
-                            Row = 2
-                        },
-                        new
-                        {
-                            Id = 7,
-                            HallId = 1,
-                            Number = 1,
-                            Row = 3
-                        },
-                        new
-                        {
-                            Id = 8,
-                            HallId = 1,
-                            Number = 2,
-                            Row = 3
-                        },
-                        new
-                        {
-                            Id = 9,
-                            HallId = 1,
-                            Number = 3,
-                            Row = 3
-                        });
+                    b.ToTable("Seats");
                 });
 
-            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Tariff", b =>
+            modelBuilder.Entity("Cinema_RepoLearn.Infrastructure.Data.Model.Tariff", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -327,36 +179,10 @@ namespace Cinema_RepoLearn.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tariffs", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Factor = 1m,
-                            Name = "Adult"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Factor = 0.8m,
-                            Name = "Student"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Factor = 0.7m,
-                            Name = "Senior"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Factor = 0.5m,
-                            Name = "SoftUni Corporate Discount"
-                        });
+                    b.ToTable("Tariffs");
                 });
 
-            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Ticket", b =>
+            modelBuilder.Entity("Cinema_RepoLearn.Infrastructure.Data.Model.Ticket", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -365,7 +191,7 @@ namespace Cinema_RepoLearn.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<decimal>("BasePrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("money");
 
                     b.Property<int>("ScheduleId")
                         .HasColumnType("int");
@@ -389,39 +215,10 @@ namespace Cinema_RepoLearn.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tickets", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BasePrice = 20m,
-                            ScheduleId = 1,
-                            SeatId = 1,
-                            TariffId = 1,
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            BasePrice = 20m,
-                            ScheduleId = 3,
-                            SeatId = 2,
-                            TariffId = 3,
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            BasePrice = 20m,
-                            ScheduleId = 2,
-                            SeatId = 3,
-                            TariffId = 2,
-                            UserId = 1
-                        });
+                    b.ToTable("Tickets");
                 });
 
-            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.User", b =>
+            modelBuilder.Entity("Cinema_RepoLearn.Infrastructure.Data.Model.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -449,72 +246,58 @@ namespace Cinema_RepoLearn.Infrastructure.Migrations
                     b.HasIndex("UserName")
                         .IsUnique();
 
-                    b.ToTable("User", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            FirstName = "Pesho",
-                            LastName = "Petrov",
-                            UserName = "Pesho123"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            FirstName = "Pesho",
-                            LastName = "Ivanov",
-                            UserName = "Pesho789"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            FirstName = "Ivan",
-                            LastName = "Ivanov",
-                            UserName = "vankata89"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            FirstName = "Maria",
-                            LastName = "Petrova",
-                            UserName = "maria12312"
-                        });
+                    b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Hall", b =>
+            modelBuilder.Entity("Cine.Infrastructure.Data.Model.CinemaHall", b =>
                 {
-                    b.HasOne("Cinema_RepoLearn.Data.Model.Cinema", "Cinema")
-                        .WithMany("Halls")
+                    b.HasOne("Cinema_RepoLearn.Infrastructure.Data.Model.Cinema", "Cinema")
+                        .WithMany("CinemaHalls")
                         .HasForeignKey("CinemaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Cinema_RepoLearn.Infrastructure.Data.Model.Hall", "Hall")
+                        .WithMany("CinemaHalls")
+                        .HasForeignKey("HallId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Cinema");
+
+                    b.Navigation("Hall");
                 });
 
-            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Schedule", b =>
+            modelBuilder.Entity("Cinema_RepoLearn.Infrastructure.Data.Model.Schedule", b =>
                 {
-                    b.HasOne("Cinema_RepoLearn.Data.Model.Hall", "Hall")
+                    b.HasOne("Cinema_RepoLearn.Infrastructure.Data.Model.Cinema", "Cinema")
+                        .WithMany()
+                        .HasForeignKey("CinemaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cinema_RepoLearn.Infrastructure.Data.Model.Hall", "Hall")
                         .WithMany("Schedules")
                         .HasForeignKey("HallId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cinema_RepoLearn.Data.Model.Movie", "Movie")
+                    b.HasOne("Cinema_RepoLearn.Infrastructure.Data.Model.Movie", "Movie")
                         .WithMany("Schedules")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Cinema");
 
                     b.Navigation("Hall");
 
                     b.Navigation("Movie");
                 });
 
-            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Seat", b =>
+            modelBuilder.Entity("Cinema_RepoLearn.Infrastructure.Data.Model.Seat", b =>
                 {
-                    b.HasOne("Cinema_RepoLearn.Data.Model.Hall", "Hall")
+                    b.HasOne("Cinema_RepoLearn.Infrastructure.Data.Model.Hall", "Hall")
                         .WithMany("Seats")
                         .HasForeignKey("HallId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -523,27 +306,27 @@ namespace Cinema_RepoLearn.Infrastructure.Migrations
                     b.Navigation("Hall");
                 });
 
-            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Ticket", b =>
+            modelBuilder.Entity("Cinema_RepoLearn.Infrastructure.Data.Model.Ticket", b =>
                 {
-                    b.HasOne("Cinema_RepoLearn.Data.Model.Schedule", "Schedule")
+                    b.HasOne("Cinema_RepoLearn.Infrastructure.Data.Model.Schedule", "Schedule")
                         .WithMany("Tickets")
                         .HasForeignKey("ScheduleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cinema_RepoLearn.Data.Model.Seat", "Seat")
+                    b.HasOne("Cinema_RepoLearn.Infrastructure.Data.Model.Seat", "Seat")
                         .WithMany("Tickets")
                         .HasForeignKey("SeatId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Cinema_RepoLearn.Data.Model.Tariff", "Tariff")
+                    b.HasOne("Cinema_RepoLearn.Infrastructure.Data.Model.Tariff", "Tariff")
                         .WithMany("Tickets")
                         .HasForeignKey("TariffId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Cinema_RepoLearn.Data.Model.User", "User")
+                    b.HasOne("Cinema_RepoLearn.Infrastructure.Data.Model.User", "User")
                         .WithMany("Tickets")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -558,39 +341,41 @@ namespace Cinema_RepoLearn.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Cinema", b =>
+            modelBuilder.Entity("Cinema_RepoLearn.Infrastructure.Data.Model.Cinema", b =>
                 {
-                    b.Navigation("Halls");
+                    b.Navigation("CinemaHalls");
                 });
 
-            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Hall", b =>
+            modelBuilder.Entity("Cinema_RepoLearn.Infrastructure.Data.Model.Hall", b =>
                 {
+                    b.Navigation("CinemaHalls");
+
                     b.Navigation("Schedules");
 
                     b.Navigation("Seats");
                 });
 
-            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Movie", b =>
+            modelBuilder.Entity("Cinema_RepoLearn.Infrastructure.Data.Model.Movie", b =>
                 {
                     b.Navigation("Schedules");
                 });
 
-            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Schedule", b =>
+            modelBuilder.Entity("Cinema_RepoLearn.Infrastructure.Data.Model.Schedule", b =>
                 {
                     b.Navigation("Tickets");
                 });
 
-            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Seat", b =>
+            modelBuilder.Entity("Cinema_RepoLearn.Infrastructure.Data.Model.Seat", b =>
                 {
                     b.Navigation("Tickets");
                 });
 
-            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.Tariff", b =>
+            modelBuilder.Entity("Cinema_RepoLearn.Infrastructure.Data.Model.Tariff", b =>
                 {
                     b.Navigation("Tickets");
                 });
 
-            modelBuilder.Entity("Cinema_RepoLearn.Data.Model.User", b =>
+            modelBuilder.Entity("Cinema_RepoLearn.Infrastructure.Data.Model.User", b =>
                 {
                     b.Navigation("Tickets");
                 });

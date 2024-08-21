@@ -51,7 +51,7 @@ namespace Cinema_RepoLearn.Infrastructure.Data
             modelBuilder.Entity<CinemaHall>()
                 .HasKey(pk => new { pk.CinemaId, pk.HallId });
 
-            modelBuilder.Seed();
+            //modelBuilder.Seed();
 
             base.OnModelCreating(modelBuilder);
         }

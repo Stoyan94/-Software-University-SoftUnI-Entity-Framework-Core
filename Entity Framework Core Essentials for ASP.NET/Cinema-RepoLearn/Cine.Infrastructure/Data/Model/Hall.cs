@@ -1,5 +1,6 @@
 ﻿namespace Cinema_RepoLearn.Infrastructure.Data.Model
 {
+    using Cine.Infrastructure.Data.Model;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     public class Hall
@@ -11,8 +12,8 @@
         [StringLength(50)]
         public string Name { get; set; } = null!;
 
-        public List<Cinema> Cinemas { get; set; }
-            = new List<Cinema>();
+        public List<CinemaHall> CinemaHalls { get; set; }
+             = new List<CinemaHall>();
 
         public List<Seat> Seats { get; set; } 
             = new List<Seat>();

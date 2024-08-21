@@ -12,6 +12,7 @@
         public string Name { get; set; } = null!;
 
         [Required]
+        [Column(TypeName = "decimal(18,2)")]
         // Determines the discount for different groups
         public decimal Factor { get; set; }
 

@@ -13,6 +13,7 @@
         public User User { get; set; } = null!;
 
         [Required]
+        [Column(TypeName = "money")]
         public decimal BasePrice { get; set; }
 
         [Required]

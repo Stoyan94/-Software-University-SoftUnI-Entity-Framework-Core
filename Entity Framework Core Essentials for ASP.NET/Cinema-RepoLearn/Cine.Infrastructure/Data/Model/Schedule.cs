@@ -17,6 +17,10 @@
         public int HallId { get; set; }
         public Hall Hall { get; set; } = null!;
 
+        [ForeignKey(nameof(Cinema))]
+        public int CinemaId { get; set; }
+        public Cinema Cinema { get; set; } = null!;
+
         public DateTime Start { get; set; }
 
         public TimeSpan Duration { get; set; }

@@ -7,25 +7,25 @@
     {
         public void Configure(EntityTypeBuilder<Movie> builder)
         {
-            builder
-                .HasData
-                (
-                    new Movie()
-                    {
-                        Id = 1,
-                        Title = "Snatch"
-                    },
-                    new Movie()
-                    {
-                        Id = 2,
-                        Title = "Lock, Stock and Two Smoking Barrels"
-                    },
-                    new Movie()
-                    {
-                        Id = 3,
-                        Title = "Rock n Rolla"
-                    }
-                );
+            //builder
+            //    .HasData
+            //    (
+            //        new Movie()
+            //        {
+            //            Id = 1,
+            //            Title = "Snatch"
+            //        },
+            //        new Movie()
+            //        {
+            //            Id = 2,
+            //            Title = "Lock, Stock and Two Smoking Barrels"
+            //        },
+            //        new Movie()
+            //        {
+            //            Id = 3,
+            //            Title = "Rock n Rolla"
+            //        }
+            //    );
         }
     }
 }
