@@ -20,9 +20,9 @@
 
             modelBuilder.ApplyConfiguration(new TariffConfiguration());
 
-            //modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
 
-            //modelBuilder.ApplyConfiguration(new SeatConfiguration());
+            modelBuilder.ApplyConfiguration(new SeatConfiguration());
 
             //modelBuilder.ApplyConfiguration(new TicketConfiguration());
         }

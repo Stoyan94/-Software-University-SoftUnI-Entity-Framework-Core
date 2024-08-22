@@ -7,73 +7,32 @@
     {
         public void Configure(EntityTypeBuilder<Seat> builder)
         {
-            //builder
-            //    .HasData
-            //    (
-            //        new Seat
-            //        {
-            //            Id = 1,
-            //            HallId = 1,
-            //            Row = 1,
-            //            Number = 1
-            //        },
-            //        new Seat
-            //        {
-            //            Id = 2,
-            //            HallId = 1,
-            //            Row = 1,
-            //            Number = 2
-            //        },
-            //        new Seat
-            //        {
-            //            Id = 3,
-            //            HallId = 1,
-            //            Row = 1,
-            //            Number = 3
-            //        },
-            //        new Seat
-            //        {
-            //            Id = 4,
-            //            HallId = 1,
-            //            Row = 2,
-            //            Number = 1
-            //        },
-            //        new Seat
-            //        {
-            //            Id = 5,
-            //            HallId = 1,
-            //            Row = 2,
-            //            Number = 2
-            //        },
-            //        new Seat
-            //        {
-            //            Id = 6,
-            //            HallId = 1,
-            //            Row = 2,
-            //            Number = 3
-            //        },
-            //        new Seat
-            //        {
-            //            Id = 7,
-            //            HallId = 1,
-            //            Row = 3,
-            //            Number = 1
-            //        },
-            //        new Seat
-            //        {
-            //            Id = 8,
-            //            HallId = 1,
-            //            Row = 3,
-            //            Number = 2
-            //        },
-            //        new Seat
-            //        {
-            //            Id = 9,
-            //            HallId = 1,
-            //            Row = 3,
-            //            Number = 3
-            //        }
-            //    );
+            List<Seat> seats = new List<Seat>();
+            int id = 0;
+            Random rand = new Random();
+
+            for (int i = 1; i < 8; i++)
+            {
+                int rows = rand.Next(10, 15);
+                int seatCount = rand.Next(10, 20);
+
+                for (int j = 1; j < rows + 1; j++)
+                {
+                    for (int k = 1; k < rows + 1; k++)
+                    {
+                        id++;
+                        seats.Add(new Seat()
+                        {
+                            Id = id,
+                            HallId = i,
+                            Row = j,
+                            Number = k,
+                        });
+                    }
+                }
+            }
+
+            builder.HasData(seats);
         }
     }
 }
