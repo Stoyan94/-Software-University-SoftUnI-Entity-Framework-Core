@@ -3,38 +3,23 @@
     using Cinema_RepoLearn.Infrastructure.Data.Model;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using System.Text.Json;
+
     public class TariffConfiguration : IEntityTypeConfiguration<Tariff>
     {
         public void Configure(EntityTypeBuilder<Tariff> builder)
         {
-            //builder
-            //    .HasData
-            //    (
-            //        new Tariff()
-            //        {
-            //            Id = 1,
-            //            Name = "Adult",
-            //            Factor = 1
-            //        },
-            //        new Tariff()
-            //        {
-            //            Id= 2,
-            //            Name = "Student",
-            //            Factor = 0.8m
-            //        },
-            //        new Tariff()
-            //        {
-            //            Id= 3,
-            //            Name = "Senior",
-            //            Factor = 0.7m
-            //        },
-            //        new Tariff()
-            //        {
-            //            Id= 4,
-            //            Name = "SoftUni Corporate Discount",
-            //            Factor = 0.5m
-            //        }
-            //    );
+            string path = Path.Combine("bin", "Debug", "net6.0", "Data", "Datasets", "tariffs.json"); // Bad practice to use absolute path, but in learning app we don't have any choice,
+            string dataRead = File.ReadAllText(path);                                                // because migrations don't start the app and cannot find the current directory
+
+
+            var tariffs = JsonSerializer.Deserialize<List<Tariff>>(dataRead);
+
+            if (tariffs != null)
+            {
+                builder
+                     .HasData(tariffs);
+            }
         }
     }
 }

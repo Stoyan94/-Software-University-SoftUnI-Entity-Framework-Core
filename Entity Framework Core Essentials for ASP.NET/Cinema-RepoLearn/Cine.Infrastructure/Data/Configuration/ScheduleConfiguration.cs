@@ -3,38 +3,23 @@
     using Cinema_RepoLearn.Infrastructure.Data.Model;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using System.Text.Json;
+
     public class ScheduleConfiguration : IEntityTypeConfiguration<Schedule>
     {
         public void Configure(EntityTypeBuilder<Schedule> builder)
         {
-            //builder
-            //    .HasData
-            //    (
-            //        new Schedule()
-            //        {
-            //            Id = 1,
-            //            MovieId = 1,
-            //            HallId = 1,
-            //            Start = new DateTime(2024, 07, 23, 20, 00, 00),
-            //            Duration = TimeSpan.FromMinutes(98)
-            //        },
-            //        new Schedule()
-            //        {
-            //            Id = 2,
-            //            MovieId = 2,
-            //            HallId = 4,
-            //            Start = new DateTime(2024, 07, 23, 20, 00, 00),
-            //            Duration = TimeSpan.FromMinutes(98)
-            //        },
-            //        new Schedule()
-            //        {
-            //            Id = 3,
-            //            MovieId = 3,
-            //            HallId = 2,
-            //            Start = new DateTime(2024, 07, 23, 20, 00, 00),
-            //            Duration = TimeSpan.FromMinutes(98)
-            //        }
-            //    );
+            string path = Path.Combine("bin", "Debug", "net6.0", "Data", "Datasets", "schedules.json"); // Bad practice to use absolute path, but in learning app we don't have any choice,
+            string dataRead = File.ReadAllText(path);                                                // because migrations don't start the app and cannot find the current directory
+
+
+            var schedules = JsonSerializer.Deserialize<List<Schedule>>(dataRead);
+
+            if (schedules != null)
+            {
+                builder
+                     .HasData(schedules);
+            }
         }
     }
 }

@@ -14,13 +14,13 @@
 
             modelBuilder.ApplyConfiguration(new CinemaHallsConfiguration());
 
-            //modelBuilder.ApplyConfiguration(new MovieConfiguration());
+            modelBuilder.ApplyConfiguration(new MovieConfiguration());
 
-            //modelBuilder.ApplyConfiguration(new ScheduleConfiguration());
+            modelBuilder.ApplyConfiguration(new ScheduleConfiguration());
+
+            modelBuilder.ApplyConfiguration(new TariffConfiguration());
 
             //modelBuilder.ApplyConfiguration(new UserConfiguration());
-
-            //modelBuilder.ApplyConfiguration(new TariffConfiguration());
 
             //modelBuilder.ApplyConfiguration(new SeatConfiguration());
 

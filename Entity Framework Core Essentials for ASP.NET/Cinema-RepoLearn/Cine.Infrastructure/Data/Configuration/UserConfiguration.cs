@@ -3,42 +3,23 @@
     using Cinema_RepoLearn.Infrastructure.Data.Model;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using System.Text.Json;
+
     public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            //builder
-            //    .HasData
-            //    (
-            //        new User()
-            //        {
-            //            Id = 1,
-            //            UserName = "Pesho123",
-            //            FirstName = "Pesho",
-            //            LastName = "Petrov"
-            //        },
-            //        new User()
-            //        {
-            //            Id = 2,
-            //            UserName = "Pesho789",
-            //            FirstName = "Pesho",
-            //            LastName = "Ivanov"
-            //        },
-            //        new User()
-            //        {
-            //            Id = 3,
-            //            UserName = "vankata89",
-            //            FirstName = "Ivan",
-            //            LastName = "Ivanov"
-            //        },
-            //        new User()
-            //        {
-            //            Id = 4,
-            //            UserName = "maria12312",
-            //            FirstName = "Maria",
-            //            LastName = "Petrova"
-            //        }
-            //    );
+            string path = Path.Combine("bin", "Debug", "net6.0", "Data", "Datasets", "users.json"); // Bad practice to use absolute path, but in learning app we don't have any choice,
+            string dataRead = File.ReadAllText(path);                                                // because migrations don't start the app and cannot find the current directory
+
+
+            var users = JsonSerializer.Deserialize<List<User>>(dataRead);
+
+            if (users != null)
+            {
+                builder
+                     .HasData(users);
+            }
         }
     }
 }

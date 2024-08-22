@@ -1,6 +1,7 @@
 [
   {
     "Id": 1,
+    "Title" : "MaXXXine",
     "Genre": 9,
     "Description": "In 1980s Hollywood, adult film star and aspiring actress Maxine Minx finally gets her big break. But as a mysterious killer stalks the starlets of Hollywood, a trail of blood threatens to reveal her sinister past."
   },
@@ -47,7 +48,7 @@
     "Description": "A young woman named Sam finds herself trapped in New York City during the early stages of an invasion by alien creatures with ultra-sensitive hearing."
   },
   {
-    "Id": 8,
+    "Id": 9,
     "Title": "Fly Me to the Moon",
     "Genre": 10,
     "Description": "Marketing maven Kelly Jones wreaks havoc on launch director Cole Davis's already difficult task. When the White House deems the mission too important to fail, the countdown truly begins."
