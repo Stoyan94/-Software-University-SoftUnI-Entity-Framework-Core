@@ -46,7 +46,7 @@ namespace Cinema_RepoLearn.Infrastructure.Data
                 .HasKey(pk => new { pk.CinemaId, pk.HallId });
 
             modelBuilder.Seed();
-
+           // C#192837465!
             base.OnModelCreating(modelBuilder);
         }
 
