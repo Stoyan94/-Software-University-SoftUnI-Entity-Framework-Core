@@ -128,5 +128,6 @@ using (var context = new MyDbContext())
 Conclusion
 Serialization and deserialization are key processes for converting objects to and from formats that can be stored or transmitted. 
 JSON and XML are common formats used in C# applications. 
+
 POCOs are simple objects used to define data models in Entity Framework, which manages database interactions for these models. 
 Understanding these concepts is crucial for effectively working with data in C# applications.
