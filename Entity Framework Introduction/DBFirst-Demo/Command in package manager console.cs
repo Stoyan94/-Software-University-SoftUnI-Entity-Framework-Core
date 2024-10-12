@@ -32,10 +32,10 @@ Example of the Resulting Files
 After running this command, you can expect to have the following structure in your project:
 
 
-YourProject
-?
+YourProject:
+
 folder \Data
-file in foldr Data => SoftUniDbContext.cs        // The DbContext class
+file in folder Data => SoftUniDbContext.cs        // The DbContext class
 folder /Models
 files in folder Models => Department.cs           // Entity class for a table in the database
                           Employee.cs            // Another entity class
