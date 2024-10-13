@@ -1,0 +1,9 @@
+The Find method in EF Core is the most efficient way to retrieve an entity by its primary key. This method is optimized because, if the entity is already tracked in the context, it returns the entity directly from memory without querying the database.
+
+Example
+
+var employee = context.Employees.Find(employeeId);
+
+Find(employeeId) Retrieves an employee entity by the employeeId.
+If the employee with the specified ID is already tracked by the context, EF Core will return it without making a database query.
+If it's not tracked, it will query the database and return the result.
