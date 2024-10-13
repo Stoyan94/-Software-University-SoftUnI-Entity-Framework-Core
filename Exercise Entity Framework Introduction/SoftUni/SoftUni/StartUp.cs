@@ -14,8 +14,10 @@ public class StartUp
     {
         SoftUniContext dbContext = new SoftUniContext();
 
-        string result = DeleteProjectById(dbContext);
-        Console.WriteLine(result);
+        Console.WriteLine(GetDepartmentsWithMoreThan5Employees(dbContext));
+
+        //string result = DeleteProjectById(dbContext);
+        //Console.WriteLine(result);
 
         //var employees = dbContext.Employees.Where(e=> e.EmployeeId == 1);
 
@@ -118,38 +120,33 @@ public class StartUp
     {
         StringBuilder output = new StringBuilder();
 
-        var employeesWithProjects = context.Employees
+        var employees = context.Employees
             .Take(10)
             .Select(e => new
             {
-                e.FirstName,
-                e.LastName,
-                ManagerFirstName = e.Manager!.FirstName,
-                ManagerLastName = e.Manager!.LastName,
+                EmployeeFullName = $"{e.FirstName} {e.LastName}",
+                ManagerFullName = $"{e.Manager.FirstName} {e.Manager.LastName}",
                 Projects = e.EmployeesProjects
-                    .Where(ep => ep.Project.StartDate.Year >= 2001 &&
-                                 ep.Project.StartDate.Year <= 2003)
-                    .Select(ep => new
-                    {
-                        ProjectName = ep.Project.Name,
-                        StartDate = ep.Project.StartDate.ToString("M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture),
-                        EndDate = ep.Project.EndDate.HasValue
-                            ? ep.Project.EndDate.Value.ToString("M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture)
-                            : "not finished"
-                    })
-                    .ToArray()
+                .Where(emp=> emp.Project.StartDate.Year >= 2001 && emp.Project.StartDate.Year <= 2003)
+                .Select(p => new
+                {
+                    p.Project.Name,
+                    StartDate = p.Project.StartDate.ToString("M/d/yyyy h:mm:ss tt",CultureInfo.InvariantCulture),
+                    EndDate = p.Project.EndDate.HasValue ?
+                              p.Project.EndDate.Value.ToString("M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture) :
+                              "not finished"
+                }).ToList()
+               
             })
-            .ToArray();
+            .ToList();
 
-        foreach (var e in employeesWithProjects)
+        foreach (var e in employees)
         {
-            output
-                .AppendLine($"{e.FirstName} {e.LastName} - Manager: {e.ManagerFirstName} {e.ManagerLastName}");
+            output.AppendLine($"{e.EmployeeFullName} {e.ManagerFullName}");
 
             foreach (var p in e.Projects)
             {
-                output
-                    .AppendLine($"--{p.ProjectName} - {p.StartDate} - {p.EndDate}");
+                output.AppendLine($"{p.Name} {p.StartDate} {p.EndDate}");
             }
         }
 
@@ -303,6 +300,42 @@ public class StartUp
             .ToArray();
 
         return String.Join(Environment.NewLine, projectsName);
+    }
+
+    public static string GetDepartmentsWithMoreThan5Employees(SoftUniContext context)
+    {
+        StringBuilder output = new StringBuilder();
+
+        var deparments = context.Departments
+            .Where(e => e.Employees.Count() > 5)
+            .OrderBy(e => e.Employees.Count())
+            .ThenBy(d => d.Name)
+            .Select(empD => new
+            {
+                DepartmentInfo = $"{empD.Name} - {empD.Manager.FirstName} {empD.Manager.LastName}",
+                Employees = empD.Employees
+                .OrderBy(e => e.FirstName)
+                .ThenBy(e => e.LastName)
+                .Select(empInfo => new
+                {
+                   EmployeeFullInfo = $"{empInfo.FirstName} {empInfo.LastName} - {empInfo.Department.Name}",
+                    
+                })
+                .ToList()
+
+            }).ToList();
+
+        foreach ( var emp in deparments )
+        {
+            output.AppendLine(emp.DepartmentInfo);
+
+            foreach (var dInfo in emp.Employees)
+            {
+               output.AppendLine(dInfo.EmployeeFullInfo);
+            }
+        }
+
+        return output.ToString().TrimEnd();
     }
 }
 
