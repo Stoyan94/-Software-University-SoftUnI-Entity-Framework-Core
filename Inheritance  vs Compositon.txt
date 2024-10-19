@@ -1,0 +1,110 @@
+When deciding between inheritance and composition, it is essential to understand their differences and consider the context in which they are applied. Each has its strengths, and one may be better suited depending on the scenario. Here’s a comparison:
+
+1. Inheritance
+Inheritance allows a class to acquire properties and behaviors (methods) from another class. This creates an "is-a" relationship. For example, a Dog class might inherit from an Animal class because a dog is an animal.
+
+Pros:
+Code Reuse: If several classes share common behavior, inheritance allows that behavior to be defined once in a base class.
+
+Polymorphism: Inheritance enables derived classes to override or extend base class behaviors, promoting flexibility and dynamic behavior (via method overriding).
+
+Simplicity in Structure: For certain scenarios, a clear hierarchy of inheritance makes the structure easy to understand.
+
+Cons:
+Tight Coupling: Derived classes are tightly coupled to their base classes. Any change in the base class can break derived classes.
+Fragile Base Class Problem: When the base class changes, it can have unintended consequences for all derived classes.
+
+Limited Flexibility: A class can only inherit from one base class (in C#), which may limit flexibility in how behavior is shared.
+
+Deep Hierarchies: Overuse of inheritance can lead to deep, complex class hierarchies that are hard to manage and understand.
+
+When to Use Inheritance:
+When classes share common properties and behaviors in a clear "is-a" relationship.
+When you want to leverage polymorphism to change or extend behaviors across related classes.
+
+
+2. Composition
+Composition, on the other hand, involves creating complex objects by combining simpler objects. This is a "has-a" relationship. A Car has an engine, but a car is not an engine.
+
+Pros:
+Flexibility: You can compose objects in various ways without being tied to a rigid hierarchy. This allows more adaptable code.
+
+Loose Coupling: Objects are loosely coupled. Changing one component doesn’t break the others as long as the public interface stays the same.
+
+Reusability: You can reuse components (classes) across multiple objects and projects.
+More Maintainable: Since behavior is distributed among separate components, changes are easier to manage and less likely to cause issues elsewhere.
+Avoids Hierarchical Fragility: You avoid the issues associated with deep inheritance hierarchies.
+
+Cons:
+Potentially More Boilerplate Code: Composition can lead to more code in some cases because you manually delegate methods or behaviors from one class to another.
+More Objects to Manage: Composition introduces more objects (since each part is represented as an object), which may increase complexity in certain cases.
+
+When to Use Composition:
+When objects have a "has-a" relationship.
+When you want to avoid deep hierarchies or rigid dependencies.
+When your components need to be easily reusable in different contexts.
+When you favor flexibility and maintainability over strict hierarchy.
+
+General Rule of Thumb:
+Favor composition over inheritance: This is a principle that many software designers follow, known as "composition over inheritance." Composition is usually more flexible, maintainable, and avoids many pitfalls of inheritance.
+
+However, inheritance is still useful in certain cases—particularly when you have a well-defined, stable hierarchy with clear "is-a" relationships (e.g., Vehicle -> Car).
+
+When Composition is Better:
+When behaviors are not shared uniformly across a hierarchy.
+When you want to easily extend or replace behaviors by combining different components.
+When your application requires flexibility and adaptability.
+When Inheritance is Better:
+When there is a natural hierarchy (e.g., Shape -> Circle, Shape -> Rectangle).
+When polymorphism is needed, and you want to ensure that related classes share and override behavior.
+
+Example:
+Let's say you are designing a Bird class. Using inheritance:
+
+
+public class Animal
+{
+    public void Eat() => Console.WriteLine("Eating");
+}
+
+public class Bird : Animal
+{
+    public void Fly() => Console.WriteLine("Flying");
+}
+In this case, inheritance works fine because all birds are animals, and they share the Eat method.
+
+But if you need to introduce specific behaviors like swimming (Penguin) or chirping (Sparrow), inheritance starts to become unwieldy. Composition might be a better approach:
+
+
+public class Bird
+{
+    private FlyBehavior _flyBehavior;
+    
+    public Bird(FlyBehavior flyBehavior)
+    {
+        _flyBehavior = flyBehavior;
+    }
+
+    public void PerformFly() => _flyBehavior.Fly();
+}
+
+public interface FlyBehavior
+{
+    void Fly();
+}
+
+public class CanFly : FlyBehavior
+{
+    public void Fly() => Console.WriteLine("Flying");
+}
+
+public class CannotFly : FlyBehavior
+{
+    public void Fly() => Console.WriteLine("Cannot fly");
+}
+
+Here, composition allows flexibility by enabling different birds to have different flying behaviors without altering the class hierarchy.
+
+Conclusion:
+Use inheritance when you have a clear, stable hierarchy with common behaviors.
+Use composition when you want flexibility, loose coupling, and the ability to easily extend or modify behavior.
