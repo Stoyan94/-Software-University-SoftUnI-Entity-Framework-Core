@@ -1,0 +1,67 @@
+Object composition in C# refers to building complex objects using simpler, smaller objects. Instead of relying on inheritance, composition allows objects to contain instances of other classes as fields, combining their functionality. This approach adheres to the "has-a" relationship, as opposed to inheritance's "is-a" relationship.
+
+Why Use Composition?
+Flexibility: You can change or extend the functionality of a class without altering its structure or breaking existing code.
+
+Reusability: Components (classes) can be reused across multiple projects.
+Avoids Fragile Base Class Problem: Inheritance can make systems brittle and difficult to maintain when base classes change. Composition avoids this issue.
+
+Example
+Imagine you have a Car class that uses Engine and Transmission classes. Instead of inheriting from these, we use composition.
+
+
+public class Engine
+{
+    public void Start() => Console.WriteLine("Engine started");
+}
+
+public class Transmission
+{
+    public void ShiftGear(int gear) => Console.WriteLine($"Shifted to gear {gear}");
+}
+
+public class Car
+{
+    private Engine _engine;
+    private Transmission _transmission;
+
+    public Car()
+    {
+        _engine = new Engine();
+        _transmission = new Transmission();
+    }
+
+    public void StartCar()
+    {
+        _engine.Start();
+        _transmission.ShiftGear(1);
+    }
+}
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        Car car = new Car();
+        car.StartCar();
+    }
+}
+
+
+Key Points in this Example:
+The Car class has an Engine and a Transmission, demonstrating a "has-a" relationship.
+Instead of Car inheriting from Engine or Transmission, it holds instances of them, allowing for easy modification or extension without tightly coupling their behaviors.
+
+Advantages of Composition over Inheritance:
+Modularity: Each class does one thing, making it easier to maintain.
+
+Maintainability: Changing one class won't affect others as much, reducing side effects.
+
+Encapsulation: Internal parts of the composed object are hidden and only exposed through public methods if necessary.
+
+When to Use Composition:
+When you need flexibility and wish to avoid deep inheritance hierarchies.
+When objects are composed of distinct components or parts that can exist independently.
+When you want to favor code reusability by combining objects in different configurations.
+
+Composition is often preferred over inheritance due to its flexibility and the ability to avoid tight coupling.
