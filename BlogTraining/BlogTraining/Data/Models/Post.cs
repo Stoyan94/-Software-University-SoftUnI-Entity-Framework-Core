@@ -20,5 +20,7 @@ namespace BlogTraining.Data.Models
 
         [ForeignKey(nameof(BlogId))]
         public Blog Blog { get; set; }
+
+        public List<PostTag> PostTags { get; set; } = new List<PostTag>();
     }
 }

@@ -12,5 +12,7 @@ namespace BlogTraining.Data.Models
         [Required]
         [MaxLength(15)]
         public string TagName { get; set; } = null!;
+
+        public List<PostTag> PostTags { get; set; } = new List<PostTag>();
     }
 }

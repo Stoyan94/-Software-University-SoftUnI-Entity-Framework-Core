@@ -39,6 +39,7 @@ namespace BlogTraining.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new BlogConfiguration());
+            modelBuilder.ApplyConfiguration(new PostTagConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
