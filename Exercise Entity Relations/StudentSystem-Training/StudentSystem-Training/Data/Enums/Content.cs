@@ -1,6 +1,6 @@
-﻿namespace Student_System.Data.Models
+﻿namespace StudentSystem_Training.Data.Enums
 {
-    public enum ContentType
+    public enum Content
     {
         Application = 0,
         Pdf = 1,
