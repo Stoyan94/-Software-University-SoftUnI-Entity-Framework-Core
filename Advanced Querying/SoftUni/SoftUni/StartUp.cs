@@ -1,12 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using SoftUni.Data;
 using SoftUni.Models;
-using System.ComponentModel;
-using System.Drawing;
-using System.Runtime.CompilerServices;
-using System.Runtime.Intrinsics.X86;
+using System;
 using System.Text;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -21,11 +17,37 @@ public class StartUp
 
 
         //await ExplicitAndEagerCombination(dbContext);
-        //await ExplicitLoading(dbContext);
-        ExecutingStoredProcedure(dbContext);
+        await ExplicitLoading(dbContext);
+        //ExecutingStoredProcedure(dbContext);
         //await Console.Out.WriteLineAsync(await SQLInjectionDefense(dbContext));
+        //await ExplicitAndEagerLoadingIssue(dbContext);
     }
 
+    private static async Task EnrtyExample()
+    {
+        Employee? employee;
+
+        using (SoftUniContext context = new SoftUniContext())
+        {
+            employee = await context.FindAsync<Employee>(1);
+        }
+
+        if (employee != null!)
+        {
+            employee.MiddleName = "Ralf";
+
+            using SoftUniContext ctx = new SoftUniContext();
+
+            var entry = ctx.Entry(employee);
+            entry.State = EntityState.Modified;
+            await ctx.SaveChangesAsync();
+        }
+
+        //A new SoftUniContext is created for saving changes. (Not reusing the previous context is a good practice in some scenarios.)
+        //    ctx.Entry(employee): Attaches the employee object to the new context.
+        //    entry.State = EntityState.Modified: Marks the entity as "Modified," indicating EF Core should update it in the database.
+
+    }
     private static async Task ExplicitAndEagerCombination(SoftUniContext dbContext)
     {
         var employees = await dbContext.Employees
@@ -59,17 +81,17 @@ public class StartUp
         //    The dbContext.Entry(employee).Reference(e => e.Address).LoadAsync() method call loads the Address entity for this particular employee on demand, after the initial query has been executed.
     }
     private static async Task ExplicitAndEagerLoadingIssue(SoftUniContext dbContext)
-{
-    var employees = await dbContext.Employees
-    .Where(e => e.DepartmentId == 1)
-            .Select(e => new
-            {
-                e.FirstName,
-                e.LastName,
-                DepartmentName = e.Department.Name,
-            })
-            .ToListAsync();
-        //.Include(e => e.Departments);
+    {
+        var employees = await dbContext.Employees
+        .Where(e => e.DepartmentId == 1)
+                .Include(e => e.Departments)
+                .Select(e => new
+                {
+                    e.FirstName,
+                    e.LastName,
+                    DepartmentName = e.Department.Name,
+                })
+                .ToListAsync();
 
         var neesh = dbContext.Entry(employees);
 
