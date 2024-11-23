@@ -1,0 +1,63 @@
+In Entity Framework (EF), SQL native queries allow you to execute raw SQL commands directly against the database while leveraging EF for connection management and result mapping. These are typically used when LINQ queries are insufficient for complex operations or when specific database features are required.
+
+Key points:
+
+Execution: Use methods like FromSqlInterpolated or FromSqlRaw to fetch data into entity types.
+
+var results = context.YourEntities
+    .FromSqlRaw("SELECT * FROM YourTable WHERE Column = {0}", value).ToList();
+Interpolated Queries: Use FromSqlInterpolated to safely embed parameters and avoid SQL injection.
+
+var results = context.YourEntities
+    .FromSqlInterpolated($"SELECT * FROM YourTable WHERE Column = {value}").ToList();
+
+Stored Procedures: You can call stored procedures similarly.
+Limitation: Only available for read operations (queries). Modifications (like INSERT or UPDATE) require context.Database.ExecuteSqlRaw().
+These queries provide flexibility while still benefiting from EF's context tracking and mappings.
+
+
+
+what is the diference between FromSqlRaw and FromSqlInterpolated?
+
+The main difference between FromSqlRaw and FromSqlInterpolated in Entity Framework Core lies in how they handle SQL query strings and parameterization, which is crucial for security and preventing SQL injection.
+
+1. FromSqlRaw
+
+Accepts a raw SQL string.
+Requires explicit parameterization using placeholders (e.g., {0}, {1}) and a separate parameters array.
+You manually handle SQL parameters.
+Example:
+
+var results = context.YourEntities
+    .FromSqlRaw("SELECT * FROM YourTable WHERE Column = {0}", someValue)
+    .ToList();
+
+Use Case:
+
+Best when you already have a raw SQL query and explicitly manage parameters.
+
+2. FromSqlInterpolated
+
+Accepts an interpolated string (using $ syntax).
+Automatically escapes and parameterizes the input values, making it safer against SQL injection.
+You don't need to explicitly pass parameters separately.
+Example:
+
+var results = context.YourEntities
+    .FromSqlInterpolated($"SELECT * FROM YourTable WHERE Column = {someValue}")
+    .ToList();
+
+Use Case:
+
+Preferred when constructing queries dynamically, as it simplifies parameter handling and ensures safety.
+
+Key Differences:
+
+Feature			FromSqlRaw				FromSqlInterpolated
+Parameter Handling	Manual (placeholders + parameter array)	Automatic (via string interpolation)
+Safety	 		Prone to mistakes if not careful	Built-in protection against SQL injection
+Readability		Less readable for dynamic queries	More concise and easier for dynamic queries
+
+Recommendation:
+Use FromSqlInterpolated for most cases as it is safer and easier to use.
+Use FromSqlRaw if you already have raw SQL or need strict control over query formatting.

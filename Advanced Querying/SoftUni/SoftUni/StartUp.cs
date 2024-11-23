@@ -22,7 +22,7 @@ public class StartUp
 
         //await ExplicitAndEagerCombination(dbContext);
         //await ExplicitLoading(dbContext);
-        //ExecutingStoredProcedure(dbContext);
+        ExecutingStoredProcedure(dbContext);
         //await Console.Out.WriteLineAsync(await SQLInjectionDefense(dbContext));
     }
 
