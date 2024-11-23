@@ -17,7 +17,7 @@ public class StartUp
 
 
         //await ExplicitAndEagerCombination(dbContext);
-        await ExplicitLoading(dbContext);
+        //await ExplicitLoading(dbContext);
         //ExecutingStoredProcedure(dbContext);
         //await Console.Out.WriteLineAsync(await SQLInjectionDefense(dbContext));
         //await ExplicitAndEagerLoadingIssue(dbContext);
@@ -62,13 +62,13 @@ public class StartUp
                 var entry = dbContext.Entry(employee);
                 await entry.Reference(e => e.Address).LoadAsync();
 
-                await Console.Out.WriteLineAsync("The one for whom we need address information and Department Name");
+                await Console.Out.WriteLineAsync("The one for who we need address information and Department Name");
                 await Console.Out.WriteLineAsync($"{employee.FirstName} {employee.LastName} {employee.Department.Name} - {employee.Address.AddressText}");
                 Console.WriteLine();
-                await Console.Out.WriteLineAsync("Employees for whose addresses information are not needed");
             }
             else
             {
+                await Console.Out.WriteLineAsync("Employees for whose addresses information are not needed");
                 await Console.Out.WriteLineAsync($"{employee.FirstName} {employee.LastName}");
             }
         }
