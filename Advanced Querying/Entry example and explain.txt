@@ -1,0 +1,123 @@
+What is Entry in Entity Framework Core?
+In Entity Framework Core (EF Core), the Entry method is used to access and manipulate the state of an entity that is being tracked by the context. The state determines what EF Core should do with the entity when SaveChanges or SaveChangesAsync is called.
+
+Syntax
+
+var entry = context.Entry(entity);
+context: The instance of your DbContext (e.g., SoftUniContext).
+entity: The object whose tracking information you want to inspect or modify.
+The Entry method returns an object of type EntityEntry, which provides access to the following:
+
+The state of the entity (EntityState).
+The current values of the entity's properties.
+The original values of the entity's properties (as they were when retrieved from the database).
+Change tracking and metadata about the entity.
+Key Properties and Methods of EntityEntry
+State:
+
+Determines the current state of the entity in the EF Core lifecycle.
+Possible states are:
+Detached: The entity is not tracked by the context.
+Unchanged: The entity is tracked but hasn't been modified.
+Modified: The entity is tracked, and some properties have been modified.
+Added: The entity is tracked and will be inserted into the database.
+Deleted: The entity is tracked and will be removed from the database.
+Example:
+
+var entry = context.Entry(employee);
+entry.State = EntityState.Modified;
+Entity:
+
+Provides access to the actual entity object.
+Example:
+
+var entity = entry.Entity; // Returns the Employee object
+CurrentValues:
+
+Represents the current values of the entity's properties.
+You can read or update these values directly.
+Example:
+
+entry.CurrentValues["MiddleName"] = "Ralf"; // Updates the MiddleName property
+OriginalValues:
+
+Represents the original values of the entity's properties as they were when the entity was retrieved from the database.
+Useful for concurrency checks.
+Example:
+
+var originalName = entry.OriginalValues["MiddleName"];
+Property:
+
+Allows access to a specific property of the entity.
+You can check whether a property has changed or explicitly mark it as modified.
+Example:
+
+var propertyEntry = entry.Property("MiddleName");
+propertyEntry.IsModified = true; // Marks this specific property as modified
+Reload:
+
+Reloads the entity from the database, discarding any changes made to it in memory.
+Example:
+
+await entry.ReloadAsync();
+Common Scenarios
+Marking an Entity as Modified
+
+Use this when you have a disconnected entity and need to explicitly tell EF Core that it should update the entity in the database.
+
+context.Entry(employee).State = EntityState.Modified;
+Partially Updating an Entity
+
+Use Property to modify only specific properties instead of marking the entire entity as modified.
+
+var entry = context.Entry(employee);
+entry.Property(e => e.MiddleName).IsModified = true;
+Inspecting Changes
+
+Check which properties of an entity have been modified.
+
+var entry = context.Entry(employee);
+foreach (var property in entry.Properties)
+{
+    if (property.IsModified)
+    {
+        Console.WriteLine($"{property.Metadata.Name} has been modified.");
+    }
+}
+Working with Original Values
+
+Use this for comparing current and original values (e.g., for audit or concurrency checks).
+
+var entry = context.Entry(employee);
+var currentName = entry.CurrentValues["MiddleName"];
+var originalName = entry.OriginalValues["MiddleName"];
+Important Notes
+Entry Works Only on Tracked Entities:
+
+The entity must be tracked by the context to use Entry. If the entity is not tracked (state is Detached), you'll need to attach it first:
+
+context.Attach(employee);
+var entry = context.Entry(employee);
+Performance Implications:
+
+If you're working with a large number of entities, excessive use of Entry for change tracking can impact performance. Consider using raw SQL or explicitly setting entity states when applicable.
+Concurrency Scenarios:
+
+Use OriginalValues to implement Optimistic Concurrency Control by comparing stored values with the database values.
+Example Use Case: Handling a Disconnected Entity
+Imagine you fetched an Employee entity, updated it in a different context, and now want to save changes:
+
+
+Employee updatedEmployee = new Employee { Id = 1, MiddleName = "Ralf" };
+
+// Attach the entity to the context
+using (var context = new SoftUniContext())
+{
+    context.Attach(updatedEmployee);
+
+    // Mark specific property as modified
+    context.Entry(updatedEmployee).Property(e => e.MiddleName).IsModified = true;
+
+    await context.SaveChangesAsync();
+}
+This ensures only the MiddleName is updated, reducing unnecessary database operations.

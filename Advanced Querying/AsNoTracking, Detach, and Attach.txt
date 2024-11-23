@@ -1,0 +1,98 @@
+In Entity Framework (EF), AsNoTracking, Detach, and Attach are methods and concepts used to manage the tracking of entity objects. Here's an explanation of each:
+
+1. AsNoTracking
+Definition:
+
+AsNoTracking() is a method used when querying data from a database via Entity Framework. It indicates that the retrieved entities should not be tracked by the EF Change Tracker.
+When to use:
+
+When you are querying data for read-only purposes and don't plan to make any changes to the entities.
+To improve performance, especially for large datasets, since EF doesn't need to keep track of changes to the entities.
+
+Example:
+
+using (var context = new YourDbContext())
+{
+    var customers = context.Customers
+                           .AsNoTracking()
+                           .Where(c => c.IsActive)
+                           .ToList();
+    // The customers fetched here are not tracked by the DbContext.
+}
+
+Benefits:
+
+Reduces memory usage because EF doesn't need to maintain snapshots of the entities.
+Prevents unintentional changes from being persisted back to the database.
+
+2. Detach
+Definition:
+
+Detaching an entity means removing it from the DbContext's Change Tracker. After detachment, EF stops tracking changes to that entity.
+When to use:
+
+When you want to stop tracking an entity to avoid accidentally saving changes.
+When an entity no longer needs to be updated or is sent to a different layer of the application (e.g., as a DTO).
+Example:
+
+using (var context = new YourDbContext())
+{
+    var customer = context.Customers.FirstOrDefault(c => c.Id == 1);
+
+    // Modify customer properties
+    customer.Name = "New Name";
+
+    // Detach the entity
+    context.Entry(customer).State = EntityState.Detached;
+
+    // Changes to 'customer' will no longer be tracked.
+    customer.Name = "Another Name"; // This change won't be saved.
+}
+
+Notes:
+
+After detaching, the entity is essentially in a "disconnected" state.
+You can reattach it if needed using the Attach method.
+
+3. Attach
+Definition:
+
+Attach is used to attach an entity to the DbContext so EF can start tracking it. It's typically used when you have a disconnected entity that you want to update or delete.
+
+When to use:
+
+When you need to reattach an entity that was previously detached or loaded outside the current DbContext.
+Useful for updating or deleting entities without fetching them again from the database.
+Example:
+
+
+using (var context = new YourDbContext())
+{
+    // Create a new detached entity
+    var customer = new Customer { Id = 1, Name = "Updated Name" };
+
+    // Attach the entity
+    context.Customers.Attach(customer);
+
+    // Mark it as modified if you plan to update
+    context.Entry(customer).State = EntityState.Modified;
+
+    // Save changes
+    context.SaveChanges();
+}
+
+Notes:
+
+Attach only attaches the entity without marking it as modified. If you want to update the entity, you need to explicitly set its state to EntityState.Modified.
+If you attach an entity that already exists in the Change Tracker, EF will throw an exception.
+Key Differences
+
+
+
+Feature			AsNoTracking				Detach				    Attach
+Purpose			Retrieves entities without tracking.	Removes an entity from tracking.    Adds a disconnected entity for tracking.
+Performance		Optimized for read-only operations.	N/A				    N/A
+Entity State		Entities are not tracked.		Entity is no longer tracked.	    Entity is tracked again.
+Typical Use Case 	Read-only queries.			Avoid unintentional updates.	    Reconnect detached entities.
+
+These tools help manage the lifecycle and performance of EF entities, ensuring efficient database interactions.
