@@ -1,0 +1,41 @@
+ager Loading in Entity Framework (EF) is a technique where related entities are loaded along with the main entity in a single query. This is achieved by specifying the related data to include when querying the main entity. Eager loading helps reduce the number of database round trips, avoiding the "N+1 query problem."
+
+How to Use Eager Loading
+You use the .Include() method to specify the related entities to load. The method is part of the Microsoft.EntityFrameworkCore namespace in EF Core.
+
+Examples
+1. Loading Related Entities
+Imagine you have two related entities: Order and Customer. An Order has a navigation property Customer.
+
+
+var orders = context.Orders
+    .Include(o => o.Customer)
+    .ToList();
+Here, all orders are loaded along with their associated customer data in a single query.
+
+2. Loading Multiple Levels
+If Customer also has a related entity, like Address, you can load multiple levels of related data.
+
+csharp
+Copy code
+var orders = context.Orders
+    .Include(o => o.Customer)
+    .ThenInclude(c => c.Address)
+    .ToList();
+This fetches the orders, their customers, and the addresses of those customers.
+
+3. Loading Collections
+If Customer has a collection, such as Orders, you can use Include() for collections too.
+
+
+var customers = context.Customers
+    .Include(c => c.Orders)
+    .ToList();
+This retrieves customers along with their orders.
+
+Use Case for Eager Loading
+Eager loading is ideal when you know you'll need related data immediately and want to minimize the number of database calls. For instance:
+
+Displaying a list of orders with customer names and addresses in a UI.
+Generating reports where multiple related tables are queried.
+Eager loading helps balance efficiency and simplicity in such scenarios.

@@ -17,6 +17,7 @@ State:
 
 Determines the current state of the entity in the EF Core lifecycle.
 Possible states are:
+
 Detached: The entity is not tracked by the context.
 Unchanged: The entity is tracked but hasn't been modified.
 Modified: The entity is tracked, and some properties have been modified.
