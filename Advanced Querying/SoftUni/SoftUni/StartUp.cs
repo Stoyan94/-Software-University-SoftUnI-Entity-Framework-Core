@@ -21,9 +21,32 @@ public class StartUp
         //ExecutingStoredProcedure(dbContext);
         //await Console.Out.WriteLineAsync(await SQLInjectionDefense(dbContext));
         //await ExplicitAndEagerLoadingIssue(dbContext);
+        //await EnrtyExample(dbContext);
     }
 
-    private static async Task EnrtyExample()
+    private static async void ConcurrencyChecks()
+    {
+        using SoftUniContext dbContext = new SoftUniContext();
+        using SoftUniContext ctx = new SoftUniContext();
+
+        var pr1 = await dbContext.Employees
+            .Where(e => e.EmployeeId == 1)
+            .Select(e => e.EmployeesProjects.First())
+            .FirstOrDefaultAsync();
+
+        pr1.Project.Name = "First";
+
+        var pr2 = await ctx.Employees
+            .Where(e => e.EmployeeId == 1)
+            .Select(e => e.EmployeesProjects.First())
+            .FirstOrDefaultAsync();
+
+        pr2.Project.Name = "Second";
+
+        await dbContext.SaveChangesAsync();
+        await ctx.SaveChangesAsync();
+    }
+    private static async Task EnrtyExample(DbContext dbContext)
     {
         Employee? employee;
 

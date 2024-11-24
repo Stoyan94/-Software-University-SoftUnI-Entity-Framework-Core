@@ -1,0 +1,46 @@
+This is a classic example of a last-write-wins scenario:
+
+When dbContext.SaveChangesAsync() is called:
+
+The project name is updated to "First" in the database.
+No concurrency check is performed (default EF Core behavior unless configured otherwise).
+When ctx.SaveChangesAsync() is called:
+
+It overwrites "First" with "Second" in the database.
+Again, no concurrency check is performed.
+
+Why Does This Happen?
+
+Entity Framework does not automatically detect concurrency conflicts unless you explicitly configure it to track a concurrency token (e.g., a timestamp or a version column).
+Both dbContext and ctx assume they are the only DbContext modifying the database.
+How to Handle Concurrency in EF Core
+Add a Concurrency Token Modify the model to include a concurrency token, such as a RowVersion property:
+
+
+public class Project
+{
+    public int ProjectId { get; set; }
+    public string Name { get; set; }
+    [Timestamp]
+    public byte[] RowVersion { get; set; }
+}
+Update the Database Update the database schema to include the RowVersion column.
+
+
+dotnet ef migrations add AddRowVersionToProject
+dotnet ef database update
+
+Handle DbUpdateConcurrencyException When multiple contexts attempt to save conflicting changes, EF Core will throw a DbUpdateConcurrencyException. You can catch and handle this exception to resolve conflicts.
+
+
+try
+{
+    await dbContext.SaveChangesAsync();
+}
+catch (DbUpdateConcurrencyException ex)
+{
+    // Handle the conflict, e.g., by reloading the entity or merging changes
+}
+
+Summary
+Without a concurrency token, EF Core doesn't track or resolve concurrent modifications to the same data. In your code, the second SaveChangesAsync() overwrites the changes from the first due to the lack of concurrency checks. Adding a concurrency token like RowVersion ensures that EF Core detects and prevents such conflicts, allowing you to handle them programmatically.
