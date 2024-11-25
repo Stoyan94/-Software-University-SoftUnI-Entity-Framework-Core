@@ -1,0 +1,65 @@
+if (!Enum.TryParse(command, true, out AgeRestriction ageRestriction))
+{
+    return string.Empty;
+}
+
+Explanation:
+Purpose:
+
+This code attempts to parse the string command into an enum value of type AgeRestriction.
+If parsing fails, it returns an empty string (string.Empty).
+Key Elements:
+
+Enum.TryParse:
+
+Tries to convert the command string into a value of the AgeRestriction enum.
+The second parameter (true) makes the parsing case-insensitive.
+If successful, the parsed value is stored in ageRestriction.
+Returns true if parsing succeeds, otherwise false.
+!Enum.TryParse:
+
+The ! negates the result of TryParse.
+If TryParse fails (returns false), the condition inside the if evaluates to true, and the return statement is executed.
+out AgeRestriction ageRestriction:
+
+Declares a variable of type AgeRestriction.
+If parsing succeeds, the parsed enum value is assigned to this variable.
+return string.Empty:
+
+If TryParse fails, the method exits and returns an empty string.
+Usage Scenario: This snippet is typically used when you want to validate and process a user-provided string (e.g., a command or input) against a predefined set of enum values. If the input is invalid, you gracefully handle it by returning a default value (string.Empty).
+
+Example with Context:
+Suppose you have an enum:
+
+public enum AgeRestriction
+{
+    None,
+    Teen,
+    Adult
+}
+
+Sample Implementation:
+
+string ParseAgeRestriction(string command)
+{
+    if (!Enum.TryParse(command, true, out AgeRestriction ageRestriction))
+    {
+        return string.Empty; // Invalid input, return empty string
+    }
+
+    return $"Parsed Age Restriction: {ageRestriction}";
+}
+
+Testing:
+
+Console.WriteLine(ParseAgeRestriction("Teen"));   // Output: Parsed Age Restriction: Teen
+Console.WriteLine(ParseAgeRestriction("teen"));   // Output: Parsed Age Restriction: Teen
+Console.WriteLine(ParseAgeRestriction("invalid"));// Output: 
+In summary, this snippet ensures that the input matches a valid AgeRestriction enum value and gracefully handles invalid input by returning an empty string.
+
+
+
+
+
+
