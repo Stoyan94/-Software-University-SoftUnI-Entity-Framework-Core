@@ -13,5 +13,7 @@ namespace MigrationsDemo.Models
         [Required]
         [StringLength(50)]
         public string Email { get; set; } = null!;
+
+        public string? Address { get; set; }
     }
 }

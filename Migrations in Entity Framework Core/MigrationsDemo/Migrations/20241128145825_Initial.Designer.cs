@@ -11,8 +11,8 @@ using MigrationsDemo.Data;
 namespace MigrationsDemo.Migrations
 {
     [DbContext(typeof(SchoolContext))]
-    [Migration("20240714131958_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20241128145825_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,6 +30,9 @@ namespace MigrationsDemo.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Age")
                         .HasColumnType("int");
