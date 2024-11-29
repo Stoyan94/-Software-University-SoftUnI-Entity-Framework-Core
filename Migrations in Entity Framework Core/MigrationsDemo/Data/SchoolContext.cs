@@ -9,7 +9,14 @@ namespace MigrationsDemo.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=STOYAN;Database=School;User Id=sa;Password=558955;Trusted_Connection=True;");
+            if (Environment.GetEnvironmentVariable("DATABASE_PROVIDER")  == "PostgreSql")
+            {
+                optionsBuilder.UseNpgsql("Host=localhost;Database=school_db;User=postgres;Password=159159");
+            }
+            else
+            {
+                optionsBuilder.UseSqlServer("Server=STOYAN;Database=School;User Id=sa;Password=558955;Trusted_Connection=True;");
+            }
         }
     }
 }
