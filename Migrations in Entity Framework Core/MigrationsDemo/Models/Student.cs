@@ -6,7 +6,7 @@ namespace MigrationsDemo.Models
     {
         public int Id { get; set; }
 
-        public string FullName { get; set; } = null!;
+        public string Name { get; set; } = null!;
 
         public int Age { get; set; }
 
@@ -15,5 +15,7 @@ namespace MigrationsDemo.Models
         public string Email { get; set; } = null!;
 
         public string? Address { get; set; }
+
+        public string City { get; set; } = null!;
     }
 }
