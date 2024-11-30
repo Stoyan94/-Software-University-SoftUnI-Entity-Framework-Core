@@ -8,11 +8,11 @@ using MigrationsDemo.Data;
 
 #nullable disable
 
-namespace MigrationsDemo.Migrations
+namespace MigrationsDemo.Migrations.School
 {
     [DbContext(typeof(SchoolContext))]
-    [Migration("20241129133119_StudentFullNameRenamed")]
-    partial class StudentFullNameRenamed
+    [Migration("20241130203309_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,11 +31,12 @@ namespace MigrationsDemo.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Age")
                         .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()

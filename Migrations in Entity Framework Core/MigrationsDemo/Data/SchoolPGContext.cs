@@ -3,15 +3,15 @@ using MigrationsDemo.Models;
 
 namespace MigrationsDemo.Data
 {
-    public class SchoolContext : DbContext
+    public class SchoolPGContext : DbContext
     {
         public DbSet<Student> Students { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
            optionsBuilder
-                .UseSqlServer("Server=STOYAN;Database=School;User Id=sa;Password=558955;Trusted_Connection=True;");
-            
+                .UseNpgsql("Host=localhost;Database=school_db;User Id=postgres;Password=159159");
+        
         }
     }
 }
