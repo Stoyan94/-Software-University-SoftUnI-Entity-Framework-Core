@@ -1,0 +1,6 @@
+
+Feature			JSON			       XML
+Readability	Simple and compact		   Verbose but descriptive
+Validation	No strict validation by default	   Strong validation with XSD
+Usage	        Modern APIs, web services	   Legacy systems, enterprise apps
+Complexity	Flat structure			   Supports nested attributes

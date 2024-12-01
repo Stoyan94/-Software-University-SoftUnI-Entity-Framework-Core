@@ -1,0 +1,125 @@
+In C#, a wrapper is a design concept where one object is encapsulated by another object to provide an additional layer of abstraction, simplify usage, or add new functionality. Wrappers are commonly used in a variety of contexts in programming. Below are some common use cases for wrappers in C#:
+
+1. Simplifying Complex APIs
+Wrappers are often used to hide complex logic behind a simpler interface.
+
+Example:
+
+public class FileWrapper
+{
+    public void WriteToFile(string path, string content)
+    {
+        File.WriteAllText(path, content);
+    }
+
+    public string ReadFromFile(string path)
+    {
+        return File.ReadAllText(path);
+    }
+}
+
+// Usage:
+FileWrapper fileWrapper = new FileWrapper();
+fileWrapper.WriteToFile("example.txt", "Hello, World!");
+string content = fileWrapper.ReadFromFile("example.txt");
+
+2. Adapting Interfaces (Adapter Pattern)
+Wrappers are used in design patterns like the Adapter Pattern to adapt one interface to another.
+
+Example:
+
+public interface ILogger
+{
+    void Log(string message);
+}
+
+public class ConsoleLogger
+{
+    public void Write(string message)
+    {
+        Console.WriteLine(message);
+    }
+}
+
+public class LoggerAdapter : ILogger
+{
+    private ConsoleLogger _consoleLogger;
+
+    public LoggerAdapter(ConsoleLogger consoleLogger)
+    {
+        _consoleLogger = consoleLogger;
+    }
+
+    public void Log(string message)
+    {
+        _consoleLogger.Write(message);
+    }
+}
+
+// Usage:
+ILogger logger = new LoggerAdapter(new ConsoleLogger());
+logger.Log("This is an adapted log message.");
+
+3. Adding Functionality (Decorator Pattern)
+Wrappers can be used to extend functionality without modifying the original class.
+
+Example:
+
+public interface IMessage
+{
+    string GetContent();
+}
+
+public class SimpleMessage : IMessage
+{
+    private string _message;
+    public SimpleMessage(string message)
+    {
+        _message = message;
+    }
+
+    public string GetContent()
+    {
+        return _message;
+    }
+}
+
+public class EncryptedMessage : IMessage
+{
+    private IMessage _message;
+    public EncryptedMessage(IMessage message)
+    {
+        _message = message;
+    }
+
+    public string GetContent()
+    {
+        return Convert.ToBase64String(Encoding.UTF8.GetBytes(_message.GetContent()));
+    }
+}
+
+// Usage:
+IMessage message = new EncryptedMessage(new SimpleMessage("Hello, World!"));
+Console.WriteLine(message.GetContent()); // Outputs encrypted message
+
+4. Interop Scenarios
+Wrappers are commonly used when interacting with unmanaged code or external libraries (e.g., COM components, P/Invoke).
+
+Example:
+
+public class NativeLibraryWrapper
+{
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+    public static extern int MessageBox(IntPtr hWnd, string text, string caption, int options);
+
+    public void ShowMessageBox(string text, string caption)
+    {
+        MessageBox(IntPtr.Zero, text, caption, 0);
+    }
+}
+
+Key Benefits of Wrappers:
+Abstraction: Hides complex or lower-level implementation details.
+Reusability: Makes code more modular and reusable.
+Adaptation: Enables seamless integration between incompatible interfaces.
+Encapsulation: Helps adhere to SOLID principles like Single Responsibility and Open/Closed.
