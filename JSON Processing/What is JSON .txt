@@ -1,0 +1,68 @@
+What is JSON?
+
+JSON (JavaScript Object Notation) is a lightweight format for storing and exchanging data. Think of it as a table or a list written in text form.
+
+Example of JSON:
+
+{
+  "name": "John",
+  "age": 25,
+  "city": "Sofia"
+}
+
+Here, we have keys (like name, age, city) and their values (like "John", 25, "Sofia").
+
+Why is JSON useful?
+Data exchange between apps
+For example, when your C# app communicates with a website or API, the data is often sent as JSON.
+
+Storing settings
+JSON can be used to save app configurations or settings.
+
+Easy for humans to read
+Compared to other formats like XML, JSON is simpler and cleaner.
+
+How do you use JSON in C#?
+In C#, you typically work with JSON using libraries like System.Text.Json or Newtonsoft.Json.
+
+Example:
+Convert JSON to a C# object (deserialize):
+This is useful when you receive JSON data from an API.
+
+using System.Text.Json;
+
+string json = @"{ ""name"": ""John"", ""age"": 25, ""city"": ""Sofia"" }";
+
+// Define a class that matches the JSON structure
+public class Person
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public string City { get; set; }
+}
+
+// Convert JSON into a C# object
+
+Person person = JsonSerializer.Deserialize<Person>(json);
+Console.WriteLine($"Name: {person.Name}, Age: {person.Age}, City: {person.City}");
+
+Convert a C# object to JSON (serialize):
+This is useful when you need to send data as JSON.
+
+using System.Text.Json;
+
+Person person = new Person { Name = "John", Age = 25, City = "Sofia" };
+
+// Convert C# object into JSON string
+
+string json = JsonSerializer.Serialize(person);
+Console.WriteLine(json);
+Output:
+
+{"Name":"John","Age":25,"City":"Sofia"}
+Why is JSON important in C#?
+JSON makes it easy for your C# app to:
+
+Communicate with APIs (e.g., getting weather data or sending user information).
+Save structured data in files (like settings).
+Work with modern web technologies, where JSON is a standard.
