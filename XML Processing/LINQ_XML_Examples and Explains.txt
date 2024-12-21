@@ -8,9 +8,12 @@ Console.WriteLine(doc.Root.Descendants().First().Elements().First().Value);
 // Retrieves the text value of the first child element of the first descendant.
 // Example Output: Professional C# and .NET (from <title> element of the first <book>)
 
+
+
 Console.WriteLine(doc.Root.Descendants().First().Element("author").Value);
 // Looks for a direct child element of the first descendant with the tag name <author>.
 // Example Output: Christian Nagel (from <author> element of the first <book>)
+
 
 
 // doc.Root.Descendants().First().SetElementValue("issueDate", "2024-07-25");
@@ -27,3 +30,20 @@ Console.WriteLine(doc.Root.Descendants().First().Element("author").Value);
 
 doc.Save("test.xml");
 // Saves the modified XML document to a file named "test.xml" in the current working directory.
+
+
+
+doc.Root
+    .Descendants()
+    .First()
+    .SetAttributeValue("issueDate", "2024-07-25");
+// Adds or updates an attribute named "issueDate" for the first descendant of the root element.
+// Example Result in XML:
+// <book issueDate="2024-07-25">
+//     <title>Professional C# and .NET</title>
+//     <author>Christian Nagel</author>
+//     <isbn>978-0-470-50225-9</isbn>
+// </book>
+
+Use Case:
+Use SetAttributeValue for metadata or properties of an element, like dates, IDs, or flags, that don’t require complex child elements.
