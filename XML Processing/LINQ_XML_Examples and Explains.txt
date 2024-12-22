@@ -47,3 +47,22 @@ doc.Root
 
 Use Case:
 Use SetAttributeValue for metadata or properties of an element, like dates, IDs, or flags, that don’t require complex child elements.
+
+
+
+XDocument doc2 = new XDocument(); // create new XML document
+
+doc2.Add(
+    new XElement("class", // Creates a new root element <class>.
+        new XElement("student", // Adds a child <student> element under <class>.
+            new XElement("name", "Stamo"), // Adds a <name> element with the value "Stamo" inside the <student>.
+            new XAttribute("course", "C#") // Adds an attribute course="C#" to the <student>.
+        ),
+        new XElement("student", // Adds another <student> element under <class>.
+            new XElement("name", "Pesho"), // Adds a <name> element with the value "Pesho" inside this <student>.
+            new XAttribute("course", "C++") // Adds an attribute course="C++" to this <student>.
+        )
+    )
+);
+
+doc2.Save("student.xml"); // Saves the constructed XML structure to a file named "student.xml" in the current working directory.
