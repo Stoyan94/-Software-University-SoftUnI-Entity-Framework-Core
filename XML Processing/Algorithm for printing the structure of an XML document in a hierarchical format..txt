@@ -1,0 +1,145 @@
+This algorithm prints the structure of an XML document in a hierarchical format. 
+
+int level = 0;
+
+	PrintStructure(doc.Elements(), level);
+}
+
+static void PrintStructure(IEnumerable<XElement> elements, int level)
+{
+	int newLevel = level++;
+	if (elements.Count() == 0)
+	{
+		newLevel = level--;
+		return;
+	}
+
+	foreach (XElement element in elements)
+	{
+        Console.WriteLine($"{new string(' ',newLevel*2)}{element.Name}");
+		PrintStructure(element.Elements(), level);
+    }
+}
+
+
+The key points of the algorithm are as follows:
+
+Code Explanation
+Main Logic:
+
+int level = 0;
+
+PrintStructure(doc.Elements(), level);
+level is initialized to 0 to represent the current depth in the XML hierarchy.
+PrintStructure is called with the root elements (doc.Elements()) and the initial depth (level).
+Recursive Function:
+
+static void PrintStructure(IEnumerable<XElement> elements, int level)
+{
+    int newLevel = level++;
+    if (elements.Count() == 0)
+    {
+        newLevel = level--;
+        return;
+    }
+
+    foreach (XElement element in elements)
+    {
+        Console.WriteLine($"{new string(' ',newLevel*2)}{element.Name}");
+        PrintStructure(element.Elements(), level);
+    }
+}
+newLevel and level++:
+
+level represents the current depth.
+newLevel is a local variable used to calculate indentation for the current level.
+Base Case:
+
+csharp
+Copy code
+if (elements.Count() == 0)
+{
+    newLevel = level--;
+    return;
+}
+If there are no more child elements, the recursion ends for the current branch.
+Recursive Loop:
+
+csharp
+Copy code
+foreach (XElement element in elements)
+{
+    Console.WriteLine($"{new string(' ',newLevel*2)}{element.Name}");
+    PrintStructure(element.Elements(), level);
+}
+Iterates through the collection of elements.
+Prints the name of each element, indented based on newLevel.
+Recursively calls PrintStructure for child elements.
+Indentation:
+
+csharp
+Copy code
+Console.WriteLine($"{new string(' ',newLevel*2)}{element.Name}");
+Uses new string(' ', newLevel * 2) to create indentation proportional to the level.
+Each level increases the indentation by 2 spaces.
+Issues in the Code
+Incorrect Increment/Decrement:
+
+The level++ and level-- are unnecessary and may cause unintended behavior.
+Instead, level should be passed as-is, and newLevel should be level + 1 for the recursion:
+csharp
+Copy code
+PrintStructure(element.Elements(), level + 1);
+Base Case Logic:
+
+The newLevel = level--; inside the if block is redundant and doesn't affect the flow.
+Simply return when there are no elements:
+
+if (!elements.Any())
+    return;
+Corrected Version
+Here’s an optimized and cleaner version of the code:
+
+
+static void PrintStructure(IEnumerable<XElement> elements, int level)
+{
+    if (!elements.Any())
+        return;
+
+    foreach (XElement element in elements)
+    {
+        Console.WriteLine($"{new string(' ', level * 2)}{element.Name}");
+        PrintStructure(element.Elements(), level + 1);
+    }
+}
+
+Example Input and Output
+Given the following XML:
+
+
+<library>
+  <book>
+    <title>Professional C#</title>
+    <author>Christian Nagel</author>
+  </book>
+  <book>
+    <title>Teach Yourself XML</title>
+    <author>Andrew Watt</author>
+  </book>
+</library>
+Calling PrintStructure(doc.Elements(), 0) will output:
+
+markdown
+Copy code
+library
+  book
+    title
+    author
+  book
+    title
+    author
+	
+How It Works
+Starts with the root (library) at level 0.
+Prints the element name with indentation proportional to its depth.
+Recursively processes child elements (book, title, author), increasing the indentation level for each nested layer.
