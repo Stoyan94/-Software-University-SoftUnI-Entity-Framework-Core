@@ -66,3 +66,35 @@ doc2.Add(
 );
 
 doc2.Save("student.xml"); // Saves the constructed XML structure to a file named "student.xml" in the current working directory.
+
+
+
+XDocument doc3 = new XDocument();
+// Creates a new, empty XML document.
+
+doc3.Add(new XElement("cars"));
+// Adds a root element <cars> to the document.
+
+doc3.Root.Add(new XElement("car"));
+// Adds a child element <car> under the root <cars>.
+
+XElement car = doc3.Root.Elements().First();
+// Retrieves the first <car> element under the root <cars> and assigns it to the variable `car`.
+
+car.Add(new XElement("maker", "Renault"));
+// Adds a <maker> element with the value "Renault" as a child of the <car> element.
+
+car.Add(new XElement("model", "Megan"));
+// Adds a <model> element with the value "Megan" as a child of the <car> element.
+
+doc3.Save("cars.xml");
+// Saves the constructed XML structure to a file named "cars.xml" in the current working directory.
+
+output => 
+			<?xml version="1.0" encoding="utf-8"?>
+			<cars>
+			  <car>
+				<maker>Renault</maker>
+				<model>Megan</model>
+			  </car>
+			</cars>
