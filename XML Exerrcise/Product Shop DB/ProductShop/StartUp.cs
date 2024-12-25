@@ -11,9 +11,9 @@ namespace ProductShop
         {
             using ProductShopContext dbContext = new ProductShopContext();
 
-            var inputFiles = File.ReadAllText("../../../Datasets/users.xml");
+            var inputFiles = File.ReadAllText("../../../Datasets/products.xml");
 
-            Console.WriteLine(ImportUsers(dbContext, inputFiles));
+            Console.WriteLine(ImportProducts(dbContext, inputFiles));
         }
 
         public static string ImportUsers(ProductShopContext context, string inputXml)
@@ -33,7 +33,28 @@ namespace ProductShop
             context.SaveChanges();
 
             return $"Successfully imported {users.Count}";
-        }        
-       
+        }
+
+        public static string ImportProducts(ProductShopContext context, string inputXml)
+        {
+            var productsDto = XmlHelper.Deserialize<List<ProductImportDto>>(inputXml, "Products");
+
+            List<Product> products = productsDto
+                .Select(dto => new Product()
+                {
+                    Name = dto.Name,
+                    Price = dto.Price,
+                    SellerId = dto.SellerId,
+                    BuyerId = dto.SellerId
+                })
+                .ToList();
+
+            context.Products.AddRange(products);
+            context.SaveChanges();
+
+            return $"Successfully imported {products.Count}";
+        }
+
+
     }
 }
