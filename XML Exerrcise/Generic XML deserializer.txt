@@ -1,0 +1,58 @@
+  
+  
+  private static T Deserialize<T>(string inputXml, string rootName)
+  {
+      XmlRootAttribute root = new XmlRootAttribute(rootName);
+      XmlSerializer serializer = new XmlSerializer(typeof(T), root);
+
+      using StringReader reader = new StringReader(inputXml);
+
+      T dtos = (T)serializer.Deserialize(reader);
+      return dtos;
+  }
+  
+  
+  
+  
+  
+The method takes an XML string and deserializes it into a .NET object of type T. It also allows you to specify the root element name of the XML.
+
+T: This is a generic type parameter. It means the method can work with any class or object type that matches the structure of the XML.
+Step-by-Step Explanation
+
+Parameters:
+
+string inputXml
+This is the XML data as a string. It contains the content you want to deserialize.
+
+string rootName
+The name of the root element in the XML. This is used to tell the serializer what to expect as the top-level element.
+
+Define the Root Attribute:
+
+XmlRootAttribute root = new XmlRootAttribute(rootName);
+Creates an XmlRootAttribute with the name specified in rootName.
+This helps the serializer match the XML's root element to the object structure.
+
+Create an XmlSerializer:
+
+XmlSerializer serializer = new XmlSerializer(typeof(T), root);
+An instance of XmlSerializer is created.
+typeof(T): Tells the serializer what type of object to deserialize into.
+root: Associates the custom root name with the object structure.
+
+Read the XML:
+
+using StringReader reader = new StringReader(inputXml);
+StringReader treats the inputXml string as a stream for the serializer to read from.
+
+Deserialize the XML:
+
+T dtos = (T)serializer.Deserialize(reader);
+The Deserialize method converts the XML into an object of type T.
+(T) is used to cast the result to the expected type.
+
+Return the Object:
+
+return dtos;
+The deserialized object (of type T) is returned to the caller.
