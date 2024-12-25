@@ -1,0 +1,32 @@
+(1 - (dto.Discount / 100))
+This calculates how much of the price is left after applying the discount.
+
+dto.Discount: The discount percentage (e.g., 10 for 10%).
+dto.Discount / 100: Converts the percentage to a decimal (e.g., 10 becomes 0.1).
+1 - ...: Subtracts the discount to find the remaining percentage.
+
+Example: If Discount is 10%, 1 - 0.1 = 0.9 (90% of the price is left).
+Multiply These Together
+The total price of the car parts is multiplied by the remaining percentage after the discount:
+Total Price * (1 - Discount)
+
+Example: If the total price is 600 and the discount is 10%, the result will be:
+600 * 0.9 = 540.
+
+(double)
+This converts the result into a double type, which allows for decimal numbers (e.g., 540.0 instead of just 540).
+
+Round(..., 4)
+Finally, the result is rounded to 4 decimal places.
+
+If the result is 540.12345, it becomes 540.1235.
+Simplified Example
+
+Let’s say:
+
+PartsCars contains parts priced at 100, 200, and 300.
+Discount is 10%.
+Sum of prices: 100 + 200 + 300 = 600.
+Remaining after discount: 1 - (10 / 100) = 0.9.
+Discounted total: 600 * 0.9 = 540.0.
+Rounded to 4 decimal places: 540.0000.
