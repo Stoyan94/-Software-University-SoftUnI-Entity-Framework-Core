@@ -11,9 +11,9 @@ namespace ProductShop
         {
             using ProductShopContext dbContext = new ProductShopContext();
 
-            var inputFiles = File.ReadAllText("../../../Datasets/products.xml");
+            var inputFiles = File.ReadAllText("../../../Datasets/categories-products.xml");
 
-            Console.WriteLine(ImportProducts(dbContext, inputFiles));
+            Console.WriteLine(ImportCategoryProducts(dbContext, inputFiles));
         }
 
         public static string ImportUsers(ProductShopContext context, string inputXml)
@@ -55,6 +55,54 @@ namespace ProductShop
             return $"Successfully imported {products.Count}";
         }
 
+        public static string ImportCategories(ProductShopContext context, string inputXml)
+        {
+            List<CategoriImportDto> categoriesDto = XmlHelper.Deserialize<List<CategoriImportDto>>(inputXml, "Categories");
+
+           var ignoreNull = categoriesDto
+                .Where(x => x.Name != null)
+                .ToList();
+
+            List<Category> categories = ignoreNull
+                .Select(dto => new Category()
+                {
+                    Name = dto.Name,
+                })
+                .ToList();
+
+            context.Categories.AddRange(categories);
+            context.SaveChanges();
+
+            return $"Successfully imported {categories.Count}";
+        }
+
+        public static string ImportCategoryProducts(ProductShopContext context, string inputXml)
+        {
+            var categoriesProductIdDto = XmlHelper.Deserialize<List<CategoriesProductImportDto>>
+                (inputXml, "CategoryProducts");
+
+            var categoryIds = context.Categories
+                .Select(x => x.Id).ToList();
+            var productIds = context.Products
+                .Select(x => x.Id).ToList();
+
+            List<CategoriesProductImportDto> validIds = categoriesProductIdDto.
+                Where(s=> categoryIds.Contains(s.CategoryId) && productIds.Contains(s.ProductId))
+                .ToList();
+
+            List<CategoryProduct> categoryProducts = validIds
+                .Select(x => new CategoryProduct()
+                {
+                    CategoryId = x.CategoryId,
+                    ProductId = x.ProductId
+                })
+                .ToList();
+
+            context.CategoryProducts.AddRange(categoryProducts);
+            context.SaveChanges();
+
+            return $"Successfully imported {categoryProducts.Count}";
+        }
 
     }
 }
