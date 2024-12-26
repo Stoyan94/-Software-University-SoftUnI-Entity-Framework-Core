@@ -18,7 +18,7 @@ namespace ProductShop.DTOs.Export
     }
 }
 
-[XmlType(nameof(Product))]
+[XmlType("ProductDetail")]
 public class SoldProductsExportDto
 {
     [XmlElement("name")]

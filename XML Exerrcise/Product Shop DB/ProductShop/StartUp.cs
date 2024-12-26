@@ -1,8 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using Castle.Core;
+using Newtonsoft.Json;
 using ProductShop.Data;
 using ProductShop.DTOs.Export;
 using ProductShop.DTOs.Import;
 using ProductShop.Models;
+using System.Diagnostics;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace ProductShop
@@ -13,9 +16,9 @@ namespace ProductShop
         {
             using ProductShopContext dbContext = new ProductShopContext();
 
-            var inputFiles = File.ReadAllText("../../../Datasets/categories-products.xml");
+            //var inputFiles = File.ReadAllText("../../../Datasets/categories-products.xml");
 
-            Console.WriteLine(GetCategoriesByProductsCount(dbContext));
+            Console.WriteLine(GetUsersWithProducts(dbContext));
         }
 
         public static string ImportUsers(ProductShopContext context, string inputXml)
@@ -160,6 +163,45 @@ namespace ProductShop
                 .ToList();
 
             return XmlHelper.SerializeToXml(categories, "Categories");
+        }
+
+        public static string GetUsersWithProducts(ProductShopContext context)
+        {
+            var totalUsersCount = context.Users
+                    .Where(u => u.ProductsSold.Any())
+                    .Count();
+
+            var usersWithProducts = context.Users
+                .Where(u => u.ProductsSold.Any())
+                .Select(userDto => new UsersWithProductsExportDto()
+                {
+                    Count = totalUsersCount,
+                    Users = new UserInfoExportDto()
+                    {
+                        FirstName = userDto.FirstName,
+                        LastName = userDto.LastName,
+                        Age = userDto.Age,
+                    },
+                    SoldProcuts = new SoldProductsInfoUserExportDto
+                    {
+                        Count = userDto.ProductsSold.Count,
+                        Products = userDto.ProductsSold.Select(pr => new SoldProductsExportDto()
+                        {
+                            Name = pr.Name,
+                            Price = pr.Price
+                        })
+                        .OrderByDescending(p => p.Price)
+                        .ToArray()
+                    }
+                    
+                })
+                .OrderByDescending(p => p.SoldProcuts.Count)
+                .Take(10)
+                .ToList();
+
+
+            return XmlHelper.SerializeToXml(usersWithProducts, "Users");
+          
         }
 
     }
