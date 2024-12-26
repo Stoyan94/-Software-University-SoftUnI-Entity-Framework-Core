@@ -1,4 +1,5 @@
-﻿using ProductShop.Data;
+﻿using Newtonsoft.Json;
+using ProductShop.Data;
 using ProductShop.DTOs.Export;
 using ProductShop.DTOs.Import;
 using ProductShop.Models;
@@ -14,7 +15,7 @@ namespace ProductShop
 
             var inputFiles = File.ReadAllText("../../../Datasets/categories-products.xml");
 
-            Console.WriteLine(GetSoldProducts(dbContext));
+            Console.WriteLine(GetCategoriesByProductsCount(dbContext));
         }
 
         public static string ImportUsers(ProductShopContext context, string inputXml)
@@ -142,6 +143,23 @@ namespace ProductShop
                 .ToList();
 
             return XmlHelper.SerializeToXml(soldProducts, "Users");
+        }
+
+        public static string GetCategoriesByProductsCount(ProductShopContext context)
+        {
+            List<CategoriesByProductExportDto> categories = context.Categories
+                .Select(pr => new CategoriesByProductExportDto()
+                {
+                    Name = pr.Name,
+                    Count = pr.CategoryProducts.Count(),
+                    AveragePrice = pr.CategoryProducts.Average(x=> x.Product.Price),
+                    TotalRevenue = pr.CategoryProducts.Sum(s => s.Product.Price)
+                })
+                .OrderByDescending(n => n.Count)
+                .ThenBy(n => n.TotalRevenue)
+                .ToList();
+
+            return XmlHelper.SerializeToXml(categories, "Categories");
         }
 
     }
