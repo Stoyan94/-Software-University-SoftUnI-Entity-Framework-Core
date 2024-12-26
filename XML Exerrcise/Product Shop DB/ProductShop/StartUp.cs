@@ -1,4 +1,5 @@
 ﻿using ProductShop.Data;
+using ProductShop.DTOs.Export;
 using ProductShop.DTOs.Import;
 using ProductShop.Models;
 using System.Xml.Serialization;
@@ -13,7 +14,7 @@ namespace ProductShop
 
             var inputFiles = File.ReadAllText("../../../Datasets/categories-products.xml");
 
-            Console.WriteLine(ImportCategoryProducts(dbContext, inputFiles));
+            Console.WriteLine(GetProductsInRange(dbContext));
         }
 
         public static string ImportUsers(ProductShopContext context, string inputXml)
@@ -102,6 +103,23 @@ namespace ProductShop
             context.SaveChanges();
 
             return $"Successfully imported {categoryProducts.Count}";
+        }
+
+        public static string GetProductsInRange(ProductShopContext context)
+        {
+            var productsInRange = context.Products
+                .Where(p => p.Price >= 500 && p.Price <=1000)
+                .OrderBy(p => p.Price)
+                .Select(dto => new ProductsInRangeExportDto()
+                {
+                    Name = dto.Name,
+                    Price = dto.Price,
+                    Byer = $"{dto.Buyer.FirstName} {dto.Buyer.LastName}"
+                })
+                .ToList();
+
+
+            return XmlHelper.SerializeToXml(productsInRange, "Products");
         }
 
     }
