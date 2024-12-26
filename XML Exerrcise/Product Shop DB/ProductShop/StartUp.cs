@@ -14,7 +14,7 @@ namespace ProductShop
 
             var inputFiles = File.ReadAllText("../../../Datasets/categories-products.xml");
 
-            Console.WriteLine(GetProductsInRange(dbContext));
+            Console.WriteLine(GetSoldProducts(dbContext));
         }
 
         public static string ImportUsers(ProductShopContext context, string inputXml)
@@ -120,6 +120,28 @@ namespace ProductShop
 
 
             return XmlHelper.SerializeToXml(productsInRange, "Products");
+        }
+
+        public static string GetSoldProducts(ProductShopContext context)
+        {
+            var soldProducts = context.Products
+                .Where(s => s.Seller.ProductsSold.Any())
+                .OrderBy(n => n.Seller.LastName)
+                .ThenBy(n => n.Seller.FirstName)
+                .Select(userDto => new SoldProductsUserExportDto()
+                {
+                    FirstName = userDto.Seller.FirstName,
+                    LastName = userDto.Seller.LastName,
+                    SoldProducts = userDto.CategoryProducts.Select(prDto => new SoldProductsExportDto()
+                    {
+                        Name = prDto.Product.Name,
+                        Price = prDto.Product.Price
+                    })
+                    .ToArray()
+                })
+                .ToList();
+
+            return XmlHelper.SerializeToXml(soldProducts, "Users");
         }
 
     }
