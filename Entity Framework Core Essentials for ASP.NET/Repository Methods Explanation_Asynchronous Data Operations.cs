@@ -1,4 +1,6 @@
-These methods are designed for asynchronous operations typically in the context of data management, such as when interacting with a database or an external data source. Here's a detailed explanation of each method and why they need to be asynchronous (Task-based):
+These methods are designed for asynchronous operations typically in the context of data management, 
+ such as when interacting with a database or an external data source. 
+ Here's a detailed explanation of each method and why they need to be asynchronous (Task-based):
 
 1. Task<T> GetByIdAsync<T>(object id) where T : class;
 Purpose:
@@ -60,6 +62,7 @@ Concurrency management: Many ORMs handle optimistic concurrency checks asynchron
 Example Usage:
 
 await repository.SaveChangesAsync();
+
 Why Asynchronous(Task) Methods Are Important in Data Operations
 
 Avoiding Thread Blocking:
@@ -82,4 +85,6 @@ These methods reflect a typical workflow in data access layers (e.g., repositori
 GetByIdAsync: Fetch an entity from the database.
 AddAsync or AddRangeAsync: Stage changes to be saved later.
 SaveChangesAsync: Commit all pending changes to the database in a single transaction.
-This approach follows best practices in modern .NET development, ensuring applications are responsive, scalable, and efficient. By using asynchronous methods for data operations, your application can handle high loads and provide a smooth experience for users.
+
+This approach follows best practices in modern .NET development, ensuring applications are responsive, scalable, and efficient. 
+By using asynchronous methods for data operations, your application can handle high loads and provide a smooth experience for users.

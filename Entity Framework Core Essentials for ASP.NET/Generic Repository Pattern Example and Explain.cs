@@ -181,6 +181,7 @@ productService.DeleteProduct(productToDelete);
 
 // Save all changes using UnitOfWork
 await unitOfWork.SaveAsync();
+
 Advantages of Generic Repository Pattern
 Reusability: A single repository can handle all entity types.
 Less Boilerplate: Avoids repetitive CRUD code for each entity.
