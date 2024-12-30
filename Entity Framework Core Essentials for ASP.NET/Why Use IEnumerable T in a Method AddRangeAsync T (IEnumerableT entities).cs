@@ -1,8 +1,10 @@
 Why Use IEnumerable<T> in a Method Like AddRangeAsync<T>(IEnumerable<T> entities)
-Using IEnumerable<T> as a parameter in a method like Task AddRangeAsync<T>(IEnumerable<T> entities) has several advantages. Let’s break it down:
+Using IEnumerable<T> as a parameter in a method like Task AddRangeAsync<T>(IEnumerable<T> entities) has several advantages. 
+Let’s break it down:
 
 1.Abstraction and Flexibility
-IEnumerable<T> is a general-purpose interface that represents a sequence of elements. By using it, you allow the method to accept any collection that implements IEnumerable<T> (e.g., arrays, lists, or custom collections).
+IEnumerable<T> is a general-purpose interface that represents a sequence of elements. 
+By using it, you allow the method to accept any collection that implements IEnumerable<T> (e.g., arrays, lists, or custom collections).
 
 Example:
 The method works with multiple collection types:
@@ -32,10 +34,12 @@ var filteredEntities = allEntities.Where(e => e.IsActive);
 await AddRangeAsync(filteredEntities);
 
 5.Simplicity for Read - Only Operations
-IEnumerable < T > only allows enumeration(read - only access), which communicates intent clearly to the method caller.It ensures the collection cannot be modified within the method, avoiding unintended side effects.
+IEnumerable < T > only allows enumeration(read - only access), which communicates intent clearly to the method caller.
+It ensures the collection cannot be modified within the method, avoiding unintended side effects.
 
 Why Not Use More Specific Interfaces ?
-You could use more specific types like IList < T > or ICollection < T > if the method requires functionality like Add, Remove, or knowing the count upfront (Count). However:
+You could use more specific types like IList < T > or ICollection < T > if the method requires functionality like Add, Remove, or knowing the count upfront (Count). 
+    However:
 
 IEnumerable<T> is sufficient if you just need to iterate through the collection.
 Using a more specific type unnecessarily restricts the method’s usability.
