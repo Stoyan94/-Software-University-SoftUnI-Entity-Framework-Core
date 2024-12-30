@@ -1,16 +1,23 @@
 Inversion of Control (IoC) Design Principle in C#
-Inversion of Control (IoC) is a design principle used to achieve decoupling between classes and their dependencies in an application. This principle is at the heart of modern software design and is heavily utilized in frameworks and libraries to improve modularity, testability, and maintainability.
+Inversion of Control (IoC) is a design principle used to achieve decoupling between classes and their dependencies in an application. 
+This principle is at the heart of modern software design and is heavily utilized in frameworks and libraries to improve modularity, testability, and maintainability.
 
 Key Concepts of IoC
 Dependency Inversion Principle:
 
 High - level modules should not depend on low-level modules. Both should depend on abstractions.
 Abstractions should not depend on details. Details should depend on abstractions.
+
+
 Control Flow Inversion:
 
-Traditionally, the code controls its dependencies (e.g., creating instances). In IoC, the control of creating and managing dependencies is inverted and handed over to a container or framework.
+Traditionally, the code controls its dependencies (e.g., creating instances). 
+In IoC, the control of creating and managing dependencies is inverted and handed over to a container or framework.
+
+
 Techniques to Implement IoC in C#
-IoC can be implemented using various techniques. Below are the most common ones:
+IoC can be implemented using various techniques. 
+    Below are the most common ones:
 
 1.Constructor Injection
 Dependencies are provided to a class through its constructor.
