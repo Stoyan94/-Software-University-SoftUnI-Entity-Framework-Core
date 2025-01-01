@@ -41,10 +41,12 @@ public class CinemaService : ICinemaService
 The CinemaService class implements the ICinemaService interface, meaning it provides a concrete implementation of the methods declared in the interface.
 
 2. private readonly IRepository repo
-Declares a private, read - only dependency on an IRepository. This is an abstraction for accessing the data layer, enabling operations like fetching, adding, or saving data.
+Declares a private, read - only dependency on an IRepository. 
+    This is an abstraction for accessing the data layer, enabling operations like fetching, adding, or saving data.
 
 3. public CinemaService(IRepository _repo)
-A constructor that uses dependency injection to initialize the repo field. The _repo parameter is provided by the dependency injection container or manually.
+A constructor that uses dependency injection to initialize the repo field. 
+    The _repo parameter is provided by the dependency injection container or manually.
 
 4. AddCinemaAsync implementation
 
