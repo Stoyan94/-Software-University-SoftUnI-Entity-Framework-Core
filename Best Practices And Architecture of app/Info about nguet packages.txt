@@ -1,0 +1,2 @@
+It is very important to remember that with nuget packages we work at the Solution level, 
+not at the project level, because over time it may cause us problems with changes (updates) in one of them and it will start to break our application

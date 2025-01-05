@@ -1,0 +1,22 @@
+[
+  {
+    "Id": 1,
+    "Name": "Standard",
+    "Factor": 1.0
+  },
+  {
+    "Id": 2,
+    "Name": "Student",
+    "Factor": 0.8
+  },
+  {
+    "Id": 3,
+    "Name": "Senior",
+    "Factor": 0.7
+  },
+  {
+    "Id": 4,
+    "Name": "Child",
+    "Factor": 0.5
+  }
+]
