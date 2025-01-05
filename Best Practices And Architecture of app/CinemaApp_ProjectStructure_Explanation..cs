@@ -163,24 +163,24 @@ Role: This folder contains database migrations that describe changes in the data
 
 
 📋 Summary of the Structure:
-Folder / File               Role                                 Description
-Program.cs	                Entry point  	                    Starts the application and configures the layers.
-
-ICinemaService.cs	        Interface for the service   	    Defines methods for managing cinema data.
-
-CinemaService.cs	        Business logic service	            Implements business logic for cinemas.
-
-CinemaModel.cs	            DTO model	                        Used for transferring data between layers.
-
-IRepository.cs	            Repository interface                Defines CRUD methods for interacting with the database.
-
-Repository.cs	            Repository	                        Implements CRUD operations.
-
-CinemaDbContext.cs	        DbContext class                     Manages the connection to the database.
-
-Cinema.cs	                Entity class                        Describes the Cinemas table in the database.
-
-ModelBuilderExtension.cs	Fluent API configurations	        Contains configurations for entity models.
+Folder / File               Layer                                 Role                              Description
+Program.cs	                Presentation Layer                    Entry point  	                    Starts the application and configures the layers.
+                                                 
+ICinemaService.cs	        Business Logic Layer(Core)            Interface for the service   	    Defines methods for managing cinema data.
+                                                 
+CinemaService.cs	        Business Logic Layer(Core)            Business logic service	        Implements business logic for cinemas.
+                                                 
+CinemaModel.cs	            Business Logic Layer(Core)            DTO model	                        Used for transferring data between layers.
+                                                 
+IRepository.cs	            Data Access Layer(Infrastructure)     Repository interface              Defines CRUD methods for interacting with the database.
+                                                 
+Repository.cs	            Data Access Layer(Infrastructure)     Repository	                    Implements CRUD operations.
+                                                 
+CinemaDbContext.cs	        Data Access Layer(Infrastructure)     DbContext class                   Manages the connection to the database.
+                                                 
+Cinema.cs	                Data Access Layer(Infrastructure)     Entity class                      Describes the Cinemas table in the database.
+                                                 
+ModelBuilderExtension.cs    Data Access Layer(Infrastructure)	  Fluent API configurations	        Contains configurations for entity models.
 
 
 
@@ -188,3 +188,24 @@ ModelBuilderExtension.cs	Fluent API configurations	        Contains configuratio
 The Presentation Layer (CinemaApp) starts the application and interacts with users.
 The Business Logic Layer (CinemaApp.Core) processes the user's requests and calls the Data Access Layer.
 The Data Access Layer (CinemaApp.Infrastructure) manages the database connection, retrieves or saves data, and returns it to the Business Logic Layer.
+
+
+
+
+Layer	                               References To
+
+Presentation Layer	                 - References CinemaService.cs (Business Logic)
+
+Business Logic Layer (Core)          - References IRepository.cs (Data Access)
+                                     - References CinemaDbContext.cs (Data Access)
+
+Data Access Layer (Infrastructure)	 - References Cinema.cs (Data Model)
+                                     - References CinemaDbContext.cs (Database Context)
+                                     - References ModelBuilderExtension.cs (Schema Configuration)
+
+Repository Layer	                 - References CinemaDbContext.cs (Database Context)
+
+Summary:
+The Presentation Layer communicates with the Business Logic Layer (CinemaService.cs) to fetch data or trigger actions (e.g., movie bookings).
+The Business Logic Layer references the Data Access Layer to interact with the database.
+The Data Access Layer manages models (Cinema.cs) and database schema (ModelBuilderExtension.cs).
