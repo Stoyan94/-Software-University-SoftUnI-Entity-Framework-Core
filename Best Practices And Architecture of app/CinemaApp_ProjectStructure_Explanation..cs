@@ -94,15 +94,25 @@ This project contains files responsible for database interactions, such as repos
 This folder contains common interfaces and implementations used for data access.
 
 📄 IRepository.cs
-Role: A generic repository interface for basic CRUD operations.
+Role: A repository with generic methods, interface for basic CRUD operations.
 Description: Defines methods like:
-All()
-Add(T entity)
-SaveChanges()
+
+IQueryable < T > All<T>() where T : class;
+
+IQueryable<T> AllReadonly<T>() where T : class;
+
+Task<T?> GetByIdAsync<T>(object id) where T : class;
+
+Task AddAsync<T>(T entity) where T : class;
+
+Task AddRangeAsync<T>(IEnumerable<T> entities) where T : class;
+
+Task<int> SaveChangesAsync();
 
 📄 Repository.cs
-Role: The implementation of the generic repository.
+Role: The implementation of the repository with generic methods.
 Description: Contains logic for performing CRUD operations on the database.
+
 📁 Data Folder
 This folder is responsible for managing the database connection and configurations.
 
@@ -203,9 +213,8 @@ Data Access Layer (Infrastructure)	 - References Cinema.cs (Data Model)
                                      - References CinemaDbContext.cs (Database Context)
                                      - References ModelBuilderExtension.cs (Schema Configuration)
 
-Repository Layer	                 - References CinemaDbContext.cs (Database Context)
 
 Summary:
-The Presentation Layer communicates with the Business Logic Layer (CinemaService.cs) to fetch data or trigger actions (e.g., movie bookings).
-The Business Logic Layer references the Data Access Layer to interact with the database.
-The Data Access Layer manages models (Cinema.cs) and database schema (ModelBuilderExtension.cs).
+Program.cs => The Presentation Layer communicates with the Business Logic Layer (CinemaService.cs) to fetch data or trigger actions (e.g., movie bookings).
+CinemaApp.Core => The Business Logic Layer references the Data Access Layer to interact with the database.
+CinemaApp.Infrastructure => The Data Access Layer manages models (Cinema.cs) and database schema (ModelBuilderExtension.cs).
