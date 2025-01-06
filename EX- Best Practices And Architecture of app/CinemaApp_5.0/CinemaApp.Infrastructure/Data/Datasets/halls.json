@@ -1,0 +1,30 @@
+[
+  {
+    "Id": 1,
+    "Name": "Standard"
+  },
+  {
+    "Id": 2,
+    "Name": "Kids"
+  },
+  {
+    "Id": 3,
+    "Name": "Luxury"
+  },
+  {
+    "Id": 4,
+    "Name": "3D"
+  },
+  {
+    "Id": 5,
+    "Name": "IMAX/4DX"
+  },
+  {
+    "Id": 6,
+    "Name": "Motion Controlled Seating"
+  },
+  {
+    "Id": 7,
+    "Name": "Drive-In"
+  }
+]

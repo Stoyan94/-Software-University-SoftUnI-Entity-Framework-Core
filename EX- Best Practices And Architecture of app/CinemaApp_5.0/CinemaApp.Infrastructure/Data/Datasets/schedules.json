@@ -1,0 +1,114 @@
+[
+  {
+    "Id": 1,
+    "MovieId": 1,
+    "HallId": 1,
+    "CinemaId": 1,
+    "Start": "2024-07-20T14:00:00",
+    "Duration": "02:00:00"
+  },
+  {
+    "Id": 2,
+    "MovieId": 1,
+    "HallId": 1,
+    "CinemaId": 2,
+    "Start": "2024-07-20T14:00:00",
+    "Duration": "02:00:00"
+  },
+  {
+    "Id": 3,
+    "MovieId": 2,
+    "HallId": 1,
+    "CinemaId": 3,
+    "Start": "2024-07-20T17:00:00",
+    "Duration": "01:45:00"
+  },
+  {
+    "Id": 4,
+    "MovieId": 2,
+    "HallId": 1,
+    "CinemaId": 5,
+    "Start": "2024-07-21T15:00:00",
+    "Duration": "01:30:00"
+  },
+  {
+    "Id": 5,
+    "MovieId": 3,
+    "HallId": 5,
+    "CinemaId": 6,
+    "Start": "2024-07-22T18:30:00",
+    "Duration": "02:15:00"
+  },
+  {
+    "Id": 6,
+    "MovieId": 3,
+    "HallId": 6,
+    "CinemaId": 11,
+    "Start": "2024-07-23T19:00:00",
+    "Duration": "02:00:00"
+  },
+  {
+    "Id": 7,
+    "MovieId": 3,
+    "HallId": 4,
+    "CinemaId": 15,
+    "Start": "2024-07-24T20:00:00",
+    "Duration": "01:50:00"
+  },
+  {
+    "Id": 8,
+    "MovieId": 1,
+    "HallId": 1,
+    "CinemaId": 19,
+    "Start": "2024-07-25T21:00:00",
+    "Duration": "02:10:00"
+  },
+  {
+    "Id": 9,
+    "MovieId": 9,
+    "HallId": 4,
+    "CinemaId": 17,
+    "Start": "2024-07-26T22:00:00",
+    "Duration": "01:45:00"
+  },
+  {
+    "Id": 10,
+    "MovieId": 8,
+    "HallId": 7,
+    "CinemaId": 18,
+    "Start": "2024-07-27T14:00:00",
+    "Duration": "02:05:00"
+  },
+  {
+    "Id": 11,
+    "MovieId": 6,
+    "HallId": 6,
+    "CinemaId": 13,
+    "Start": "2024-07-28T15:00:00",
+    "Duration": "01:45:00"
+  },
+  {
+    "Id": 12,
+    "MovieId": 5,
+    "HallId": 5,
+    "CinemaId": 10,
+    "Start": "2024-07-29T16:00:00",
+    "Duration": "02:00:00"
+  },
+  {
+    "Id": 13,
+    "MovieId": 7,
+    "HallId": 7,
+    "CinemaId": 7,
+    "Start": "2024-07-30T17:00:00",
+    "Duration": "01:45:00"
+  },
+  {
+    "Id": 14,
+    "MovieId": 4,
+    "HallId": 4,
+    "CinemaId": 4,
+    "Start": "2024-07-31T18:00:00",
+    "Duration": "02:00:00"
+  }
+]

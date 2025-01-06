@@ -1,0 +1,272 @@
+[
+  {
+    "CinemaId": 1,
+    "HallId": 1
+  },
+  {
+    "CinemaId": 1,
+    "HallId": 2
+  },
+  {
+    "CinemaId": 1,
+    "HallId": 4
+  },
+  {
+    "CinemaId": 1,
+    "HallId": 5
+  },
+  {
+    "CinemaId": 1,
+    "HallId": 6
+  },
+  {
+    "CinemaId": 2,
+    "HallId": 1
+  },
+  {
+    "CinemaId": 2,
+    "HallId": 2
+  },
+  {
+    "CinemaId": 3,
+    "HallId": 1
+  },
+  {
+    "CinemaId": 3,
+    "HallId": 4
+  },
+  {
+    "CinemaId": 3,
+    "HallId": 5
+  },
+  {
+    "CinemaId": 3,
+    "HallId": 6
+  },
+  {
+    "CinemaId": 3,
+    "HallId": 7
+  },
+  {
+    "CinemaId": 4,
+    "HallId": 1
+  },
+  {
+    "CinemaId": 4,
+    "HallId": 2
+  },
+  {
+    "CinemaId": 4,
+    "HallId": 3
+  },
+  {
+    "CinemaId": 4,
+    "HallId": 4
+  },
+  {
+    "CinemaId": 4,
+    "HallId": 5
+  },
+  {
+    "CinemaId": 5,
+    "HallId": 1
+  },
+  {
+    "CinemaId": 5,
+    "HallId": 4
+  },
+  {
+    "CinemaId": 6,
+    "HallId": 1
+  },
+  {
+    "CinemaId": 6,
+    "HallId": 4
+  },
+  {
+    "CinemaId": 6,
+    "HallId": 5
+  },
+  {
+    "CinemaId": 7,
+    "HallId": 1
+  },
+  {
+    "CinemaId": 7,
+    "HallId": 4
+  },
+  {
+    "CinemaId": 7,
+    "HallId": 5
+  },
+  {
+    "CinemaId": 7,
+    "HallId": 7
+  },
+  {
+    "CinemaId": 8,
+    "HallId": 1
+  },
+  {
+    "CinemaId": 8,
+    "HallId": 3
+  },
+  {
+    "CinemaId": 8,
+    "HallId": 5
+  },
+  {
+    "CinemaId": 8,
+    "HallId": 6
+  },
+  {
+    "CinemaId": 9,
+    "HallId": 1
+  },
+  {
+    "CinemaId": 9,
+    "HallId": 4
+  },
+  {
+    "CinemaId": 9,
+    "HallId": 5
+  },
+  {
+    "CinemaId": 10,
+    "HallId": 1
+  },
+  {
+    "CinemaId": 10,
+    "HallId": 4
+  },
+  {
+    "CinemaId": 10,
+    "HallId": 5
+  },
+  {
+    "CinemaId": 11,
+    "HallId": 1
+  },
+  {
+    "CinemaId": 11,
+    "HallId": 4
+  },
+  {
+    "CinemaId": 11,
+    "HallId": 5
+  },
+  {
+    "CinemaId": 11,
+    "HallId": 6
+  },
+  {
+    "CinemaId": 12,
+    "HallId": 1
+  },
+  {
+"CinemaId": 12,
+    "HallId": 4
+  },
+  {
+    "CinemaId": 12,
+    "HallId": 5
+  },
+  {
+    "CinemaId": 12,
+    "HallId": 6
+  },
+  {
+    "CinemaId": 13,
+    "HallId": 1
+  },
+  {
+    "CinemaId": 13,
+    "HallId": 4
+  },
+  {
+    "CinemaId": 13,
+    "HallId": 5
+  },
+  {
+    "CinemaId": 13,
+    "HallId": 6
+  },
+  {
+    "CinemaId": 14,
+    "HallId": 1
+  },
+  {
+    "CinemaId": 14,
+    "HallId": 4
+  },
+  {
+    "CinemaId": 14,
+    "HallId": 5
+  },
+  {
+    "CinemaId": 14,
+    "HallId": 6
+  },
+
+  {
+    "CinemaId": 15,
+    "HallId": 1
+  },
+  {
+    "CinemaId": 15,
+    "HallId": 4
+  },
+  {
+    "CinemaId": 15,
+    "HallId": 5
+  },
+  {
+    "CinemaId": 16,
+    "HallId": 1
+  },
+  {
+    "CinemaId": 16,
+    "HallId": 4
+  },
+  {
+    "CinemaId": 16,
+    "HallId": 5
+  },
+
+  {
+    "CinemaId": 17,
+    "HallId": 1
+  },
+  {
+    "CinemaId": 17,
+    "HallId": 4
+  },
+  {
+    "CinemaId": 17,
+    "HallId": 5
+  },
+  {
+    "CinemaId": 18,
+    "HallId": 1
+  },
+  {
+    "CinemaId": 18,
+    "HallId": 2
+  },
+  {
+    "CinemaId": 18,
+    "HallId": 4
+  },
+  {
+    "CinemaId": 18,
+    "HallId": 5
+  },
+  {
+    "CinemaId": 18,
+    "HallId": 7
+  },
+  {
+    "CinemaId": 19,
+    "HallId": 1
+  }
+]
