@@ -4,6 +4,7 @@ using CinemaApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaApp.Infrastructure.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    partial class CinemaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250105124539_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,122 +45,6 @@ namespace CinemaApp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Cinemas");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Address = "Sofia, The Mall",
-                            Name = "Arena"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Address = "Sofia, Mega Mall",
-                            Name = "Arena"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Address = "Varna, Grand Mall",
-                            Name = "Arena"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Address = "Plovdiv, Markovo Tepe",
-                            Name = "Arena"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Address = "Kardzhali, Arena",
-                            Name = "Arena"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Address = "Smolyan, Arena",
-                            Name = "Arena"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Address = "Sofia, Mall Sofia",
-                            Name = "Cinema City"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Address = "Sofia, Paradise Center",
-                            Name = "Cinema City"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Address = "Stara Zagora, Mall Galleria",
-                            Name = "Cinema City"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Address = "Burgas, Mall Galeria",
-                            Name = "Cinema City"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Address = "Plovdiv, Mall Plovdiv",
-                            Name = "Cinema City"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Address = "Rousse, Mall Rousse",
-                            Name = "Cinema City"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Address = "Sofia, Park Center",
-                            Name = "Cine Grand"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Address = "Sofia, Ring Mall",
-                            Name = "Cine Grand"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Address = "Sofia, Bulgaria Mall",
-                            Name = "Cineland"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Address = "Pernik, Mall Pernik",
-                            Name = "Cineland"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Address = "Veliko Tarnovo, Iskra",
-                            Name = "Cineland"
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Address = "Pleven, Central Mall",
-                            Name = "Cineland"
-                        },
-                        new
-                        {
-                            Id = 19,
-                            Address = "Targovishte, Cinemagic",
-                            Name = "Cineland"
-                        });
                 });
 
             modelBuilder.Entity("CinemaApp.Infrastructure.Data.Models.CinemaHall", b =>
