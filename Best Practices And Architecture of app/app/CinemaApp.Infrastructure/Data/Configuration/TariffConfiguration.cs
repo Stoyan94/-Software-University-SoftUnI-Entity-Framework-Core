@@ -6,17 +6,17 @@ using System.Text.Json;
 
 namespace CinemaApp.Infrastructure.Data.Configuration
 {
-    public class UserConfiguration : IEntityTypeConfiguration<User>
+    public class TariffConfiguration : IEntityTypeConfiguration<Tariff>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<Tariff> builder)
         {
-            string path = Path.Combine("bin", "Debug", "net6.0", "Data", "Datasets", "users.json");            
+            string path = Path.Combine("bin", "Debug", "net6.0", "Data", "Datasets", "tariffs.json");
             string data = FileValidationService.ValidateAndReadFile(path);
 
-            var users = JsonSerializer.Deserialize<List<User>>(data);
+            var tariffs = JsonSerializer.Deserialize<List<Tariff>>(data);
 
             builder
-                .HasData(users);
+                .HasData(tariffs);
         }
     }
 }
