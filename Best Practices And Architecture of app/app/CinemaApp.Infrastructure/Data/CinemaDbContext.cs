@@ -27,7 +27,7 @@ namespace CinemaApp.Infrastructure.Data
 
             if (optionsBuilder.IsConfigured == false)
             {
-                optionsBuilder.UseSqlServer(configuration.GetConnectionString("CinemaConnection"));
+                optionsBuilder.UseSqlServer("Server=STOYAN;Database=Cinema;User Id=sa;Password=558955;Trusted_Connection=True;");
             }
         }
 

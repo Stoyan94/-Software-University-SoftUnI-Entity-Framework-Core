@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CinemaApp.Infrastructure.Data.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.Infrastructure.Data.Extension
 {
@@ -6,7 +7,7 @@ namespace CinemaApp.Infrastructure.Data.Extension
     {
         public static void Seed(this ModelBuilder modelBuilder)
         {
-           
+            modelBuilder.ApplyConfiguration(new CinemaConfiguration());
         }
     }
 }
