@@ -15,7 +15,7 @@ var configuration = new ConfigurationBuilder()
 var serviceProvider = new ServiceCollection()
     .AddLogging()
     .AddDbContext<CinemaDbContext>(options =>
-     options.UseSqlServer(configuration.GetConnectionString("CinemaConnection")))
+        options.UseSqlServer(configuration.GetConnectionString("CinemaConnection")))
     .AddScoped<IRepository, Repository>()
     .AddScoped<ICinemaService, CinemaService>()
     .BuildServiceProvider();

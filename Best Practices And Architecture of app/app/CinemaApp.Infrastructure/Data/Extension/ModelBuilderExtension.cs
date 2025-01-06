@@ -8,6 +8,8 @@ namespace CinemaApp.Infrastructure.Data.Extension
         public static void Seed(this ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new CinemaConfiguration());
+            modelBuilder.ApplyConfiguration(new HallConfiguration());
+            modelBuilder.ApplyConfiguration(new CinemasHallsConfiguration());
         }
     }
 }
