@@ -23,7 +23,7 @@ var serviceProvider = new ServiceCollection()
 using var scope = serviceProvider.CreateScope();
 var dbContext = scope.ServiceProvider.GetRequiredService<CinemaDbContext>();
 
-ResetDatabase(dbContext);
+//ResetDatabase(dbContext);
 
 ICinemaService? service = scope.ServiceProvider.GetService<ICinemaService>();
 
