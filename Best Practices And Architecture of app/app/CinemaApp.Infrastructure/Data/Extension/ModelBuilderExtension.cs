@@ -10,6 +10,9 @@ namespace CinemaApp.Infrastructure.Data.Extension
             modelBuilder.ApplyConfiguration(new CinemaConfiguration());
             modelBuilder.ApplyConfiguration(new HallConfiguration());
             modelBuilder.ApplyConfiguration(new CinemasHallsConfiguration());
+
+            //modelBuilder.ApplyConfiguration(new UserConfiguration());
+            
         }
     }
 }

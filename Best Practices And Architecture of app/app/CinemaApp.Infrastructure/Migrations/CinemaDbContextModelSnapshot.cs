@@ -42,7 +42,7 @@ namespace CinemaApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cinemas");
+                    b.ToTable("Cinemas", (string)null);
 
                     b.HasData(
                         new
@@ -173,7 +173,7 @@ namespace CinemaApp.Infrastructure.Migrations
 
                     b.HasIndex("HallId");
 
-                    b.ToTable("CinemaHall");
+                    b.ToTable("CinemaHall", (string)null);
 
                     b.HasData(
                         new
@@ -528,7 +528,7 @@ namespace CinemaApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Halls");
+                    b.ToTable("Halls", (string)null);
 
                     b.HasData(
                         new
@@ -590,7 +590,7 @@ namespace CinemaApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Movies");
+                    b.ToTable("Movies", (string)null);
                 });
 
             modelBuilder.Entity("CinemaApp.Infrastructure.Data.Models.Schedule", b =>
@@ -624,7 +624,7 @@ namespace CinemaApp.Infrastructure.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("Schedules");
+                    b.ToTable("Schedules", (string)null);
                 });
 
             modelBuilder.Entity("CinemaApp.Infrastructure.Data.Models.Seat", b =>
@@ -648,7 +648,7 @@ namespace CinemaApp.Infrastructure.Migrations
 
                     b.HasIndex("HallId");
 
-                    b.ToTable("Seats");
+                    b.ToTable("Seats", (string)null);
                 });
 
             modelBuilder.Entity("CinemaApp.Infrastructure.Data.Models.Tariff", b =>
@@ -669,7 +669,7 @@ namespace CinemaApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tariffs");
+                    b.ToTable("Tariffs", (string)null);
                 });
 
             modelBuilder.Entity("CinemaApp.Infrastructure.Data.Models.Ticket", b =>
@@ -705,7 +705,7 @@ namespace CinemaApp.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tickets");
+                    b.ToTable("Tickets", (string)null);
                 });
 
             modelBuilder.Entity("CinemaApp.Infrastructure.Data.Models.User", b =>
@@ -736,7 +736,7 @@ namespace CinemaApp.Infrastructure.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("CinemaApp.Infrastructure.Data.Models.CinemaHall", b =>
