@@ -8,6 +8,6 @@ namespace CinemaApp.Core.Contracts
         Task AddCinemaAsync(CinemaModel model);
         List<Cinema> GetAllCinemas();
         List<Movie> GetAllMovies();
-        void InsertAdditionalMovies(List<Movie> movies);
+        Task InsertAdditionalMovies(List<Movie> movies);
     }
 }

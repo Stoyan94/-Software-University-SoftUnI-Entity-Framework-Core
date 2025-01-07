@@ -2,6 +2,7 @@
 using CinemaApp.Core.Models;
 using CinemaApp.Infrastructure.Data.Common;
 using CinemaApp.Infrastructure.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.Core.Services
 {
@@ -38,12 +39,14 @@ namespace CinemaApp.Core.Services
 
         public List<Movie> GetAllMovies()
         {
-            throw new NotImplementedException();
+           return repo.AllReadonly<Movie>()
+                      .AsNoTracking().ToList();
         }
 
-        public void InsertAdditionalMovies(List<Movie> movies)
+        public async Task InsertAdditionalMovies(List<Movie> movies)
         {
-            throw new NotImplementedException();
+            await repo.AddAsync(movies);
+            await repo.SaveChangesAsync();            
         }
     }
 }
