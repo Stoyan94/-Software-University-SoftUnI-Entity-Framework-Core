@@ -18,6 +18,7 @@ var serviceProvider = new ServiceCollection()
         options.UseSqlServer(configuration.GetConnectionString("CinemaConnection")))
     .AddScoped<IRepository, Repository>()
     .AddScoped<ICinemaService, CinemaService>()
+    .AddScoped<IMovieService, MovieService>()
     .BuildServiceProvider();
 
 using var scope = serviceProvider.CreateScope();
@@ -25,14 +26,20 @@ var dbContext = scope.ServiceProvider.GetRequiredService<CinemaDbContext>();
 
 //ResetDatabase(dbContext);
 
-ICinemaService? service = scope.ServiceProvider.GetService<ICinemaService>();
+ICinemaService? cinemaService = scope.ServiceProvider.GetService<ICinemaService>();
+IMovieService? movieService = scope.ServiceProvider.GetService<IMovieService>();
 
-if (service is null)
+if (cinemaService is null)
 {
     throw new InvalidOperationException("Failed to resolve ICinemaService.");
 }
 
-ConsoleInterface.Run(service);
+if (movieService is null)
+{
+    throw new InvalidOperationException("Failed to resolve IMovieService.");
+}
+
+ConsoleInterface.Run(cinemaService, movieService);
 
 static void ResetDatabase(CinemaDbContext dbContext)
 {

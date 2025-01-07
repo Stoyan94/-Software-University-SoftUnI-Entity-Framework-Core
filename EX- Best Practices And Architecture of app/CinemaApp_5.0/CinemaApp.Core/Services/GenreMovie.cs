@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CinemaApp.Core.Services
+﻿namespace CinemaApp.Core.Services
 {
-    internal class MovieService
+    public class GenreMovie 
     {
     }
 }

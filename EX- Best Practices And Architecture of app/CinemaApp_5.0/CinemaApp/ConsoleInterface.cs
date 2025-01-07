@@ -10,7 +10,7 @@ using System.Text.Json;
 
 public static class ConsoleInterface
 {
-    public static void Run(ICinemaService cinemaService)
+    public static async void Run(ICinemaService cinemaService, IMovieService movieService)
     {
         Console.WriteLine("Welcome to CinemaApp!");
         Console.WriteLine();
@@ -21,6 +21,7 @@ public static class ConsoleInterface
             Console.WriteLine("0. Insert additional movies from JSON");
             Console.WriteLine("1. List all movies");
             Console.WriteLine("2. List all cinemas");
+            Console.WriteLine("3. List all animations");
 
             string? input = Console.ReadLine();
 
@@ -38,7 +39,7 @@ public static class ConsoleInterface
             }
             else if (input == "1")
             {
-                List<Movie> movies = cinemaService.GetAllMovies();
+                var movies = movieService.GetAllMoviesAsync();                
 
                 if (movies.Count == 0)
                 {
@@ -90,6 +91,17 @@ public static class ConsoleInterface
                     }
                     Console.WriteLine(stringBuilder.ToString().Trim());
                 }
+            }
+            else if (input == "3")
+            {
+                throw new NotImplementedException();
+
+                //var animations = await movieService.GetAllMoviesAsync();
+
+                //foreach (var a in animations)
+                //{
+                //    await Console.Out.WriteLineAsync($"{a.Title} - {a.Genre}");
+                //}
             }
             else
             {

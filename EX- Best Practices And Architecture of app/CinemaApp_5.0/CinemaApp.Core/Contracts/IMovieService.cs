@@ -2,8 +2,8 @@
 
 namespace CinemaApp.Core.Contracts
 {
-    public interface IGenreMovie
+    public interface IMovieService
     {
-        Task<List<Movie>> GetGenreMoviesAsync(string genre);
+        IList<Movie> GetAllMoviesAsync();
     }
 }
