@@ -96,12 +96,7 @@ public static class ConsoleInterface
             {
                 throw new NotImplementedException();
 
-                //var animations = await movieService.GetAllMoviesAsync();
-
-                //foreach (var a in animations)
-                //{
-                //    await Console.Out.WriteLineAsync($"{a.Title} - {a.Genre}");
-                //}
+                
             }
             else
             {

@@ -34,7 +34,8 @@ namespace CinemaApp.Core.Services
 
         public List<Cinema> GetAllCinemas()
         {
-            throw new NotImplementedException();
+            return repo.AllReadonly<Cinema>()
+                       .ToList();
         }     
 
         public async Task InsertAdditionalMovies(List<Movie> movies)
