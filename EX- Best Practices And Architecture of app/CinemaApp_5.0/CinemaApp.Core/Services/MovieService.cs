@@ -14,7 +14,7 @@ namespace CinemaApp.Core.Services
             _repository = repository;
         }       
 
-        public IList<Movie> GetAllMoviesAsync()
+        public IList<Movie> GetAllMovies()
         {
             return  _repository.AllReadonly<Movie>()                              
                               .ToList();

@@ -39,7 +39,7 @@ public static class ConsoleInterface
             }
             else if (input == "1")
             {
-                var movies = movieService.GetAllMoviesAsync();                
+                var movies = movieService.GetAllMovies();                
 
                 if (movies.Count == 0)
                 {

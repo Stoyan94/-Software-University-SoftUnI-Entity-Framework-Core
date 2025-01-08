@@ -4,6 +4,6 @@ namespace CinemaApp.Core.Contracts
 {
     public interface IMovieService
     {
-        IList<Movie> GetAllMoviesAsync();
+        IList<Movie> GetAllMovies();
     }
 }
