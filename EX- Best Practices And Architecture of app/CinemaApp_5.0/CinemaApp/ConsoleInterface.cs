@@ -94,9 +94,21 @@ public static class ConsoleInterface
             }
             else if (input == "3")
             {
-                throw new NotImplementedException();
+                var animations = movieService.GetAllMovies()
+                    .Where(m => m.Genre == Genre.Animation);
 
-                
+                StringBuilder output = new StringBuilder();
+
+                foreach (var animation in animations)
+                {
+                    output.AppendLine($"{animation.Genre}")
+                          .AppendLine($"{animation.Title}")
+                          .AppendLine($"{animation.Description}")
+                          .AppendLine();
+                          
+                }
+
+                Console.WriteLine(output.ToString().TrimEnd());
             }
             else
             {
