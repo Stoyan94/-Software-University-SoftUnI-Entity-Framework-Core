@@ -115,16 +115,10 @@ public static class ConsoleInterface
             {
                 StringBuilder output = new StringBuilder();
 
-                var paginatedMovies = movieService.GetAllMoviesPage(1, 3);
+                var paginatedMovies = GetAllMoviesRecursively(1, 3, movieService);
 
-                foreach (var page in paginatedMovies)
-                {
-                    Console.WriteLine(page.Title);
-                    output.AppendLine(page.Title)
-                          .AppendLine();
-                }
-
-                Console.WriteLine(output.ToString().TrimEnd());
+                Console.WriteLine(paginatedMovies);
+               
             }
             else
             {
@@ -185,6 +179,32 @@ public static class ConsoleInterface
             Console.WriteLine("File not found.");
             return null;
         }
+    }
+
+    private static StringBuilder GetAllMoviesRecursively(int currentPage, int pageSize, IMovieService movieService)
+    {
+        var paginatedMovies = movieService.GetAllMoviesPage(currentPage, pageSize);        
+
+        // Ако няма повече филми, връщаме празен StringBuilder
+        if (!paginatedMovies.Any())
+        {
+            return new StringBuilder();
+        }
+
+        // Събираме текущите заглавия на филми
+        var output = new StringBuilder();
+
+        output.AppendLine($"Page: {currentPage.ToString()}");        
+        foreach (var movie in paginatedMovies)
+        {
+            output.AppendLine(movie.Title);            
+        }
+        output.AppendLine();
+
+        // Добавяме резултата от следващите страници
+        output.Append(GetAllMoviesRecursively(currentPage + 1, pageSize, movieService));
+
+        return output;
     }
 
     private static bool IsValid(object dto)
