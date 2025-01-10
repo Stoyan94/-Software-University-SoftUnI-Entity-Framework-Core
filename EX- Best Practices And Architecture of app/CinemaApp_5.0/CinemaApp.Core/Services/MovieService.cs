@@ -19,5 +19,29 @@ namespace CinemaApp.Core.Services
             return  _repository.AllReadonly<Movie>()                              
                               .ToList();
         }
+
+        public IQueryable<Movie> GetAllMovies(Func<Movie, bool> predicate)
+        {
+            return _repository.AllReadonly<Movie>() 
+                .Where(predicate).AsQueryable();
+        }
+
+        public IQueryable<Movie> GetAllMoviesPage(int pageNumber, int pageSize)
+        {
+            if (pageSize < 1)
+            {
+                throw new ArgumentException(nameof(pageNumber));
+            }
+
+            if (pageNumber < 1)
+            {
+                throw new ArgumentException(nameof(pageSize));
+            }
+
+
+           return _repository.AllReadonly<Movie>()
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize);
+        }
     }
 }

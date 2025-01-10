@@ -22,6 +22,7 @@ public static class ConsoleInterface
             Console.WriteLine("1. List all movies");
             Console.WriteLine("2. List all cinemas");
             Console.WriteLine("3. List all animations");
+            Console.WriteLine("4. List all movies in pages");
 
             string? input = Console.ReadLine();
 
@@ -94,8 +95,8 @@ public static class ConsoleInterface
             }
             else if (input == "3")
             {
-                var animations = movieService.GetAllMovies()
-                    .Where(m => m.Genre == Genre.Animation);
+                var animations = movieService
+                        .GetAllMovies(m => m.Genre == Genre.Animation);
 
                 StringBuilder output = new StringBuilder();
 
@@ -106,6 +107,21 @@ public static class ConsoleInterface
                           .AppendLine($"{animation.Description}")
                           .AppendLine();
                           
+                }
+
+                Console.WriteLine(output.ToString().TrimEnd());
+            }
+            else if (input == "4")
+            {
+                StringBuilder output = new StringBuilder();
+
+                var paginatedMovies = movieService.GetAllMoviesPage(1, 3);
+
+                foreach (var page in paginatedMovies)
+                {
+                    Console.WriteLine(page.Title);
+                    output.AppendLine(page.Title)
+                          .AppendLine();
                 }
 
                 Console.WriteLine(output.ToString().TrimEnd());
