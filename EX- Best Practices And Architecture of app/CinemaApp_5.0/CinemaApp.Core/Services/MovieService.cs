@@ -7,22 +7,22 @@ namespace CinemaApp.Core.Services
 {
     public class MovieService : IMovieService
     {
-        private readonly IRepository _repository;
+        private readonly IRepository repository;
 
-        public MovieService(IRepository repository)
+        public MovieService(IRepository _repository)
         {
-            _repository = repository;
+            repository = _repository;
         }       
 
         public IList<Movie> GetAllMovies()
         {
-            return  _repository.AllReadonly<Movie>()                              
+            return  repository.AllReadonly<Movie>()                              
                               .ToList();
         }
 
-        public IQueryable<Movie> GetAllMovies(Func<Movie, bool> predicate)
+        public IQueryable<Movie> GetAllAnimationsMovies(Func<Movie, bool> predicate)
         {
-            return _repository.AllReadonly<Movie>() 
+            return repository.AllReadonly<Movie>() 
                 .Where(predicate).AsQueryable();
         }
 
@@ -39,7 +39,7 @@ namespace CinemaApp.Core.Services
             }
 
 
-           return _repository.AllReadonly<Movie>()
+           return repository.AllReadonly<Movie>()
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize);
         }

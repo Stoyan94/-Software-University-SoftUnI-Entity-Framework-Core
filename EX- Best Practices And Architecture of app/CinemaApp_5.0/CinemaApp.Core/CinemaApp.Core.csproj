@@ -10,4 +10,8 @@
     <ProjectReference Include="..\CinemaApp.Infrastructure\CinemaApp.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\DTOs\" />
+  </ItemGroup>
+
 </Project>
