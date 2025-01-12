@@ -4,7 +4,7 @@ Example:
 Assuming you have an Employees table with columns FirstName, LastName, and Salary, the ToQueryString() method will return a SQL query similar to this:
 
 sql
-ode
+code
 SELECT [e].[FirstName], [e].[LastName], [e].[Salary]
 FROM [Employees] AS [e]
 
