@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Json;
+using System.Xml.Linq;
 
 public static class ConsoleInterface
 {
@@ -23,9 +24,9 @@ public static class ConsoleInterface
             Console.WriteLine("2. List all cinemas");
             Console.WriteLine("3. List all animations");
             Console.WriteLine("4. List all movies in pages");
-            Console.WriteLine("5. Default");
+            Console.WriteLine("5. Find a cinema by town name.");
 
-            string? input = Console.ReadLine();
+            string ? input = Console.ReadLine();
 
             if (input == "0")
             {
@@ -123,7 +124,14 @@ public static class ConsoleInterface
             }
             else if (input == "5")
             {
-                
+                string inputName = Console.ReadLine()!.ToLower();
+
+                var cinemasByTown = cinemaService.GetAllCinemasByTown(inputName);
+
+                foreach (var cinema in cinemasByTown)
+                {
+                    Console.WriteLine($"Cinema {cinema.Name} is in {cinema.Address} and has a {cinema.NumberOfHalls}");
+                }
             }
             else
             {
