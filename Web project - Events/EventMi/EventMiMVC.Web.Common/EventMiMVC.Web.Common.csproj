@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\EventMiMVC.Web.Common\EventMiMVC.Web.Common.csproj" />
-  </ItemGroup>
-
 </Project>

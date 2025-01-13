@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EventMiMVC.Web.Common\EventMiMVC.Web.Common.csproj" />
+    <ProjectReference Include="..\EventMiMVC.Web.Data.Models\EventMiMVC.Web.Data.Models.csproj" />
   </ItemGroup>
 
 </Project>
