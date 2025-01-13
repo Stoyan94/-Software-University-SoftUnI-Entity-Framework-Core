@@ -5,7 +5,8 @@ It takes an array of strings(args) as parameters, which can be used to pass comm
 
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-This line creates a new WebApplicationBuilder instance using the provided command - line arguments.The builder is used to configure and build the web application's services and middleware.
+This line creates a new WebApplicationBuilder instance using the provided command - line arguments.
+The builder is used to configure and build the web application's services and middleware.
 
 
 

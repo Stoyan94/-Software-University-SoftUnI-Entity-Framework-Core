@@ -5,7 +5,7 @@ namespace EventMiMVC.Web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
             string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -36,7 +36,12 @@ namespace EventMiMVC.Web
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            app.Run();
+            IServiceScope serviceScope = app.Services.CreateScope();
+            EventMiDbContext context = serviceScope.ServiceProvider.GetRequiredService<EventMiDbContext>();
+            await context.Database.MigrateAsync();
+            
+
+           await app.RunAsync(); 
         }
     }
 }
