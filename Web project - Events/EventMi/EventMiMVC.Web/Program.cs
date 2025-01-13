@@ -1,15 +1,21 @@
+using EventMiMVC.Web.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace EventMiMVC.Web
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+            string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddDbContext<EventMiDbContext>(optionsBuilder =>
+                optionsBuilder.UseSqlServer(connectionString));
 
-            var app = builder.Build();
+            WebApplication app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
