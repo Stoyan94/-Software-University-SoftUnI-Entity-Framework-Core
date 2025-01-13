@@ -1,4 +1,4 @@
-namespace EventMiMVC.Web.ViewModels
+namespace EventMi.Web.ViewModels.Home
 {
     public class ErrorViewModel
     {
@@ -7,3 +7,4 @@ namespace EventMiMVC.Web.ViewModels
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     }
 }
+ 

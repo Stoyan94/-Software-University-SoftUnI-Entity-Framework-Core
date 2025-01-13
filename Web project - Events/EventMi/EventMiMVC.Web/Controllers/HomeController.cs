@@ -1,8 +1,8 @@
-using EventMiMVC.Web.Data;
-using EventMiMVC.Web.ViewModels;
 
 namespace EventMiMVC.Web.Controllers
 {
+    using Data;
+    using EventMi.Web.ViewModels.Home;
     using Microsoft.AspNetCore.Mvc;
     using System.Diagnostics;
     public class HomeController : Controller
