@@ -1,3 +1,4 @@
+using EventMiMVC.Web.Data;
 using EventMiMVC.Web.ViewModels;
 
 namespace EventMiMVC.Web.Controllers
@@ -6,9 +7,10 @@ namespace EventMiMVC.Web.Controllers
     using System.Diagnostics;
     public class HomeController : Controller
     {
-        public HomeController()
+        private readonly EventMiDbContext _context;
+        public HomeController(EventMiDbContext dbContext)
         {
-            
+            _context = dbContext;
         }
 
         public IActionResult Index()
