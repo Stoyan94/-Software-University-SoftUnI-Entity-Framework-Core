@@ -16,7 +16,8 @@ namespace EventMiMVC.Web
             // This will add the services to the application's service container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<EventMiDbContext>(optionsBuilder =>
-                optionsBuilder.UseSqlServer(connectionString));
+                optionsBuilder.UseSqlServer(connectionString))
+            builder.Services.AddScoped<ieventser>();
 
             // Build the application
             // This class is used to configure the HTTP request pipeline and start the application.

@@ -1,6 +1,9 @@
-﻿namespace EventMi.Web.Services.Data.Contracts
+﻿using EventMi.Web.ViewModels.Event;
+
+namespace EventMi.Web.Services.Data.Contracts
 { 
-    internal interface IEventService
+    public interface IEventService
     {
+        Task<bool> AddEvenet(AddEventFormModel eventFormModel);
     }
 }
