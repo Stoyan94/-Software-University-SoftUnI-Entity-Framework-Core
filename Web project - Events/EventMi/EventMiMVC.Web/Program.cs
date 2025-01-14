@@ -1,3 +1,5 @@
+using EventMi.Web.Services.Data;
+using EventMi.Web.Services.Data.Contracts;
 using EventMiMVC.Web.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,8 +18,10 @@ namespace EventMiMVC.Web
             // This will add the services to the application's service container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<EventMiDbContext>(optionsBuilder =>
-                optionsBuilder.UseSqlServer(connectionString))
-            builder.Services.AddScoped<ieventser>();
+                optionsBuilder.UseSqlServer(connectionString));
+
+            //This will add the EventService class to the service container.
+            builder.Services.AddScoped<IEventService, EventService>();
 
             // Build the application
             // This class is used to configure the HTTP request pipeline and start the application.
