@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EventMi.Web.ViewModels\EventMi.Web.ViewModels.csproj" />
+    <ProjectReference Include="..\EventMiMVC.Web.Data.Models\EventMiMVC.Web.Data.Models.csproj" />
+  </ItemGroup>
+
 </Project>

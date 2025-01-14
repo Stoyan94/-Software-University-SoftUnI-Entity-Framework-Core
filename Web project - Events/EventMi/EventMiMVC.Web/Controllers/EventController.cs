@@ -19,6 +19,7 @@ namespace EventMiMVC.Web.Controllers
                 return View(model);
             }
 
+            return View(model);
         }
     }
 }
