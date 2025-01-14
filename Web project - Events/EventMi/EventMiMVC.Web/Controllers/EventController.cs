@@ -1,6 +1,7 @@
 ﻿using EventMi.Web.Services.Data.Contracts;
 using EventMi.Web.ViewModels.Event;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace EventMiMVC.Web.Controllers
 {
@@ -34,28 +35,39 @@ namespace EventMiMVC.Web.Controllers
                                     // This will display the validation errors to the user
             }
 
-            bool addSuccess = await eventService.AddEvenet(model); // Call the AddEvenet method of the eventService
+            if (!ModelState.IsValid)
+            {
+                return View(model); // Return the view with the model if the model state is not valid
+                // This will display the validation errors to the user
+            }
+
             
+            // This will display the data that the user entered in the form
+            bool addSuccess = await eventService.AddEvenet(model); // Call the AddEvenet method of the eventService
+
             if (!addSuccess)
             {
-                ModelState.AddModelError(nameof(model.StartDate), "Start and or End date is not in correct format!");
-                return View(model); // Return the view with the model if the event could not be added
-                                    // This will display an error message to the user
+                ModelState.AddModelError(nameof(model.StartDate), "Start or End date is not in correct format!");
+                return View(model); 
+                
+                // Return the view with the model if the event could not be added
+                //DateTime startDate = DateTime.Parse(model.StartDate);
+                //DateTime endDate = DateTime.Parse(model.EndDate);
+                //if (startDate < endDate)
+                //{
+                //    ModelState.AddModelError(nameof(model.StartDate), "The start date must be earlier than the end date!");
+                //    return View(model);
+                //}
+                //else
+                //{
+                //    ModelState.AddModelError(nameof(model.EndDate), "The end date must be later than the start date!");
+                //    return View(model);
+                //}
+
+                // This will display an error message to the user
             }
 
-            DateTime startDate = DateTime.Parse(model.StartDate);
-            DateTime endDate = DateTime.Parse(model.EndDate);
-
-            if (startDate >= endDate)
-            {
-                ModelState.AddModelError(nameof(model.StartDate), "The start date must be earlier than the end date!");
-                return View(model);
-            }
-            else
-            {
-                ModelState.AddModelError(nameof(model.EndDate), "The end date must be later than the start date!");
-                return View(model);
-            }
+          
 
             return RedirectToAction("Index", "Home");
             // Redirect the user to the home page if the event was added successfully
