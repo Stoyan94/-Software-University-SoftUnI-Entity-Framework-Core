@@ -90,12 +90,18 @@ namespace EventMiMVC.Web.Controllers
 
         [HttpPost]
 
-        public async Task<IActionResult> Edit(int id, EditEventFormModel model)
+        public async Task<IActionResult> Edit(int? id, EditEventFormModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
+
+            if (!id.HasValue)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
 
             bool isStartDateValid = DateTime.TryParse(model.StartDate, CultureInfo.InvariantCulture,
                 DateTimeStyles.None, out DateTime startDate);
@@ -117,7 +123,7 @@ namespace EventMiMVC.Web.Controllers
 
             try
             {
-                await eventService.EditEventById(id, model, startDate, endDate);
+                await eventService.EditEventById(id.Value, model, startDate, endDate);
                 return RedirectToAction("Index", "Home");
             }
             catch (Exception e)

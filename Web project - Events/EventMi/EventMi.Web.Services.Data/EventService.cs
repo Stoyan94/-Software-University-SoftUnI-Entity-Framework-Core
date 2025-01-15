@@ -42,6 +42,7 @@ namespace EventMi.Web.Services.Data
                     Place = e.Place
                 }).FirstAsync();
 
+            
             return eventForm;
         }
 
