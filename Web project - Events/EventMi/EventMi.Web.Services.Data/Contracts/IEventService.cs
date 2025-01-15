@@ -4,6 +4,10 @@ namespace EventMi.Web.Services.Data.Contracts
 { 
     public interface IEventService
     {
-        Task<bool> AddEvenet(AddEventFormModel eventFormModel);
+        Task AddEvenet(AddEventFormModel eventFormModel, DateTime startDate, DateTime endDate);
+
+        Task<EditEventFormModel> GetEventById(int id);
+
+        Task EditEventById(int id, EditEventFormModel eventFormModel, DateTime startDate, DateTime endDate);
     }
 }
