@@ -22,7 +22,8 @@ namespace EventMi.Web.Services.Data
                 Name = eventFormModel.Name,
                 StartDate = startDate,
                 EndDate = endDate,
-                Place = eventFormModel.Place
+                Place = eventFormModel.Place,
+                IsActive = true
             };
 
             await dbContext.Events.AddAsync(newEvent);

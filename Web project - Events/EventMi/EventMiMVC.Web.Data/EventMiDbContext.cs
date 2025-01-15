@@ -10,7 +10,7 @@ namespace EventMiMVC.Web.Data
             
         }
 
-        public EventMiDbContext(DbContextOptions<EventMiDbContext> options)
+        public EventMiDbContext(DbContextOptions options)
                : base(options)
         {
             
@@ -30,7 +30,9 @@ namespace EventMiMVC.Web.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Event>()
+                .Property(e => e.IsActive)
+                .HasDefaultValue(true);
         }
     }
 }

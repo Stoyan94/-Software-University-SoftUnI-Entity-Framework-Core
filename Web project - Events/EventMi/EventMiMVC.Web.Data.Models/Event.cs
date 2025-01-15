@@ -19,5 +19,7 @@
         [Required]
         [MaxLength(EventPlaceMaxLength)]
         public required string Place { get; set; }
+
+        public required bool? IsActive { get; set; }
     }
 }
