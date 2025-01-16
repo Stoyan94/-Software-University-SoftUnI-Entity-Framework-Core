@@ -16,7 +16,7 @@ namespace EventMi.Web.Services.Data
         {
             dbContext = _dbContext;
         }
-        public async Task AddEvenet(AddEventFormModel eventFormModel, DateTime startDate, DateTime endDate)
+        public async Task AddEvent(AddEventFormModel eventFormModel, DateTime startDate, DateTime endDate)
         {
             Event newEvent = new Event
             {
@@ -76,6 +76,25 @@ namespace EventMi.Web.Services.Data
             eventToEdit.Place = eventFormModel.Place;
 
            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteEventById(int id)
+        {
+            Event? eventToDelete = await dbContext.Events
+                .FirstOrDefaultAsync(e => e.Id == id);
+
+            if (eventToDelete is null)
+            {
+                throw new InvalidOperationException("Event not found");
+            }
+
+            if (!eventToDelete!.IsActive!.Value)
+            {
+                throw new InvalidOperationException();
+            }
+
+            dbContext.Remove(eventToDelete);
+            await dbContext.SaveChangesAsync();
         }
     }
 }

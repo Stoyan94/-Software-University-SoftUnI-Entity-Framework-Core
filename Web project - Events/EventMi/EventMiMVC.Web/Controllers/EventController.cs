@@ -1,11 +1,7 @@
-﻿using System.Globalization;
-using EventMi.Web.Services.Data.Contracts;
+﻿using EventMi.Web.Services.Data.Contracts;
 using EventMi.Web.ViewModels.Event;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Runtime.Intrinsics.X86;
-using System.Runtime.Serialization;
+using System.Globalization;
 
 namespace EventMiMVC.Web.Controllers
 {
@@ -59,7 +55,7 @@ namespace EventMiMVC.Web.Controllers
 
 
             // This will display the data that the user entered in the form
-            await eventService.AddEvenet(model, startDate, endDate ); // Call the AddEvenet method of the eventService
+            await eventService.AddEvent(model, startDate, endDate ); // Call the AddEvent method of the eventService
             
 
             return RedirectToAction("Index", "Home");
@@ -147,6 +143,28 @@ namespace EventMiMVC.Web.Controllers
                 EditEventFormModel eventModel = await eventService.GetEventById(id.Value);
 
                 return View(eventModel);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+
+        [HttpPost]
+
+        public async Task<IActionResult> Delete(int? id, EditEventFormModel model)
+        {
+            if (!id.HasValue)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+
+            try
+            {
+                await eventService.DeleteEventById(id.Value);
+                return RedirectToAction("Index", "Home");
             }
             catch (Exception)
             {
