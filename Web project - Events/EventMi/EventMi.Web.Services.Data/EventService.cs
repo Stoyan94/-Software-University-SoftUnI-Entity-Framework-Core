@@ -4,6 +4,7 @@ using EventMi.Web.ViewModels.Event;
 using EventMiMVC.Web.Data;
 using EventMiMVC.Web.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace EventMi.Web.Services.Data
 {
@@ -32,15 +33,28 @@ namespace EventMi.Web.Services.Data
 
         public async Task<EditEventFormModel> GetEventById(int id)
         {
-            EditEventFormModel eventForm = await dbContext.Events
-                .Where(e => e.Id == id)
-                .Select(e => new EditEventFormModel()
-                {
-                    Name = e.Name,
-                    StartDate = e.StartDate.ToString("G"),
-                    EndDate = e.EndDate.ToString("G"),
-                    Place = e.Place
-                }).FirstAsync();
+            Event? eventDb = await dbContext.Events
+                .FirstOrDefaultAsync(e => e.Id == id);
+
+            if (eventDb == null)
+            {
+                throw new InvalidOperationException("Event not found");
+            }
+
+            if (!eventDb.IsActive!.Value)
+            {
+                throw new InvalidOperationException();
+            }
+
+            EditEventFormModel eventForm = new EditEventFormModel
+            {
+                Name = eventDb.Name,
+                StartDate = eventDb.StartDate.ToString("G"),
+                EndDate = eventDb.EndDate.ToString("G"),
+                Place = eventDb.Place
+            };
+
+           
 
             
             return eventForm;
@@ -49,7 +63,12 @@ namespace EventMi.Web.Services.Data
         public async Task EditEventById(int id, EditEventFormModel eventFormModel, DateTime startDate, DateTime endDate)
         {
             Event eventToEdit = await dbContext.Events
-                .FirstAsync(e => e.Id == id);
+            .FirstAsync(e => e.Id == id);
+
+            if (!eventToEdit.IsActive!.Value)
+            {
+                throw new InvalidOperationException();
+            }
 
             eventToEdit.Name = eventFormModel.Name;
             eventToEdit.StartDate = startDate;

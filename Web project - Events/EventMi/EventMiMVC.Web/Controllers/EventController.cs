@@ -82,7 +82,7 @@ namespace EventMiMVC.Web.Controllers
                 return View(eventModel); 
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -124,14 +124,35 @@ namespace EventMiMVC.Web.Controllers
             try
             {
                 await eventService.EditEventById(id.Value, model, startDate, endDate);
-                return RedirectToAction("Index", "Home");
+                return View();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return RedirectToAction("Index", "Home");
             }
 
         }
-        
+
+        [HttpGet]
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            try
+            {
+                EditEventFormModel eventModel = await eventService.GetEventById(id.Value);
+
+                return View(eventModel);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
     }
 }
