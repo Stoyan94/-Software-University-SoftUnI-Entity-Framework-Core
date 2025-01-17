@@ -77,7 +77,6 @@ namespace EventMiMVC.Web.Controllers
 
             try
             {
-                //we check for error because the user may pass a non - existent id and we in service use First() and make sure it won't return null
                 EditEventFormModel eventModel = await eventService.GetEventById(id.Value);
 
                 return View(eventModel); 

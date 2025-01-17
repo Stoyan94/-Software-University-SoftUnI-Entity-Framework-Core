@@ -18,6 +18,7 @@ namespace EventMi.Web.Services.Data
         }
         public async Task AddEvent(AddEventFormModel eventFormModel, DateTime startDate, DateTime endDate)
         {
+            // Create a new Event object and set its properties to the values from the form model
             Event newEvent = new Event
             {
                 Name = eventFormModel.Name,
@@ -33,6 +34,10 @@ namespace EventMi.Web.Services.Data
 
         public async Task<EditEventFormModel> GetEventById(int id)
         {
+            // Find the event by id
+            // If the event is not found, throw an exception
+            // If the event is not active, throw an exception
+            // Create a new EditEventFormModel object and set its properties to the values of the event
             Event? eventDb = await dbContext.Events
                 .FirstOrDefaultAsync(e => e.Id == id);
 
@@ -53,15 +58,15 @@ namespace EventMi.Web.Services.Data
                 EndDate = eventDb.EndDate.ToString("G"),
                 Place = eventDb.Place
             };
-
-           
-
             
             return eventForm;
         }
 
         public async Task EditEventById(int id, EditEventFormModel eventFormModel, DateTime startDate, DateTime endDate)
         {
+            // Find the event by id
+            // If the event is not found, throw an exception
+            // Update the event's properties with the values from the form model
             Event eventToEdit = await dbContext.Events
             .FirstAsync(e => e.Id == id);
 
