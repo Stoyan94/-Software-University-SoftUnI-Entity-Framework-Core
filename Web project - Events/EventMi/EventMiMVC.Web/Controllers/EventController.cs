@@ -2,6 +2,7 @@
 using EventMi.Web.ViewModels.Event;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
+using EventMiMVC.Web.Data.Models;
 
 namespace EventMiMVC.Web.Controllers
 {
@@ -62,9 +63,13 @@ namespace EventMiMVC.Web.Controllers
             // Redirect the user to the home page if the event was added successfully
         }
 
-        [HttpGet]
+        
+        [HttpGet] // This method will be called when the user navigates to the /event/edit/{id} URL
+                  // It will return the Edit view to the user
+                  // The Edit view will contain a form that the user can fill out to edit an existing event
         public async Task<IActionResult> Edit(int? id)
         {
+
             if (!id.HasValue)
             {
                 return RedirectToAction("Index", "Home");
