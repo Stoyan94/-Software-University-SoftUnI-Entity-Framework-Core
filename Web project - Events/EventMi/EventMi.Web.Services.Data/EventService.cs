@@ -19,6 +19,13 @@ namespace EventMi.Web.Services.Data
         public async Task AddEvent(AddEventFormModel eventFormModel, DateTime startDate, DateTime endDate)
         {
             // Create a new Event object and set its properties to the values from the form model
+
+            startDate = new DateTime(startDate.Year, startDate.Month, startDate.Day, startDate.Hour, startDate.Minute,
+                0);
+            endDate = new DateTime(startDate.Year, startDate.Month, startDate.Day, startDate.Hour, startDate.Minute,
+                0);
+            
+            
             Event newEvent = new Event
             {
                 Name = eventFormModel.Name,
@@ -54,8 +61,8 @@ namespace EventMi.Web.Services.Data
             EditEventFormModel eventForm = new EditEventFormModel
             {
                 Name = eventDb.Name,
-                StartDate = eventDb.StartDate.ToString("G"),
-                EndDate = eventDb.EndDate.ToString("G"),
+                StartDate = eventDb.StartDate.ToString("f"),
+                EndDate = eventDb.EndDate.ToString("f"),
                 Place = eventDb.Place
             };
             

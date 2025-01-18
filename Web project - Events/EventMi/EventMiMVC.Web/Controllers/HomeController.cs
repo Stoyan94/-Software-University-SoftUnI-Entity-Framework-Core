@@ -7,10 +7,9 @@ namespace EventMiMVC.Web.Controllers
     using System.Diagnostics;
     public class HomeController : Controller
     {
-        private readonly EventMiDbContext _context;
         public HomeController(EventMiDbContext dbContext)
         {
-            _context = dbContext;
+            
         }
 
         public IActionResult Index()

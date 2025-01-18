@@ -56,13 +56,15 @@ This helps to display a user-friendly error page instead of the default error pa
 This line enables HTTP Strict Transport Security (HSTS) for the application. 
 HSTS is a security feature that enforces the use of HTTPS and helps protect against certain types of attacks. 
 The default duration is 30 days.
+HSTS: "HTTP Strict Transport Security"
 
 
 
 
     app.UseHttpsRedirection();
 This line forces all HTTP requests to be redirected to HTTPS, ensuring secure communication between the client and the server.
-
+HTTP: "Hypertext Transfer Protocol"
+HTTPS: "Hypertext Transfer Protocol Secure"
 
 
 
@@ -209,10 +211,14 @@ This code sets up an ASP.NET Core web application, configures services, sets up 
 
          Този ред активира HTTP Strict Transport Security (HSTS) за приложението.
          HSTS е защитна функция, която налага използването на HTTPS и помага за защита от определени видове атаки.
+         HSTS: "Строга транспортна защита на HTTP"
+         или "Строга политика за транспортна сигурност на HTTP".
     }
 
     app.UseHttpsRedirection();
      Този ред пренасочва всички HTTP заявки към HTTPS, като гарантира сигурна комуникация между клиента и сървъра.
+     HTTP: "Протокол за пренос на хипертекст"
+     HTTPS: "Протокол за пренос на хипертекст със защита"
 
 
     app.UseStaticFiles();
@@ -236,6 +242,7 @@ This code sets up an ASP.NET Core web application, configures services, sets up 
      съответния контролер и действие. Ако не е предоставен конкретен маршрут, приложението ще използва 
      контролера "Home" и действието "Index" по подразбиране. Параметърът id е опционален.
 
+     URL (Uniform Resource Locator) се превежда като "Унифициран локатор на ресурси".
 
 
     IServiceScope serviceScope = app.Services.CreateScope();
@@ -273,13 +280,13 @@ app.UseHsts();: Активира HTTP Strict Transport Security (HSTS).
 
 app.UseHttpsRedirection();: Пренасочва HTTP заявки към HTTPS.
 
-app.UseStaticFiles();: Обслужва статични файлове.
+app.UseStaticFiles();: Обслужва статични файлове. HTML, CSS, JavaScript, изображения
 
-app.UseRouting();: Активира маршрутизация.
+app.UseRouting();: Активира маршрутизация.(контролери, действия)
 
 app.UseAuthorization();: Активира middleware за оторизация.
 
-app.MapControllerRoute(...);: Дефинира маршрут по подраз
+app.MapControllerRoute(...);: Дефинира маршрут по подразбиране.
 
 IServiceScope serviceScope = app.Services.CreateScope();: Създава обхват на услугите (Service Scope).
 
