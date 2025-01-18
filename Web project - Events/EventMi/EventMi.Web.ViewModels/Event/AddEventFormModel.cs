@@ -7,7 +7,6 @@ namespace EventMi.Web.ViewModels.Event
     using static EntityConstraint;
     public class AddEventFormModel
     {
-        //public int Id { get; set; }
         [StringLength(EventNameMaxLength, MinimumLength = EventNameMinLength)]
         public required string Name { get; set; } = null!;
 
