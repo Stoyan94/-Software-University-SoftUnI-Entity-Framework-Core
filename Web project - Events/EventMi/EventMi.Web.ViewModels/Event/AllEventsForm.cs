@@ -4,9 +4,9 @@ using EventMiMVC.Web.Common;
 namespace EventMi.Web.ViewModels.Event
 {
     using static EntityConstraint;
-    public class EditEventFormModel
+    public class AllEventsForm
     {
-        //public int Id { get; set; }
+        public int Id { get; set; }
 
         [StringLength(EventNameMaxLength, MinimumLength = EventNameMinLength)]
         public required string Name { get; set; } = null!;
@@ -20,6 +20,5 @@ namespace EventMi.Web.ViewModels.Event
         [MaxLength(EventDescriptionMaxLength)]
         public string? Description { get; set; }
         public required string Place { get; set; } = null!;
-
     }
 }
