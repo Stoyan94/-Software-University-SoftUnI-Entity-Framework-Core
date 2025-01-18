@@ -1,0 +1,17 @@
+The word "unified" comes from the Latin word "unificare" and means "combined," "standardized," or "put into a single form." 
+In the context of "Uniform Resource Locator" (URL), 
+the term "unified" refers to the standard or widely accepted way of defining addresses for internet resources.
+
+This means that a URL is a widely accepted standard for specifying the location of resources on the internet, 
+which is consistent and unambiguous across all websites and servers, 
+allowing any location to be accessible from any browser or system on the internet.
+
+бг превод
+
+Думата "унифициран" идва от латинската дума "unificare" и означава "обединен", "стандартизиран" или "поставен в единна форма". 
+В контекста на "унифициран локатор на ресурси" (URL), терминът "унифициран" се отнася до стандарта или общоприетия начин, 
+по който се дефинират адресите на интернет ресурси.
+
+Това означава, че URL е общоприет стандарт за указване на местоположението на ресурси в интернет, 
+който е еднозначен и последователен за всички сайтове и сървъри, 
+така че всяко местоположение да може да бъде достъпно от всеки браузър или система в интернет. 
