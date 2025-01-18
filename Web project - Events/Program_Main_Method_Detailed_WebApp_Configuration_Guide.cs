@@ -142,3 +142,150 @@ This code sets up an ASP.NET Core web application, configures services, sets up 
 - context.Database.Migrate();: Applies any pending migrations.
 
 - app.Run();: Starts the application.
+
+
+
+
+
+ БГ ПРЕВОД
+
+
+    public static void Main(string[] args)
+{
+    Това е входната точка на приложението. Методът Main е първият метод, който се извиква при стартирането на приложението.
+    Той приема масив от низове (args) като параметри, които могат да се използват за предаване на аргументи от командния ред на приложението.
+
+    WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+    Този ред създава нова инстанция на WebApplicationBuilder, използвайки предоставените аргументи от командния ред.
+    Builder-ът се използва за конфигуриране и изграждане на услугите и междинния софтуер (middleware) на уеб приложението.
+
+
+    string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+     Този ред извлича връзковия низ (connection string) с име "DefaultConnection" от конфигурационните настройки на приложението 
+     (обикновено от файла appsettings.json или променливи на средата). 
+     Връзковият низ се използва за връзка с базата данни.
+
+
+     Добавяне на услуги към контейнера.
+    builder.Services.AddControllersWithViews();
+
+     Този ред добавя необходимите услуги към контейнера за dependency injection, за да поддържа контролери с изгледи (MVC модел).
+     Това позволява на приложението да използва контролери и да обслужва изгледи.
+
+
+
+    builder.Services.AddDbContext<EventMiDbContext>(optionsBuilder =>
+        optionsBuilder.UseSqlServer(connectionString));
+
+     Този ред регистрира EventMiDbContext в контейнера за dependency injection, 
+     конфигурирайки го да използва SQL Server с предоставения връзков низ.
+     EventMiDbContext е класът за контекста на Entity Framework, който взаимодейства с базата данни.
+
+
+
+    WebApplication app = builder.Build();
+
+     Този ред изгражда WebApplication, използвайки конфигурирания builder.
+     Полученият обект app представлява конфигурираното уеб приложение.
+
+
+     Конфигуриране на HTTP заявките.
+
+    if (!app.Environment.IsDevelopment())
+    {
+         Този ред проверява дали приложението се изпълнява в среда за разработка.
+         Ако не е, следващият блок код ще бъде изпълнен за конфигуриране на настройки, специфични за продукция.
+
+        app.UseExceptionHandler("/Home/Error");
+
+         Този ред конфигурира глобален обработчик на изключения, който пренасочва потребителите към маршрута "/Home/Error" 
+         при възникване на необработено изключение. Това помага за показване на потребителски ориентирана страница за грешки.
+
+
+         Стойността по подразбиране на HSTS е 30 дни. Препоръчва се промяна за продукционни сценарии.
+        app.UseHsts();
+
+         Този ред активира HTTP Strict Transport Security (HSTS) за приложението.
+         HSTS е защитна функция, която налага използването на HTTPS и помага за защита от определени видове атаки.
+    }
+
+    app.UseHttpsRedirection();
+     Този ред пренасочва всички HTTP заявки към HTTPS, като гарантира сигурна комуникация между клиента и сървъра.
+
+
+    app.UseStaticFiles();
+     Този ред позволява обслужването на статични файлове (напр. HTML, CSS, JavaScript, изображения) от папката wwwroot.
+
+
+    app.UseRouting();
+     Този ред активира маршрутизацията в приложението, като позволява свързването на входящите заявки с 
+     съответните крайни точки (контролери, действия).
+
+
+    app.UseAuthorization();
+     Този ред активира middleware за оторизация, което гарантира, че само автентифицирани и оторизирани потребители 
+     имат достъп до определени части на приложението.
+
+
+    app.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+     Този ред дефинира маршрут по подразбиране за приложението. Той свързва шаблона на URL с 
+     съответния контролер и действие. Ако не е предоставен конкретен маршрут, приложението ще използва 
+     контролера "Home" и действието "Index" по подразбиране. Параметърът id е опционален.
+
+
+
+    IServiceScope serviceScope = app.Services.CreateScope();
+    EventMiDbContext context = serviceScope.ServiceProvider.GetRequiredService<EventMiDbContext>();
+    context.Database.Migrate();
+
+     Тези редове създават нов обхват на услугата и извличат инстанция на EventMiDbContext от контейнера за dependency injection.
+     Извикването на context.Database.Migrate() прилага всички чакащи миграции към базата данни, като гарантира, че схемата на базата данни е актуална.
+
+
+    app.Run();
+     Този ред стартира уеб приложението, позволявайки му да обработва входящи HTTP заявки.
+     Методът app.Run() блокира изпълнението на основния поток, докато приложението не бъде спряно.
+}
+
+
+
+public static void Main(string[] args) { ... }: Входна точка на приложението.
+
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);: Инициализира builder с аргументи от командния ред.
+
+string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");: Извлича връзковия низ.
+
+builder.Services.AddControllersWithViews();: Добавя услуги за контролери с изгледи (MVC).
+
+builder.Services.AddDbContext<EventMiDbContext>(...);: Регистрира DbContext с конфигурация за SQL Server.
+
+WebApplication app = builder.Build();: Изгражда уеб приложението.
+
+if (!app.Environment.IsDevelopment()) { ... }: Конфигурира настройки, специфични за продукция.
+
+app.UseExceptionHandler("/Home/Error");: Настройва глобален обработчик на изключения.
+
+app.UseHsts();: Активира HTTP Strict Transport Security (HSTS).
+
+app.UseHttpsRedirection();: Пренасочва HTTP заявки към HTTPS.
+
+app.UseStaticFiles();: Обслужва статични файлове.
+
+app.UseRouting();: Активира маршрутизация.
+
+app.UseAuthorization();: Активира middleware за оторизация.
+
+app.MapControllerRoute(...);: Дефинира маршрут по подраз
+
+IServiceScope serviceScope = app.Services.CreateScope();: Създава обхват на услугите (Service Scope).
+
+EventMiDbContext context = serviceScope.ServiceProvider.GetRequiredService<EventMiDbContext>();: Извлича инстанция на EventMiDbContext от контейнера за зависимостите (Dependency Injection).
+
+context.Database.Migrate();: Прилага всички чакащи миграции към базата данни, за да гарантира, че нейната схема е актуална.
+
+app.Run();: Стартира приложението и му позволява да обработва входящи HTTP заявки.
+
