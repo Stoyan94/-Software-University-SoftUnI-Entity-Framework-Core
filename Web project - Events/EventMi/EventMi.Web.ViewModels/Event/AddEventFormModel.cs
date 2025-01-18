@@ -16,6 +16,8 @@ namespace EventMi.Web.ViewModels.Event
 
         [StringLength(EventPlaceMaxLength, MinimumLength = EventPlaceMinLength)]
 
+        [MaxLength(EventDescriptionMaxLength)]
+        public string? Description { get; set; }
         public required string Place { get; set; } = null!;
     }
 }
