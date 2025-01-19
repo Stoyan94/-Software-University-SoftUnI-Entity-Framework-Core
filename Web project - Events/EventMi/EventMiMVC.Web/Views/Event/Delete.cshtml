@@ -1,34 +1,49 @@
 ﻿@model EditEventFormModel;
 
 
+@{
+    ViewBag.Title = "Delete an Event";
+}
 
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
 
-    <div class="row">
-        <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-            <form asp-action="Delete" method="post">
-                <div class="mb-3">
-                    <label asp-for="Name" class="form-label">Name</label>
-                    <input asp-for="Name" class="form-control" disabled="true" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="StartDate" class="form-label">Start</label>
-                    <input asp-for="StartDate" class="form-control" disabled="true" />
-                    <span asp-validation-for="StartDate" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="EndDate" class="form-label">End</label>
-                    <input asp-for="EndDate" class="form-control" disabled="true" />
-                    <span asp-validation-for="EndDate" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="Place" class="form-label">Place</label>
-                    <input asp-for="Place" class="form-control" disabled="true" />
-                    <span asp-validation-for="Place" class="text-danger"></span>
-                </div>
-                <div class="mb-3 text-center">
-                    <input class="btn btn-primary" type="submit" value="Delete" />
-                </div>
-            </form>
-        </div>
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form asp-action="Delete" method="post">
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Name</label>
+                <input asp-for="Name" class="form-control" disabled="true" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="StartDate" class="form-label">Start</label>
+                <input asp-for="StartDate" class="form-control" disabled="true" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="EndDate" class="form-label">End</label>
+                <input asp-for="EndDate" class="form-control" disabled="true" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Place" class="form-label">Place</label>
+                <input asp-for="Place" class="form-control" disabled="true" />
+                <span asp-validation-for="Place" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label">Description</label>
+                <textarea asp-for="Description" class="form-control" rows="5" disabled="true"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="mb-3 text-center">
+                <input class="btn btn-danger" type="submit" value="Delete" />
+            </div>
+        </form>
     </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

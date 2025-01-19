@@ -20,6 +20,9 @@
         [MaxLength(EventPlaceMaxLength)]
         public required string Place { get; set; }
 
+        [MaxLength(EventDescriptionMaxLength)]
+        public string? Description { get; set; }
+
         public required bool? IsActive { get; set; }
     }
 }

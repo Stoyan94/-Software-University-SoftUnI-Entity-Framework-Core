@@ -18,20 +18,14 @@ namespace EventMi.Web.Services.Data
         }
         public async Task AddEvent(AddEventFormModel eventFormModel, DateTime startDate, DateTime endDate)
         {
-            // Create a new Event object and set its properties to the values from the form model
 
-            startDate = new DateTime(startDate.Year, startDate.Month, startDate.Day, startDate.Hour, startDate.Minute,
-                0);
-            endDate = new DateTime(startDate.Year, startDate.Month, startDate.Day, startDate.Hour, startDate.Minute,
-                0);
-            
-            
             Event newEvent = new Event
             {
                 Name = eventFormModel.Name,
                 StartDate = startDate,
                 EndDate = endDate,
                 Place = eventFormModel.Place,
+                Description = eventFormModel.Description,
                 IsActive = true
             };
 
@@ -61,9 +55,10 @@ namespace EventMi.Web.Services.Data
             EditEventFormModel eventForm = new EditEventFormModel
             {
                 Name = eventDb.Name,
-                StartDate = eventDb.StartDate.ToString("f"),
-                EndDate = eventDb.EndDate.ToString("f"),
-                Place = eventDb.Place
+                StartDate = eventDb.StartDate.ToString("G", CultureInfo.InvariantCulture),
+                EndDate = eventDb.EndDate.ToString("G", CultureInfo.InvariantCulture),
+                Place = eventDb.Place,
+                Description = eventDb.Description
             };
             
             return eventForm;
@@ -86,8 +81,9 @@ namespace EventMi.Web.Services.Data
             eventToEdit.StartDate = startDate;
             eventToEdit.EndDate = endDate;
             eventToEdit.Place = eventFormModel.Place;
+            eventToEdit.Description = eventFormModel.Description;
 
-           await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteEventById(int id)
@@ -107,6 +103,23 @@ namespace EventMi.Web.Services.Data
 
             dbContext.Remove(eventToDelete);
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<AllEventsForm>> GetAllEvents()
+        {
+            return await dbContext.Events
+                .Where(e => e.IsActive == true)
+                .OrderBy(e=> e.StartDate)
+                .Select(e => new AllEventsForm
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    StartDate = e.StartDate.ToString("G", CultureInfo.InvariantCulture),
+                    EndDate = e.EndDate.ToString("G", CultureInfo.InvariantCulture),
+                    Place = e.Place,
+                    Description = e.Description
+                })
+                .ToListAsync();
         }
     }
 }

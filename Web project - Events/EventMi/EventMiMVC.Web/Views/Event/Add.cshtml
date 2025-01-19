@@ -30,6 +30,11 @@
                 <input asp-for="Place" class="form-control" aria-required="true" />
                 <span asp-validation-for="Place" class="text-danger"></span>
             </div>
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label">Description</label>
+                <textarea asp-for="Description" class="form-control" rows="5" aria-required="true"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
             <div class="mb-3 text-center">
                 <input class="btn btn-primary" type="submit" value="Add" />
             </div>

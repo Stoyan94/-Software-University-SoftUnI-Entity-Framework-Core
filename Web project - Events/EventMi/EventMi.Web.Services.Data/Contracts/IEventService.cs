@@ -11,5 +11,7 @@ namespace EventMi.Web.Services.Data.Contracts
         Task EditEventById(int id, EditEventFormModel eventFormModel, DateTime startDate, DateTime endDate);
 
         Task DeleteEventById(int id);
+
+        Task<IEnumerable<AllEventsForm>> GetAllEvents();
     }
 }
