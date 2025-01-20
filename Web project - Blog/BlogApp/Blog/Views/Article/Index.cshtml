@@ -7,13 +7,21 @@
 
 <h1>Welcome to Article View!</h1>
 
-@foreach (var article in Model)
-{
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">@article.Title</h5>
-            <p class="card-text" @article.Content>@article.Content</p>
-            <button class="btn btn-primary" onclick="this.classList.replace('btn-primary', 'btn-success')">Like</button>
+<div class="row">
+    
+    @foreach (var article in Model)
+    {
+        <div class="card" style="width: 20rem; margin: 2rem;">
+            <div class="card-body">
+                <h5 class="card-title">@article.Title</h5>
+                <h6 class="card-title">CreatedOn: @article.CreatedOn</h6>
+                <p class="card-text" >@article.Author</p>
+                <p class="card-text" >@article.Content</p>
+                <a href="#" class="btn btn-primary">Read more</a>
+                <button class="btn btn-primary" onclick="this.classList.replace('btn-primary', 'btn-success')">Like</button>
+            </div>
         </div>
-    </div>
-}
+    }
+
+</div>
+

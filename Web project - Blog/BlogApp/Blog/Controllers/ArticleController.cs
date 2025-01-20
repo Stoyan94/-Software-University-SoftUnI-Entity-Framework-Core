@@ -14,7 +14,7 @@ namespace Blog.Web.Controllers
                 new Article
                 {
                     Title = "What is a Full Stack Developer?",
-                    CreatedOn = new DateTime(2024, 10 ,5),
+                    CreatedOn = new DateTime(2024, 10 ,5, 10, 30, 0),
                     Content = "A Full Stack Developer works on both the front-end and back-end of applications. " +
                               "They handle UI design with HTML, CSS, and JavaScript and server-side logic with languages like C# or Python. " +
                               "This versatility makes them valuable for bridging communication between teams. Their skills are essential for end-to-end development. " +
@@ -24,7 +24,7 @@ namespace Blog.Web.Controllers
                 new Article
                 {
                     Title = "Why Learn C# in 2025?",
-                    CreatedOn = new DateTime(2024, 10 ,5),
+                    CreatedOn = new DateTime(2024, 10 ,5, 11, 30, 0),
                     Content = "C# remains a top choice for developers due to its versatility and .NET framework support. " +
                               "It’s widely used in web development, game development with Unity, and enterprise applications. " +
                               "The language offers strong performance and a large community. Learning C# can boost career opportunities, especially in backend and Full Stack roles. " +
@@ -34,7 +34,7 @@ namespace Blog.Web.Controllers
                 new Article
                 {
                     Title = "The Importance of Clean Code",
-                    CreatedOn = new DateTime(2024, 10 ,6),
+                    CreatedOn = new DateTime(2024, 10 ,6, 12, 30, 0),
                     Content = "Clean code is essential for maintainable and scalable software. " +
                               "It improves readability, making it easier for teams to collaborate and debug. " +
                               "Practices like using descriptive names and avoiding code duplication are key. " +
@@ -44,7 +44,7 @@ namespace Blog.Web.Controllers
                 new Article
                 {
                     Title = "SQL for Developers: A Must-Have Skill",
-                    CreatedOn = new DateTime(2024, 10 ,9),
+                    CreatedOn = new DateTime(2024, 10 ,9, 18, 30, 0),
                     Content = "SQL is crucial for interacting with databases in almost any application. " +
                               "It allows developers to store, retrieve, and manipulate data efficiently. " +
                               "Mastering SQL enhances productivity and enables dynamic web applications. " +
@@ -56,7 +56,13 @@ namespace Blog.Web.Controllers
         }
         public IActionResult Index()
         {
-            return View(articles);
+            return View(articles.Select(a => new Article
+            {
+                Title = a.Title,
+                Content = a.Content.Substring(0, 100),
+                CreatedOn = a.CreatedOn,
+                UserId = a.UserId
+            }));
         }
     }
 }
