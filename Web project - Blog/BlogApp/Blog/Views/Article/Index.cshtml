@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Blog.Data.Models.Article>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h1>Welcome to Article View!</h1>
+
+@foreach (var article in Model)
+{
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">@article.Title</h5>
+            <p class="card-text" @article.Content>@article.Content</p>
+            <button class="btn btn-primary" onclick="this.classList.replace('btn-primary', 'btn-success')">Like</button>
+        </div>
+    </div>
+}
