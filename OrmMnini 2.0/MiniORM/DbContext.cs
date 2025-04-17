@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Collections;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using static MiniORM.ErrorMessages;
 
@@ -49,7 +50,7 @@ namespace MiniORM
             foreach (IEnumerable<object> dbSet in dbSetsObjects)
             {
                 IEnumerable<object> invalidEntities = dbSet
-                    .Where(e => !this.IsObjectValid(e))
+                    .Where(e => !IsObjectValid(e))
                     .ToArray();
 
                 if (invalidEntities.Any())
@@ -95,6 +96,15 @@ namespace MiniORM
             }
         }
 
+        private static bool IsObjectValid(object obj)
+        {
+            ValidationContext validationContext = new ValidationContext(obj);
+            ICollection<ValidationResult> validationErros = new List<ValidationResult>();
+
+            return Validator
+                .TryValidateObject(obj, validationContext, validationErros, true);
+        }       
+
         private IDictionary<Type, PropertyInfo> DiscoverDbSet()
         {
             throw new NotImplementedException();
@@ -108,6 +118,40 @@ namespace MiniORM
         private void MapAllRelations()
         {
             throw new NotImplementedException();
+        }
+
+        private void Persist<TEntity> (DbSet<TEntity> dbSet)
+            where TEntity : class, new()
+        {
+            string tableName = this.GetTableName(typeof(TEntity));
+            IEnumerable<string> columnsNames = this.dbConnection
+                .FetchColumnNames(tableName);
+
+            if (dbSet.ChangeTracker.AddedEntities.Any())
+            {
+                this.dbConnection.InsertEntities(dbSet.ChangeTracker.AddedEntities, tableName, columnsNames.ToArray());
+            }
+
+            IEnumerable<TEntity> modifiedEntities = dbSet
+                .ChangeTracker.GetModifiedEntities(dbSet);
+
+            if (modifiedEntities.Any())
+            {
+                this.dbConnection
+                    .UpdateEntities(modifiedEntities, tableName, columnsNames.ToArray());
+            }
+
+            if (dbSet.ChangeTracker.RemovedEntities.Any())
+            {
+                this.dbConnection
+                    .DeleteEntities(dbSet.ChangeTracker.RemovedEntities, tableName, columnsNames.ToArray());
+            }
+        }
+
+
+        private string GetTableName(Type tableType)
+        {
+
         }
     }
 }
