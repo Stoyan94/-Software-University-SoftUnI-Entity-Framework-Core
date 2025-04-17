@@ -14,38 +14,65 @@ namespace MiniORM
 
         internal ICollection<TEntity> Entities { get; set; }
 
-        public int Count => throw new NotImplementedException();
+        public int Count
+            => this.Entities.Count();
 
-        public bool IsReadOnly => throw new NotImplementedException();
+        public bool IsReadOnly 
+            => this.Entities.IsReadOnly;
 
         public void Add(TEntity item)
         {
-            throw new NotImplementedException();
+            this.Entities.Add(item);
+            this.ChangeTracker.Add(item); // Notify the change tracker about the new entity added
         }
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            while (this.Entities.Any())
+            {
+                TEntity entity = this.Entities.First();
+                this.Entities.Remove(entity);
+            }
         }
 
         public bool Contains(TEntity item)
         {
-            throw new NotImplementedException();
+            return this.Entities.Contains(item);
         }
 
         public void CopyTo(TEntity[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            this.Entities.CopyTo(array, arrayIndex);
+        }
+
+
+        public bool Remove(TEntity item)
+        {
+            bool isRemoved = this.Entities.Remove(item);
+            if (isRemoved)
+            {
+                this.ChangeTracker.Remove(item); // Notify the change tracker about the entity removed
+            }
+            return isRemoved;
+        }
+
+        public bool RemoveRange(IEnumerable<TEntity> range)
+        {
+            foreach (TEntity entityToRemove in range)
+            {
+                bool result = this.Entities.Remove(entityToRemove);
+                if (!result)
+                {
+                    return false; // Stop the removing since we have invalid parameter
+                }
+            }
+
+            return true;
         }
 
         public IEnumerator<TEntity> GetEnumerator()
         {
-            throw new NotImplementedException();
-        }
-
-        public bool Remove(TEntity item)
-        {
-            throw new NotImplementedException();
+           return this.Entities.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
