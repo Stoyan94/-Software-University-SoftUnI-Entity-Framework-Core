@@ -86,12 +86,21 @@ namespace MiniORM
                     }
                     catch 
                     {
-                        Console.WriteLine("Performing Rollback due to Exception!!!");
+                        Console.WriteLine(TransactionRollbackMessage);
                         transaction.Rollback();
                         throw;
                     }
-                    
-                    transaction.Commit();
+
+                    try
+                    {
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        Console.WriteLine(TransactionExceptionMessage);
+                        throw;
+                    }                    
+                   
                 }
             }
         }
@@ -107,17 +116,48 @@ namespace MiniORM
 
         private IDictionary<Type, PropertyInfo> DiscoverDbSet()
         {
-            throw new NotImplementedException();
+            return this.GetType()
+                .GetProperties()
+                .Where(pi => pi.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>))
+                .ToDictionary(pi => pi.PropertyType.GetGenericArguments().First(), pi => pi);
         }
 
         private void InitializeDbSets()
         {
-            throw new NotImplementedException();
+            foreach (KeyValuePair<Type, PropertyInfo> dbSetKvp in dbSetProperties)
+            {
+                Type dbSetType = dbSetKvp.Key;
+                PropertyInfo dbSetPoperty = dbSetKvp.Value;
+
+                MethodInfo populateDbSetMethodInfo = typeof(DbContext)
+                    .GetMethod("PopulateDbSet", BindingFlags.NonPublic | BindingFlags.Instance)!
+                    .MakeGenericMethod(dbSetType);
+
+                populateDbSetMethodInfo.Invoke(this, new object[] { dbSetPoperty });
+            }
         }
 
         private void MapAllRelations()
         {
-            throw new NotImplementedException();
+            foreach (KeyValuePair<Type, PropertyInfo> dbSetKvp in dbSetProperties)
+            {
+                Type dbSetType = dbSetKvp.Key;
+                PropertyInfo dbSetPropertyInfo = dbSetKvp.Value;
+
+                MethodInfo mapRelationsGenericMethodInfo = typeof(DbContext)
+                    .GetMethod("MapRelations", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .MakeGenericMethod(dbSetType);
+
+                object? dbSetInstance = dbSetPropertyInfo.GetValue(this);
+
+                if (dbSetInstance == null)
+                {
+                    throw new ArgumentNullException(dbSetPropertyInfo.Name,
+                        String.Format(NullDbSetMessage, dbSetPropertyInfo.Name));
+                }
+
+                mapRelationsGenericMethodInfo.Invoke(this, new object[] { dbSetInstance });
+            }
         }
 
         private void Persist<TEntity> (DbSet<TEntity> dbSet)
@@ -148,10 +188,25 @@ namespace MiniORM
             }
         }
 
-
-        private string GetTableName(Type tableType)
+        private void PopulateDbSet<TEntity>(PropertyInfo dbSetPropertyInfo)
+            where TEntity : class, new()
         {
-
+            IEnumerable<TEntity> dbSetEntities = this.LoadTableEntities<TEntity>();
+            DbSet<TEntity> dbSetInstance = new DbSet<TEntity>(dbSetEntities);
+            ReflectionHelper.ReplaceBackingField(this, dbSetPropertyInfo.Name, dbSetInstance);
         }
+
+
+        private IEnumerable<TEntity> LoadTableEntities<TEntity>()
+          where TEntity : class
+        {
+            Type tableType = typeof(TEntity);
+            IEnumerable<string> columnNames = this.GetEntityColumnNames(tableType);
+            string tableName = this.GetTableName(tableType);
+
+            return this.dbConnection
+                .FetchResultSet<TEntity>(tableName, columnNames.ToArray());
+        }
+
     }
 }
