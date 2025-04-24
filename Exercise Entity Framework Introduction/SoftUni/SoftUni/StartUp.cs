@@ -337,5 +337,41 @@ public class StartUp
 
         return output.ToString().TrimEnd();
     }
+
+
+    public static string RemoveTown(SoftUniDbContext context)
+    {
+        // 1. Намери града
+        var townToDelete = context.Towns
+            .FirstOrDefault(t => t.Name == "Seattle");
+
+        if (townToDelete == null)
+        {
+            return "Town 'Seattle' not found.";
+        }
+
+        // 2. Извади всички адреси, свързани с града
+        var addressesToDelete = context.Addresses
+            .Where(a => a.TownId == townToDelete.TownId)
+            .ToArray();
+
+        // 3. Намери служителите, които живеят на тези адреси
+        var employeesToUpdate = context.Employees
+            .Where(e => addressesToDelete.Contains(e.Address))
+            .ToList();
+
+        //4.Занули адресите им
+        employeesToUpdate.ForEach(e => e.AddressId = null);
+
+        // 5. Изтрий адресите и града
+        context.Addresses.RemoveRange(addressesToDelete);
+        context.Towns.Remove(townToDelete);
+
+        // 6. Запази промените
+        context.SaveChanges();
+
+        // 7. Върни съобщение
+        return $"{addressesToDelete.Length} addresses in Seattle were deleted";
+    }
 }
 
