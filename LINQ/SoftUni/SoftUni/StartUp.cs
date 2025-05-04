@@ -22,12 +22,14 @@ public class StartUp
     {
         using SoftUniContext dbContext = new SoftUniContext();
 
-        Console.WriteLine(await SelectManyMethod(dbContext));
-        Console.WriteLine(await GroupByMethod(dbContext));
-        Console.WriteLine(await AsyncAndDTO(dbContext));
-        Console.WriteLine(await JoinAgg(dbContext));
+        //Console.WriteLine(await SelectManyMethod(dbContext));
+        //Console.WriteLine(await GroupByMethod(dbContext));
+        //Console.WriteLine(await AsyncAndDTO(dbContext));
+        //Console.WriteLine(await JoinAgg(dbContext));
 
-        var employees = GetFilteredEmployees(e => e.DepartmentId == 1).ToList();
+        var employees = GetFilteredEmployees(e => e.DepartmentId == 1).ToList();        
+
+        Console.WriteLine(string.Join(Environment.NewLine, employees.Select(e => $"{e.DepartmentId} made EF to downloads the entire table from the base Into memory with all columns")));
         
         IQueryable<Employee> GetFilteredEmployees(Expression<Func<Employee, bool>> filter)
         {
@@ -39,71 +41,71 @@ public class StartUp
             // dbContext.Employees
             // .Where(filter).AsQueryable();
 
-            // Using func caused the expression tree to convert IQuerable<T> to IEnumerable because func is used
+            // Using func caused the expression tree to convert IQueryable<T> to IEnumerable because func is used
             //   by the IEnumerable<T> interface because at the moment whoever sees a func EF knows it should use IEnumerable<T> and the most dangerous thing is func made EF to downloads the entire table from the base Into memory with all columns.
-            //   In the query and write AsQueryable() EF will again execute it as IEnumerable<Т> before reaching AsQueryable() to convert the query to IQerable which is very wrong and dangerous for us.
+            //   In the query and write AsQueryable() EF will again execute it as IEnumerable<Т> before reaching AsQueryable() to convert the query to IQueryable which is very wrong and dangerous for us.
             // To avoid such errors we should use Expression<Func< T, bool>> which will not convert our query to IEnumerable
             // implicit conversion occurs because IQueryable<> inherits IEnumerable<>
         }
     }
 
     private static async Task<string> SelectManyMethod(SoftUniContext dbContext)
-{
-    // SelectMany: This method projects each employee into their list of Addresses and then flattens these lists into a single sequence of Address objects.
-        StringBuilder sb = new StringBuilder();
-    List<Address> allAddresses = await dbContext.Towns
-    .SelectMany(t => t.Addresses).ToListAsync();
-    foreach (var item in allAddresses)
     {
-        sb.AppendLine(item.AddressText);
+        // SelectMany: This method projects each employee into their list of Addresses and then flattens these lists into a single sequence of Address objects.
+            StringBuilder sb = new StringBuilder();
+        List<Address> allAddresses = await dbContext.Towns
+        .SelectMany(t => t.Addresses).ToListAsync();
+        foreach (var item in allAddresses)
+        {
+            sb.AppendLine(item.AddressText);
+        }
+        return sb.ToString().TrimEnd();
     }
-    return sb.ToString().TrimEnd();
-}
     private static async Task<string> GroupByMethod(SoftUniContext dbContext)
-{
-    StringBuilder sb = new StringBuilder();
-    List<Employee> employees = await dbContext.Employees.ToListAsync();
-    List<IGrouping<string, Employee>> emp = employees
-    .GroupBy(e => e.JobTitle)
-    .ToList();
-    // Snippet 1:
-    // Executes the initial query on the database to load all employees.
-    // Performs the grouping operation in memory on the client side.
-
-
-        var emp1 = await dbContext.Employees
-    .GroupBy(e => new { e.JobTitle, e.Department.Name })
-    .Select(grp => new
     {
-        grp.Key.JobTitle,
-        Department = grp.Key.Name,
-        Salary = grp.Sum(e => e.Salary)
-    })
-    .ToListAsync();
-    // Snippet 2:
-    // Returns the results directly from the database without loading all employee records into memory.
-    // Executes the entire query on the database, including the grouping and selection of keys.
+        StringBuilder sb = new StringBuilder();
+        List<Employee> employees = await dbContext.Employees.ToListAsync();
+        List<IGrouping<string, Employee>> emp = employees
+        .GroupBy(e => e.JobTitle)
+        .ToList();
+        // Snippet 1:
+        // Executes the initial query on the database to load all employees.
+        // Performs the grouping operation in memory on the client side.
 
-        foreach (var item in emp)
-    {
-        Console.WriteLine(item);
-    }
-    foreach (var e in emp1)
-    {
-        sb.AppendLine($"{e.JobTitle} - {e.Salary:f2} - {e.Department}");
-    }
 
-    // Summary
-    // Snippet 1 is less efficient because it loads all employee records into memory before grouping them.
-    //     It results in a collection of groups of employees by job title.
-    //
-    // Snippet 2 is more efficient because it performs the grouping directly in the database and only retrieves the distinct job titles.
-    //     It results in a list of job titles.
-    //
-    // When to Use Each Approach
-    // Use Snippet 1 if you need to perform further processing on the grouped employees in memory and are dealing with a manageable amount of data.
-    //
-    // Use Snippet 2 if you only need the distinct job titles or if you are dealing with a large dataset and want to optimize performance by offloading the grouping to the database.
+            var emp1 = await dbContext.Employees
+        .GroupBy(e => new { e.JobTitle, e.Department.Name })
+        .Select(grp => new
+        {
+            grp.Key.JobTitle,
+            Department = grp.Key.Name,
+            Salary = grp.Sum(e => e.Salary)
+        })
+        .ToListAsync();
+        // Snippet 2:
+        // Returns the results directly from the database without loading all employee records into memory.
+        // Executes the entire query on the database, including the grouping and selection of keys.
+
+            foreach (var item in emp)
+        {
+            Console.WriteLine(item);
+        }
+        foreach (var e in emp1)
+        {
+            sb.AppendLine($"{e.JobTitle} - {e.Salary:f2} - {e.Department}");
+        }
+
+        // Summary
+        // Snippet 1 is less efficient because it loads all employee records into memory before grouping them.
+        //     It results in a collection of groups of employees by job title.
+        //
+        // Snippet 2 is more efficient because it performs the grouping directly in the database and only retrieves the distinct job titles.
+        //     It results in a list of job titles.
+        //
+        // When to Use Each Approach
+        // Use Snippet 1 if you need to perform further processing on the grouped employees in memory and are dealing with a manageable amount of data.
+        //
+        // Use Snippet 2 if you only need the distinct job titles or if you are dealing with a large dataset and want to optimize performance by offloading the grouping to the database.
 
         return sb.ToString().TrimEnd();
 
