@@ -64,7 +64,9 @@ public class StartUp
     private static async Task<string> GroupByMethod(SoftUniContext dbContext)
     {
         StringBuilder sb = new StringBuilder();
+
         List<Employee> employees = await dbContext.Employees.ToListAsync();
+
         List<IGrouping<string, Employee>> emp = employees
         .GroupBy(e => e.JobTitle)
         .ToList();
@@ -74,22 +76,23 @@ public class StartUp
 
 
             var emp1 = await dbContext.Employees
-        .GroupBy(e => new { e.JobTitle, e.Department.Name })
-        .Select(grp => new
-        {
-            grp.Key.JobTitle,
-            Department = grp.Key.Name,
-            Salary = grp.Sum(e => e.Salary)
-        })
-        .ToListAsync();
+                .GroupBy(e => new { e.JobTitle, e.Department.Name })
+                .Select(grp => new
+                {
+                    grp.Key.JobTitle,
+                    Department = grp.Key.Name,
+                    Salary = grp.Sum(e => e.Salary)
+                })
+                .ToListAsync();
         // Snippet 2:
         // Returns the results directly from the database without loading all employee records into memory.
         // Executes the entire query on the database, including the grouping and selection of keys.
 
-            foreach (var item in emp)
+        foreach (var item in emp)
         {
-            Console.WriteLine(item);
+        Console.WriteLine(item);
         }
+
         foreach (var e in emp1)
         {
             sb.AppendLine($"{e.JobTitle} - {e.Salary:f2} - {e.Department}");

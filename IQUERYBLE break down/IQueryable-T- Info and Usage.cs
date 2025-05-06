@@ -1,11 +1,12 @@
-In C#, IQueryable<T> is an interface that is used for querying data from a data source. It is part of the System.Linq namespace and extends the IEnumerable<T> interface. 
+In C#, IQueryable<T> is an interface that is used for querying data from a data source. 
+It is part of the System.Linq namespace and extends the IEnumerable<T> interface. 
 The main advantage of IQueryable<T> is its ability to build expressions that can be translated into queries that run on the data source (e.g., SQL queries for a database). 
 This is particularly useful in scenarios involving LINQ to SQL, LINQ to Entities (Entity Framework), and other LINQ providers that can translate expressions into native queries for the underlying data source.
 
 Key Features of IQueryable<T>
 
-Deferred Execution: Queries are not executed when they are defined. Instead, 
-    they are executed when the query is enumerated, such as with a foreach loop or a call to methods like ToList() or FirstOrDefault().
+Deferred Execution: Queries are not executed when they are defined. 
+    Instead, they are executed when the query is enumerated, such as with a foreach loop or a call to methods like ToList() or FirstOrDefault().
 
 Expression Trees: IQueryable<T> works with expression trees, allowing the provider to translate the LINQ query into a specific query language (e.g., SQL for databases).
 
